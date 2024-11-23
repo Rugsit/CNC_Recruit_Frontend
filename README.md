@@ -14,22 +14,32 @@ This is a template for creating applications using Next.js 14 (app directory) an
 - [Framer Motion](https://www.framer.com/motion/)
 - [next-themes](https://github.com/pacocoursey/next-themes)
 
+local lib:
+    
+- axios
+- tanstack
+
 ## How to Use
 
-### Use the template with create-next-app
-
-To create a new project based on this template using `create-next-app`, run the following command:
-
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
 
 ### Install dependencies
 
+require 
+    
+    - Docker
+    - Node 20 or above
+
 You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+
 
 ```bash
 npm install
+```
+
+or 
+
+```bash
+pnpm i
 ```
 
 ### Run the development server
@@ -38,16 +48,35 @@ npm install
 npm run dev
 ```
 
-### Setup pnpm (optional)
-
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+or 
 
 ```bash
-public-hoist-pattern[]=*@nextui-org/*
+pnpm dev
 ```
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+## To Build Image
 
-## License
+first type command 
 
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+```bash
+docker build -t cnc-recruit-project .
+```
+ 
+!!make sure your project has Dockerfile!!
+
+and then use 
+
+```bash
+docker run -dp 3000:3000 cnc-recruit-project
+```
+to run project
+
+and then you can go to ` localhost:3000 ` with your browser 
+
+NOTE:
+
+-d is stand for runnin in background
+-p is to specify port
+
+
+
