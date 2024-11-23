@@ -77,8 +77,28 @@ export const Navbar = () => {
         >
           <Login />
           <ThemeSwitch />
-          <NavbarMenuToggle />
+          <NavbarMenuToggle className='text-primary' />
         </NavbarContent>
+        <NavbarMenu className='pt-6'>
+          {siteConfig.navMenuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link
+                color={
+                  index === 2
+                    ? 'primary'
+                    : index === siteConfig.navMenuItems.length - 1
+                      ? 'danger'
+                      : 'foreground'
+                }
+                className='w-full'
+                href={item.label}
+                size='lg'
+              >
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
       </NextUINavbar>
     </div>
   );
