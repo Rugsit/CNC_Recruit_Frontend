@@ -9,37 +9,32 @@ import Image from 'next/image';
 import ChevronLeftIcon from '@/public/form/chevron-left.svg';
 import UploadImageIcon from '@/public/form/upload-image.svg';
 import UploadFileIcon from '@/public/form/upload-file.svg';
-import { registerForm } from '@/app/lib/actions';
-import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
-
-const INITIAL_STATE = {
-    data: {
-        nisitId: "",
-        firstName: "",
-        lastName: "",
-        nickName: "",
-        social: "",
-        lineId: "",
-        phoneNumber: "",
-        address: "",
-        mbti: "",
-        club: "",
-        skill: "",
-        interest: "",
-        project: "",
-        tool: "",
-        imageProfile: null,
-        transcript: null
-    },
-    errors: null,
-    message: null
-};
+import { formSchema, FormFields } from '@/app/lib/validations/schema';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function RegisterForm() {
     const router = useRouter();
-    const [formState, formAction] = useFormState(registerForm , INITIAL_STATE);
-    const errors = formState?.errors;
+    
+    const {
+        register, 
+        handleSubmit, 
+        formState: { errors, isSubmitting } 
+    } = useForm<FormFields>({
+        resolver: zodResolver(formSchema),
+    });
+
+    const onSubmit = async (data: FormFields) => {
+        try {
+            // POST data to API
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log(data);
+        } catch (error) {
+            // Handle error if POST request failed
+            console.error(error);
+        }
+    }
     
     return (
         <section>
@@ -52,52 +47,54 @@ export default function RegisterForm() {
                     กลับสู่หน้าหลัก
                 </span>
             </Link>
-            <form action={formAction}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="p-10 bg-white rounded-lg">
                     <div>
-                        <h3 className="text-2xl pb-6 text-blue-400 font-bold">แบบฟอร์มสมัคร</h3>
+                        <h3 className="md:text-2xl text-xl pb-6 text-blue-400 font-bold">แบบฟอร์มสมัคร</h3>
                     </div>
                     <div>
-                        <InputText name="nisitId" title="รหัสนิสิต" description="ตัวอย่าง: 67104xxxxx" error={errors?.nisitId} />
-                        <InputText name="firstName" title="ชื่อจริง" description="ตัวอย่าง: สมชาย" error={errors?.firstName} />
-                        <InputText name="lastName" title="นามสกุล" description="ตัวอย่าง: ใจจริง" error={errors?.lastName} />
-                        <InputText name="nickName" title="ชื่อเล่น" description="ตัวอย่าง: ชาย" error={errors?.nickName} />
-                        <InputText name="social" title="Facebook/IG" error={errors?.social} />
-                        <InputText name="lineId" title="LINE ID" error={errors?.lineId} />
-                        <InputText name="phoneNumber" title="เบอร์โทรศัพท์" error={errors?.phoneNumber} />
-                        <InputText name="address" title="ที่อยู่อาศัยปัจจุบัน" description="หอใน, หอนอก, บ้าน" error={errors?.address} />
-                        <InputText name="mbti" title="MBTI" description="ทำแบบทดสอบได้ที่: www.16personalities.com" error={errors?.mbti} />
-                        <InputText name="club" title="ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?" error={errors?.club} />
-                        <Textarea name="skill" title="มีความสามารถพิเศษอะไรบ้าง?" error={errors?.skill} />
-                        <Textarea name="interest" title="มีความสนใจในเรื่องอะไรเป็นพิเศษ?" description="ตัวอย่าง: UX/UI, Web Dev, AI, Cloud, etc." error={errors?.interest} />
-                        <Textarea name="project" title="โปรเจ็คที่เคยทำมีอะไรบ้าง?" error={errors?.project} />
-                        <Textarea name="tool" title="Tools, Frameworks, Software ที่เคยใช้มีอะไรบ้าง?" error={errors?.tool} />
+                        <InputText title="รหัสนิสิต" description="6710400000" register={register("nisitId")} errorMessage={errors.nisitId?.message}/>
+                        <InputText title="ชื่อจริง" description="เกิดสิริ" register={register("firstName")} errorMessage={errors.firstName?.message} />
+                        <InputText title="นามสกุล" description="ศรีเจริญ" register={register("lastName")} errorMessage={errors.lastName?.message} />
+                        <InputText title="ชื่อเล่น" description="ต้นน้ำ" register={register("nickName")} errorMessage={errors.nickName?.message} />
+                        <InputText title="Facebook/IG" register={register("social")} errorMessage={errors.social?.message} />
+                        <InputText title="LINE ID" register={register("lineId")} errorMessage={errors.lineId?.message} />
+                        <InputText title="เบอร์โทรศัพท์" register={register("phoneNumber")} errorMessage={errors.phoneNumber?.message} />
+                        <InputText title="ที่อยู่อาศัยปัจจุบัน" register={register("address")} description="หอใน, หอนอก, บ้าน" errorMessage={errors.address?.message} />
+                        <InputText title="MBTI" register={register("mbti")} description="INFP" errorMessage={errors.mbti?.message} />
+                        <InputText title="ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?" register={register("club")} errorMessage={errors.club?.message} />
+                        <Textarea title="มีความสามารถพิเศษอะไรบ้าง?" register={register("skill")} errorMessage={errors.skill?.message} />
+                        <Textarea title="มีความสนใจในเรื่องอะไรเป็นพิเศษ?" description="สนใจ UX/UI, Web Dev, AI, Cloud, etc." register={register("interest")} errorMessage={errors.interest?.message} />
+                        <Textarea title="โปรเจ็คที่เคยทำมีอะไรบ้าง?" register={register("project")} errorMessage={errors.project?.message} />
+                        <Textarea title="Tools, Frameworks, Software ที่เคยใช้มีอะไรบ้าง?" register={register("tool")} errorMessage={errors.tool?.message} />
                         <FileUpload
-                          name="imageProfile"
                           title="อัพโหลดรูปภาพ" 
                           description="ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน"
                           accept=".png, .jpg, .jpeg"
-                          error={errors?.imageProfile}
+                          register={register("imageProfile")}
+                          errorMessage={errors.imageProfile?.message}
                           icon={{ src: UploadImageIcon, alt: "upload image icon" }}  
                         />
                         <FileUpload
-                          name="transcript"
                           title="อัพโหลดใบรับรองผลการเรียน" 
                           description="ไฟล์​ PDF ขนาดไม่เกิน 10 MB"
                           accept=".pdf"
-                          error={errors?.transcript}
+                          register={register("transcript")}
+                          errorMessage={errors.transcript?.message}
                           icon={{ src: UploadFileIcon, alt: "upload file icon" }}  
                         />
                     </div>
                     <div className="flex flex-row gap-x-4">
                         <Button
                             onClick={() => router.push("/home")}
+                            disabled={isSubmitting}
                             type="reset"
                             variant="bordered" 
                             className="grow border border-black md:text-xl text-base text-black font-medium"
                             >ยกเลิก
                         </Button>
-                        <Button 
+                        <Button
+                            disabled={isSubmitting}
                             type="submit" 
                             variant="shadow" 
                             className="grow bg-black md:text-xl text-base text-white font-medium"

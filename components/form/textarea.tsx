@@ -1,28 +1,25 @@
 import React from 'react'
 import { Textarea } from '@nextui-org/input'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 export default function TextareaForm({
-    name, 
     title, 
-    description, 
-    error 
+    description,
+    register,
+    errorMessage,
 }: { 
-    name: string, 
     title: string, 
-    description?: string, 
-    error: string 
+    description?: string,
+    register: UseFormRegisterReturn,
+    errorMessage: string | undefined,
 }) {
     return (
         <div className="flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 mb-6 border border-gray-200 rounded-lg">
-            <p className="md:text-xl text-base text-bold">{title}</p>
-            {
-                description &&
-                (<p className="text-gray-500 text-base font-light">{description}</p>)
-            }
+            <p className="text-base font-bold">{title}</p>
             <Textarea
-                name={name}
+                {...register}
                 variant="faded"
-                placeholder="Value"
+                placeholder={description}
                 maxRows={3}
                 classNames={{
                     inputWrapper: "bg-gray-100 border border-gray-300",
@@ -30,8 +27,8 @@ export default function TextareaForm({
                 }}
             />
             {
-                error &&
-                <p className="text-red-500">{error}</p>
+                errorMessage &&
+                <p className="text-red-500 font-light">{errorMessage}</p>
             }
         </div>
     )
