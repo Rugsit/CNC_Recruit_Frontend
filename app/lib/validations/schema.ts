@@ -1,10 +1,8 @@
-'use server';
-
 import { z } from 'zod';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-const formSchema = z.object({
+export const formSchema = z.object({
     nisitId: z.string().regex(/^\d{10}$/, {
         message: "*กรุณาระบุรหัสนิสิต 10 หลัก"
     }),
@@ -59,32 +57,4 @@ const formSchema = z.object({
     }),
 });
 
-export async function registerForm(prevState: any, formData: FormData) {
-    const validatedFields = formSchema.safeParse({
-        nisitId: formData.get('nisitId'),
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        nickName: formData.get('nickName'),
-        social: formData.get('social'),
-        lineId: formData.get('lineId'),
-        phoneNumber: formData.get('phoneNumber'),
-        address: formData.get('address'),
-        mbti: formData.get('mbti'),
-        club: formData.get('club'),
-        skill: formData.get('skill'),
-        interest: formData.get('interest'),
-        project: formData.get('project'),
-        tool: formData.get('tool'),
-        imageProfile: formData.get('imageProfile'),
-        transcript: formData.get('transcript'),
-    });
-
-    if (!validatedFields.success) {
-        return {
-            ...prevState,
-            errors: validatedFields.error.flatten().fieldErrors,
-        };
-    }
-
-    console.log(validatedFields.data);
-}
+export type FormFields = z.infer<typeof formSchema>;
