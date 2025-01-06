@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AngleDown } from "../icons";
 import clsx from "clsx";
 import { Textarea } from "@nextui-org/input";
+import { Button } from "@nextui-org/button";
 
 export default function QuestionCard() {
   const [editGrade, setEditGrade] = useState(false);
@@ -110,21 +111,21 @@ malesuada, odio fames litora. Velit viverra
               </button>
             </div>
             <div>
-              <button className={clsx("transition-all mt-7 px-7 py-3 rounded-lg  bg-primary text-white mx-auto block", {
+              <Button className={clsx("transition-all mt-7  rounded-lg  bg-primary text-white mx-auto block", {
                 " fixed opacity-0" : editGrade
               })} onClick={() => {
                 setEditGrade(true);
-              }}>แก้ไขคะแนน</button>
+              }}>แก้ไขคะแนน</Button>
               <div className={clsx("transition-all mx-auto max-w-[300px] flex gap-5", {
                 " fixed opacity-0" : !editGrade,
                 " opacity-100" : editGrade
               })}>
-                <button className="w-full mt-7 px-7 py-3 rounded-lg  bg-primary text-white mx-auto block" onClick={() => {
+                <Button className="w-full mt-7" color="primary" onClick={() => {
                   setEditGrade(false);
-                }}>ยืนยัน</button>
-                <button className="w-full mt-7 px-7 py-3 rounded-lg  border-primary border-1 text-primary mx-auto block" onClick={() => {
+                }}>ยืนยัน</Button>
+                <Button className="w-full mt-7 " color="primary" variant="bordered" onClick={() => {
                   setEditGrade(false);
-                }}>ยกเลิก</button>
+                }}>ยกเลิก</Button>
               </div>
             </div>
           </div>
