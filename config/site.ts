@@ -5,7 +5,7 @@ export const siteConfig = {
   description: 'Demo',
   navItems: [
     {
-      label: 'เกี่นวกับ LAB',
+      label: 'เกี่ยวกับ LAB',
       href: '/about',
     },
     {

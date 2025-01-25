@@ -214,3 +214,56 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const Plus = ({
+  size,
+  fill,
+  ...props
+}:IconSvgProps) => {
+  return(
+  <svg fill={fill} width={size} height={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+  )
+}
+
+export const AngleDown = ({
+  size,
+  fill,
+  className,
+  ...props
+}:IconSvgProps) => {
+  return(
+  <svg className={className} height={size} width={size} fill={fill} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+  )
+}
+
+
+export const XMark = ({fill, ...props}: IconSvgProps) => (
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 384 512"
+    {...props}
+    fill={fill}
+>
+    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+    />
+
+  </svg>
+  
+
+
+);
+
+export const AngleRight = ({fill, ...props}: IconSvgProps) => (
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 320 512"
+    {...props}
+    fill={fill}
+>
+<path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+
+  </svg>
+  
+
+
+);

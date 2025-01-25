@@ -21,7 +21,7 @@ import logo from '@/public/logo.svg';
 
 export const Navbar = () => {
   return (
-    <div className='p-4'>
+    <div className='p-4 fixed w-full z-40'>
       <NextUINavbar
         className='bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-500 rounded-2xl shadow-lg'
         isBordered
