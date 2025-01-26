@@ -1,15 +1,20 @@
+'use client'
 import HomeDetails from "@/components/home-detail";
 import { Timer } from "@/components/timer";
 import Map from "@/app/home/_local/map";
 import Timeline from "@/components/timeline";
 import HomeFooter from "@/components/home-footer";
+import LoginPopup from "./_local/loginPopup";
+import { useState } from "react";
+import clsx from "clsx";
 
 export default function Home() {
+
   return (
     <section >
       <section className='bg-gradient-to-b from-white to-primary' id="home">
         <div className="h-[100vh]  flex items-center justify-center pt-[100px]" >
-          <Timer title="ปิดลงวันเวลาสัมภาษณ์ในอีก..." endTime="1234" buttonAction="ลงเวลาสัมภาษณ์" desc="คุณยังไม่เลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด"/>
+          <Timer title="ปิดลงวันเวลาสัมภาษณ์ในอีก..." endTime="2025-02-15" buttonAction="ลงเวลาสัมภาษณ์" desc="คุณยังไม่เลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด"/>
         </div>
       <HomeDetails />
       </section>

@@ -1,27 +1,35 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@nextui-org/button';
 import { fontSansThai, fontKanit } from '@/config/fonts';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 interface LoginPopupProps {
   onClose: () => void;
   onLoginSuccess: () => void;
+  isOpen: boolean;
 }
 
-const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess }) => {
+const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess, isOpen }) => {
   const handleGoogleLogin = () => {
     onLoginSuccess();
   };
 
   return (
     <div
-      className={`w-[500px] h-[320px] bg-white rounded-xl shadow-lg ${fontSansThai.variable} ${fontKanit.variable}`}
+      className={clsx(`transition-all w-[500px] h-[320px] bg-white rounded-xl shadow-lg ${fontSansThai.variable} ${fontKanit.variable}`, {
+        " scale-90 opacity-0" : isOpen,
+        " scale-100 opacity-100" : !isOpen
+      })}
     >
       <div className='relative pb-2 px-6 pt-6'>
         <button
           className='absolute right-4 top-4'
-          onClick={onClose}
+          onClick={() => {
+            onClose();
+          }}
           aria-label='ปิด'
         >
           <X className='h-8 w-8 text-gray-600' />
@@ -32,7 +40,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess }) => {
 
         <div className='px-4 space-y-4'>
           <Button
-            onClick={handleGoogleLogin}
+            // onClick={handleGoogleLogin}
             className='w-full h-[60] py-6 bg-[#29B6F6] text-white rounded-xl hover:bg-[#0288D1] transition-colors'
           >
             <div className='flex items-center justify-center gap-3'>

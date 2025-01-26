@@ -1,3 +1,4 @@
+'use client'
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -18,10 +19,22 @@ import { ThemeSwitch } from '@/components/theme-switch';
 
 import Image from 'next/image';
 import logo from '@/public/logo.svg';
+import LoginPopup from '@/app/home/_local/loginPopup';
+import { useState } from 'react';
 
 export const Navbar = () => {
+  const [loginIsClosed, setLoginIsClosed] = useState(true);
+  const closeLoginPopup = () => {
+    setLoginIsClosed(true);
+  };
   return (
     <div className='p-4 fixed w-full z-40'>
+      <div className={clsx("bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all", {
+        " pointer-events-none opacity-0" : loginIsClosed,
+        " opacity-100" : !loginIsClosed
+      })}>
+        <LoginPopup onClose={closeLoginPopup} onLoginSuccess={() => {}} isOpen={loginIsClosed}/>
+      </div>
       <NextUINavbar
         className='bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-500 rounded-2xl shadow-lg'
         isBordered
@@ -66,7 +79,9 @@ export const Navbar = () => {
                 </NextLink>
               </NavbarItem>
             ))}
-            <Login className='justify-center mt-2' />
+            <Login onOpenPopup={() => {
+              setLoginIsClosed(false);
+            }}/>
           </ul>
         </NavbarContent>
       </NextUINavbar>

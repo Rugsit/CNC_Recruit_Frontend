@@ -22,8 +22,8 @@ export default function QuestionCard() {
   return (
     <article className="bg-white max-w-[750px] mx-auto rounded-xl shadow-md min-[440px]:p-5 max-[440px]:p-3 font-medium">
       <div className="flex gap-5 justify-start items-center max-[440px]:flex-col">
-        <p className="font-bold text-xl">ประเภทวัดคำถาม</p>
-        <div className="border-red-400 border-3 py-2 px-9 rounded-xl text-red-400">
+        <p className="font-bold text-xl text-[#3B434F]">ประเภทวัดคำถาม</p>
+        <div className="border-red-400 border-[2px] py-2 px-9 rounded-xl text-red-400">
           ยังไม่ได้ให้คะแนน
         </div>
       </div>
@@ -32,22 +32,22 @@ export default function QuestionCard() {
         <button className="py-2 px-4 cursor-default bg-red-400 rounded-xl">ยาก</button>
       </div>
       <section className="my-10">
-        <p className="text-lg mb-4 font-bold">คำถาม</p>
-        <p className="leading-7">
+        <p className="text-lg mb-4 font-bold text-[#3B434F]">คำถาม</p>
+        <p className="leading-7 text-[#3B434F]">
 Lorem ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus. Conubia eleifend hendrerit integer et aenean congue elit. Adipiscing tristique lobortis enim torquent vehicula nulla porttitor. nuttela num
 eleifend hendrerit integer et aenean congue elit. Adipiscing tristique lobortis enim torquent vehicula nulla porttitor. nuttela num
 malesuada, odio fames litora. Velit viverra 
         </p>
       </section>
       <div className="flex justify-between w-full">
-        <p className="font-bold text-lg">รายละเอียดเพิ่มเติม</p>
+        <p className="font-bold text-lg text-[#3B434F]">รายละเอียดเพิ่มเติม</p>
         <button className={clsx("transition-all", {
           " rotate-180" : toggleMoreInfo
         })} onClick={() => {
           setToggleMoreInfo(!toggleMoreInfo);
           console.log("Test")
         }}>
-          <AngleDown size={25} fill="black" className="cursor-pointer"/>
+          <AngleDown size={25} fill="#3B434F" className="cursor-pointer"/>
         </button>
       </div>
       <div className={clsx("transition-all grid ", {
@@ -55,8 +55,8 @@ malesuada, odio fames litora. Velit viverra
         " grid-rows-[0fr]" : !toggleMoreInfo,
       })}>
         <div className="overflow-hidden mt-4">
-          <p className="leading-7">
-            <span className="font-bold mr-4 ">คำตอบที่คาดหวัง:</span>ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus.  torquent vehicula nulla porttitor. nuttela num
+          <p className="leading-7 text-[#3B434F]">
+            <span className="font-bold mr-4 text-[#3B434F]">คำตอบที่คาดหวัง:</span>ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus.  torquent vehicula nulla porttitor. nuttela num
   eleifend hendrerit integer et aenean congue
           </p>
           <Textarea label="คำตอบที่ได้รับ" className={clsx("my-8 text-base font-medium",{
@@ -71,7 +71,7 @@ malesuada, odio fames litora. Velit viverra
   eleifend hendrerit integer et aenean congue
           </p>
           <div className="mt-10 ">
-            <p className="font-bold text-lg">ให้คะแนนคำถาม</p>
+            <p className="font-bold text-lg text-[#3B434F]">ให้คะแนนคำถาม</p>
             <div className={clsx("flex justify-center items-center w-full max-[440px]:gap-1 min-[440px]:gap-5 mt-10", {
               " pointer-events-none" : !editGrade
             })}>

@@ -1,4 +1,5 @@
 'use client'
+import AddQuestion from "@/components/candidate-details/add-question/add-question-popup";
 import NavbarCandidate from "@/components/candidate-details/navbar-candidate";
 import QuestionCard from "@/components/candidate-details/question-card";
 import SelectQuestion from "@/components/candidate-details/select-question/select-question";
