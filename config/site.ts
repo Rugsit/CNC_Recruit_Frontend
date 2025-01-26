@@ -5,20 +5,20 @@ export const siteConfig = {
   description: 'Demo',
   navItems: [
     {
-      label: 'เกี่นวกับ LAB',
-      href: '/about',
-    },
-    {
-      label: 'สถานที่',
-      href: '/place',
+      label: 'เกี่ยวกับ LAB',
+      href: '#about-lab',
     },
     {
       label: 'กำหนดการณ์',
-      href: '/date',
+      href: '#timeline',
+    },
+    {
+      label: 'สถานที่',
+      href: '#location',
     },
     {
       label: 'ติดตามข่าวสาร',
-      href: '/contact',
+      href: '#connect',
     },
   ],
   navMenuItems: [
