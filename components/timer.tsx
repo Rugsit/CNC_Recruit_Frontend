@@ -58,8 +58,8 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
   return (
     <div className='flex flex-col items-center justify-center font-sans-thai'>
       <div className='text-center'>
-        <h3 className='text-[61px] font-bold'>{title}</h3>
-        <p className='text-[39px] font-light'>{desc}</p>
+        <h3 className='text-5xl font-bold text-[#0374BA] mb-6'>{title}</h3>
+        <p className='text-3xl font-light text-[#0374BA]'>{desc}</p>
       </div>
       <div className='flex items-start justify-center w-full gap-4 count-down-main text-primary'>
         <div className='timer flex flex-col space-y-[-2rem] '>
@@ -93,8 +93,8 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
 
       {buttonAction ? (
         <Button
-          className='mt-8 p-[2rem] text-[32px]'
-          color='primary'
+          className='mt-8 p-[2rem] text-2xl font-bold hover:scale-90 bg-white text-primary shadow-lg shadow-primary-100]'
+          
         >
           {buttonAction}
         </Button>

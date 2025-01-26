@@ -39,7 +39,7 @@ export const Navbar = () => {
           >
             <NextLink
               className='flex justify-start items-center gap-1'
-              href='/'
+              href='/home'
             >
               <Image
                 className='mt-3'
@@ -57,7 +57,7 @@ export const Navbar = () => {
                 <NextLink
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
-                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] '
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] text-[#3B434F]'
                   )}
                   color='foreground'
                   href={item.href}
@@ -66,39 +66,9 @@ export const Navbar = () => {
                 </NextLink>
               </NavbarItem>
             ))}
-            <ThemeSwitch />
             <Login className='justify-center mt-2' />
           </ul>
         </NavbarContent>
-
-        <NavbarContent
-          className='sm:hidden basis-1 pl-4'
-          justify='end'
-        >
-          <Login />
-          <ThemeSwitch />
-          <NavbarMenuToggle className='text-primary' />
-        </NavbarContent>
-        <NavbarMenu className='pt-6'>
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? 'primary'
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? 'danger'
-                      : 'foreground'
-                }
-                className='w-full'
-                href={item.label}
-                size='lg'
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
       </NextUINavbar>
     </div>
   );

@@ -33,7 +33,7 @@ export default {
               DEFAULT: '#F6F6F6',
               foreground: '#11181C',
             },
-            focus: '#BEF264',
+            focus: '#FFFFFF',
           },
         },
         dark: {
