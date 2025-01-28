@@ -8,14 +8,14 @@ import CandidateCard from '@/components/candidate-card';
 import axios from 'axios';
 
 interface Candidate {
-  profileUrl: string;
-  fullname: string;
-  year: string;
-  status: string;
+  profileUrl: string,
+  fullname: string,
+  year: string,
+  status: string,
+  id: number,
 }
 
 export default function Page() {
-
   const [candidates, setCandidates] = useState([]);
   const [year, setYear] = useState(2);
   const [status, setStatus] = useState("all");
@@ -40,7 +40,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-6 items-center">
+    <div className="flex flex-col gap-y-6 items-center max-w-[1500px] mx-auto px-4 pt-44">
       <h3 className="text-center text-3xl text-blue-400 font-bold">รายการผู้สมัคร</h3>
       <Input
         classNames={{
@@ -54,11 +54,11 @@ export default function Page() {
       />
       <div className="flex gap-x-2 md:justify-end justify-center items-center w-full">
         <p>ชั้นปี: </p>
-        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))} className="px-7 py-2 bg-blue-100 text-blue-500 text-center font-bold rounded-lg appearance-none">
+        <select value={year} onChange={(e) => setYear(parseInt(e.target.value))} className="px-7 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg appearance-none">
           <option value="2">2</option>
         </select>
         <p>สถานะ: </p>
-        <select value={status} onChange={(e) => setStatus(e.target.value)} className="px-2 py-2 bg-blue-100 text-blue-500 text-center font-bold rounded-lg appearance-none">
+        <select value={status} onChange={(e) => setStatus(e.target.value)} className="px-2 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg appearance-none">
           <option value="all">ทั้งหมด</option>
           <option value="approved">อนุมัติแล้ว</option>
           <option value="pending">กำลังดำเนินการ</option>
@@ -67,6 +67,7 @@ export default function Page() {
       <div className="grid md:grid-cols-3 grid-cols-1 gap-8 w-full">
         {
           candidates.map((candidate: Candidate, index: number) => {
+            console.log(candidate.profileUrl);
             return (
               <CandidateCard key={index} props={candidate} />
             )
@@ -74,5 +75,5 @@ export default function Page() {
         }
       </div>
     </div>
-  )
+  );
 }
