@@ -16,11 +16,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function RegisterForm() {
     const router = useRouter();
-    
+
     const {
-        register, 
-        handleSubmit, 
-        formState: { errors, isSubmitting } 
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting }
     } = useForm<FormFields>({
         resolver: zodResolver(formSchema),
     });
@@ -35,11 +35,11 @@ export default function RegisterForm() {
             console.error(error);
         }
     }
-    
+
     return (
         <section>
             <Link href="/home" className="inline-flex items-center gap-x-2">
-                <Image 
+                <Image
                     src={ChevronLeftIcon}
                     alt="chevron left logo"
                 />
@@ -53,7 +53,7 @@ export default function RegisterForm() {
                         <h3 className="md:text-2xl text-xl pb-6 text-blue-400 font-bold">แบบฟอร์มสมัคร</h3>
                     </div>
                     <div>
-                        <InputText title="รหัสนิสิต" description="6710400000" register={register("nisitId")} errorMessage={errors.nisitId?.message}/>
+                        <InputText title="รหัสนิสิต" description="6710400000" register={register("nisitId")} errorMessage={errors.nisitId?.message} />
                         <InputText title="ชื่อจริง" description="เกิดสิริ" register={register("firstName")} errorMessage={errors.firstName?.message} />
                         <InputText title="นามสกุล" description="ศรีเจริญ" register={register("lastName")} errorMessage={errors.lastName?.message} />
                         <InputText title="ชื่อเล่น" description="ต้นน้ำ" register={register("nickName")} errorMessage={errors.nickName?.message} />
@@ -68,20 +68,20 @@ export default function RegisterForm() {
                         <Textarea title="โปรเจ็คที่เคยทำมีอะไรบ้าง?" register={register("project")} errorMessage={errors.project?.message} />
                         <Textarea title="Tools, Frameworks, Software ที่เคยใช้มีอะไรบ้าง?" register={register("tool")} errorMessage={errors.tool?.message} />
                         <FileUpload
-                          title="อัพโหลดรูปภาพ" 
-                          description="ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน"
-                          accept=".png, .jpg, .jpeg"
-                          register={register("imageProfile")}
-                          errorMessage={errors.imageProfile?.message}
-                          icon={{ src: UploadImageIcon, alt: "upload image icon" }}  
+                            title="อัพโหลดรูปภาพ"
+                            description="ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน"
+                            accept=".png, .jpg, .jpeg"
+                            register={register("imageProfile")}
+                            errorMessage={errors.imageProfile?.message}
+                            icon={{ src: UploadImageIcon, alt: "upload image icon" }}
                         />
                         <FileUpload
-                          title="อัพโหลดใบรับรองผลการเรียน" 
-                          description="ไฟล์​ PDF ขนาดไม่เกิน 10 MB"
-                          accept=".pdf"
-                          register={register("transcript")}
-                          errorMessage={errors.transcript?.message}
-                          icon={{ src: UploadFileIcon, alt: "upload file icon" }}  
+                            title="อัพโหลดใบรับรองผลการเรียน"
+                            description="ไฟล์​ PDF ขนาดไม่เกิน 10 MB"
+                            accept=".pdf"
+                            register={register("transcript")}
+                            errorMessage={errors.transcript?.message}
+                            icon={{ src: UploadFileIcon, alt: "upload file icon" }}
                         />
                     </div>
                     <div className="flex flex-row gap-x-4">
@@ -89,16 +89,16 @@ export default function RegisterForm() {
                             onClick={() => router.push("/home")}
                             disabled={isSubmitting}
                             type="reset"
-                            variant="bordered" 
+                            variant="bordered"
                             className="grow border border-black md:text-xl text-base text-black font-medium"
-                            >ยกเลิก
+                        >ยกเลิก
                         </Button>
                         <Button
                             disabled={isSubmitting}
-                            type="submit" 
-                            variant="shadow" 
+                            type="submit"
+                            variant="shadow"
                             className="grow bg-black md:text-xl text-base text-white font-medium"
-                            >ส่งใบสมัคร
+                        >ส่งใบสมัคร
                         </Button>
                     </div>
                 </div>

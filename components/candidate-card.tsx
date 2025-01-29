@@ -2,15 +2,23 @@ import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function CandidateCard({ props }: { props: { profileUrl: string, fullname: string, year: string, status: string } }) {
-    const { profileUrl, fullname, year, status } = props;
+interface CandidateCardProps {
+    profileUrl: string, 
+    fullname: string, 
+    year: string, 
+    status: string,
+    id: number,
+}
+
+export default function CandidateCard({ props }: { props: CandidateCardProps }) {
+    const { profileUrl, fullname, year, status, id } = props;
 
     return (
-        <Link href='/' className="flex items-center gap-x-6 gap-y-4 px-4 py-2 rounded-xl shadow-md">
-            <Image 
-                src={profileUrl} 
-                alt="profile-image" 
-                width={70} 
+        <Link href={`/candidate-list/${id}`} className="flex items-center gap-x-6 gap-y-4 px-4 py-2 rounded-xl shadow-md">
+            <Image
+                src={profileUrl}
+                alt="profile-image"
+                width={70}
                 height={70}
                 className="aspect-square rounded-full"
             />
@@ -20,5 +28,5 @@ export default function CandidateCard({ props }: { props: { profileUrl: string, 
                 <p>สถานะ: {status}</p>
             </div>
         </Link>
-    )
+    );
 }
