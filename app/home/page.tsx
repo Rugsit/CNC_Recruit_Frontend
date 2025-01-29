@@ -19,7 +19,7 @@ export default function Home() {
       <HomeDetails />
       </section>
       <section className='bg-gradient-to-t from-white to-primary pt-[200px]' id="timeline">
-        <Timeline />
+        {/* <Timeline /> */}
         <div className="w-full max-w-[1500px] mx-auto pt-[300px] pb-[200px]" id="location">
           <Map />
         </div>
