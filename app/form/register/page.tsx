@@ -20,7 +20,9 @@ export default function RegisterForm() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting }
+        formState: { errors, isSubmitting },
+        setValue,
+        trigger
     } = useForm<FormFields>({
         resolver: zodResolver(formSchema),
     });
@@ -37,8 +39,8 @@ export default function RegisterForm() {
     }
 
     return (
-        <section>
-            <Link href="/home" className="inline-flex items-center gap-x-2">
+        <section className="w-full px-8 mt-32 mb-12">
+            <Link href="/home" className="inline-flex gap-x-2 items-center">
                 <Image
                     src={ChevronLeftIcon}
                     alt="chevron left logo"
@@ -48,11 +50,11 @@ export default function RegisterForm() {
                 </span>
             </Link>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="p-10 bg-white rounded-lg">
+                <div className="flex flex-col gap-y-5 px-10 py-3 bg-white rounded-lg">
                     <div>
-                        <h3 className="md:text-2xl text-xl pb-6 text-blue-400 font-bold">แบบฟอร์มสมัคร</h3>
+                        <h3 className="md:text-2xl text-xl mt-5 text-blue-400 font-bold">แบบฟอร์มสมัคร</h3>
                     </div>
-                    <div>
+                    <div className="flex flex-col gap-y-5">
                         <InputText title="รหัสนิสิต" description="6710400000" register={register("nisitId")} errorMessage={errors.nisitId?.message} />
                         <InputText title="ชื่อจริง" description="เกิดสิริ" register={register("firstName")} errorMessage={errors.firstName?.message} />
                         <InputText title="นามสกุล" description="ศรีเจริญ" register={register("lastName")} errorMessage={errors.lastName?.message} />
@@ -72,16 +74,20 @@ export default function RegisterForm() {
                             description="ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน"
                             accept=".png, .jpg, .jpeg"
                             register={register("imageProfile")}
-                            errorMessage={errors.imageProfile?.message}
-                            icon={{ src: UploadImageIcon, alt: "upload image icon" }}
+                            errorMessage={errors.imageProfile?.message?.toString()}
+                            icon={{ src: UploadImageIcon, alt: "upload-image-icon" }}
+                            setValue={setValue}
+                            trigger={trigger}
                         />
                         <FileUpload
                             title="อัพโหลดใบรับรองผลการเรียน"
                             description="ไฟล์​ PDF ขนาดไม่เกิน 10 MB"
                             accept=".pdf"
                             register={register("transcript")}
-                            errorMessage={errors.transcript?.message}
-                            icon={{ src: UploadFileIcon, alt: "upload file icon" }}
+                            errorMessage={errors.transcript?.message?.toString()}
+                            icon={{ src: UploadFileIcon, alt: "upload-file-icon" }}
+                            setValue={setValue}
+                            trigger={trigger}
                         />
                     </div>
                     <div className="flex flex-row gap-x-4">

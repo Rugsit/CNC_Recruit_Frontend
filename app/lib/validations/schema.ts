@@ -45,12 +45,12 @@ export const formSchema = z.object({
     tool: z.string().min(1, {
         message: "*กรุณาระบุ Tools, Frameworks หรือ Software ที่เคยใช้"
     }),
-    imageProfile: z.instanceof(File).refine(file => file && ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type), {
+    imageProfile: z.any().refine(file => file && ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type), {
         message: "*กรุณาอัพโหลดรูปภาพเป็น JPEG, JPG หรือ PNG"
     }).refine(file => file.size <= MAX_FILE_SIZE, {
         message: "*กรุณาอัพโหลดรูปภาพขนาดไม่เกิน 10MB"
     }),
-    transcript: z.instanceof(File).refine(file => file && ['application/pdf'].includes(file.type), {
+    transcript: z.any().refine(file => file && ['application/pdf'].includes(file.type), {
         message: "*กรุณาอัพโหลดใบรับรองผลการเรียนเป็น PDF"
     }).refine(file => file.size <= MAX_FILE_SIZE, {
         message: "*กรุณาอัพโหลดใบรับรองผลการเรียนขนาดไม่เกิน 10MB"
