@@ -14,7 +14,7 @@ export default function TextareaForm({
     errorMessage: string | undefined,
 }) {
     return (
-        <div className="flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 mb-6 border border-gray-200 rounded-lg">
+        <div className="flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg">
             <p className="text-base font-bold">{title}</p>
             <Textarea
                 {...register}
