@@ -102,8 +102,13 @@ export const Navbar = () => {
         <MenuBar width={50} height={50}/>
       </Button>
       </NextUINavbar>
+      <button className={clsx('fixed left-0 right-0 top-0 bottom-0 bg-black/20 ', {
+        " pointer-events-none opacity-0" : !isNavMenuOpen
+      })} onClick={() => {
+        setIsNavMenuOpen(!isNavMenuOpen);
+      }}></button>
       <div className={clsx('fixed top-[100px] m-[16px] left-0 right-0 transition-all bg-white rounded-md  p-5 lg:opacity-0 lg:pointer-events-none', {
-        " pointer-events-none opacity-0  scale-90" : !isNavMenuOpen
+        " pointer-events-none opacity-0 scale-75" : !isNavMenuOpen
       })} >
         <ul className='flex flex-col lg:hidden gap-4 justify-end'>
           {siteConfig.navItems.map((item) => (
