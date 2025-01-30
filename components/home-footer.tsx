@@ -1,13 +1,13 @@
 import Image from "next/image";
-import logo from '@/public/logo.svg';
+import logo from '@/public/cnc_logo_white.png';
 import ku_logo from '@/public/images/logo_ku_th.jpg';
 import { Facebook, IG } from "./icons";
 
 export default function HomeFooter() {
   return (
-    <section className="flex justify-between pl-10 pr-10 pb-10 pt-[100px] bg-gradient-to-b from-white to-[#0374BA]" id="connect">
-      <div>
-        <div className="flex gap-10 mb-[20px]">
+    <section className="grid grid-cols-1 lg:flex justify-between pl-[20px] pr-[20px] pb-10 pt-[100px] bg-gradient-to-b from-white to-[#0374BA]" id="connect">
+      <div className="w-full">
+        <div className="flex justify-center items-center gap-3 lg-gap-10 mb-[20px] lg:justify-start">
           <Image
             className='mt-3'
             src={logo}
@@ -15,17 +15,16 @@ export default function HomeFooter() {
             width={150}
           />
           <Image 
-            className="rounded-full"
+            className="rounded-full w-[90px] h-[90px] lg:w-[130px] lg:h-[130px]"
             src={ku_logo}
-            width={140} 
             alt="ku logo"
           />
         </div>
-        <p className="text-white text-2xl font-bold">ภาควิชาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์</p>
-        <p className="text-white mt-5 font-medium">ชั้น 7-8, อาคารวิทยาศาสตร์กายภาพ 45 ปี เลขที่ 50 ถนน งามวงศ์วาน แขวงลาดยาว เขตจตุจักร กรุงเทพมหานคร 10900</p>
+        <p className="text-white w-full text-lg font-bold text-center lg:text-start lg:text-2xl">ภาควิชาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์</p>
+        <p className="text-white w-full mt-5 font-medium text-center lg:text-start text">ชั้น 7-8, อาคารวิทยาศาสตร์กายภาพ 45 ปี เลขที่ 50 ถนน งามวงศ์วาน แขวงลาดยาว เขตจตุจักร กรุงเทพมหานคร 10900</p>
       </div>
-      <div>
-      <p className="text-white font-medium">ติดตามข่าวสารหรือติดต่อ</p>
+      <div className="w-full lg:max-w-[300px]">
+      <p className="text-white font-medium text-center mt-10 lg:mt-0">ติดตามข่าวสารหรือติดต่อ</p>
       <div className="flex justify-center gap-8 mt-5">
         <a href="https://www.facebook.com/CNCXisAwesome">
           <Facebook width={50} height={50}/>

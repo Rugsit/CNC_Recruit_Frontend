@@ -20,15 +20,27 @@ import { ThemeSwitch } from '@/components/theme-switch';
 import Image from 'next/image';
 import logo from '@/public/logo.svg';
 import LoginPopup from '@/app/home/_local/loginPopup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MenuBar } from './icons';
+import { Button } from '@nextui-org/button';
 
 export const Navbar = () => {
   const [loginIsClosed, setLoginIsClosed] = useState(true);
+  const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const closeLoginPopup = () => {
     setLoginIsClosed(true);
   };
+
+  useEffect(()=> {
+    if (!loginIsClosed) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto"
+    }
+  }, [loginIsClosed])
   return (
-    <div className='p-4 fixed w-full z-40'>
+    <div className={clsx('p-4 fixed w-full z-40', {
+    })}>
       <div className={clsx("bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all", {
         " pointer-events-none opacity-0" : loginIsClosed,
         " opacity-100" : !loginIsClosed
@@ -70,7 +82,7 @@ export const Navbar = () => {
                 <NextLink
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
-                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] text-[#3B434F]'
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
                   )}
                   color='foreground'
                   href={item.href}
@@ -84,7 +96,35 @@ export const Navbar = () => {
             }}/>
           </ul>
         </NavbarContent>
+      <Button className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0' isIconOnly onClick={() => {
+        setIsNavMenuOpen(!isNavMenuOpen);
+      }}>
+        <MenuBar width={50} height={50}/>
+      </Button>
       </NextUINavbar>
+      <div className={clsx('fixed top-[100px] m-[16px] left-0 right-0 transition-all bg-white rounded-md  p-5 lg:opacity-0 lg:pointer-events-none', {
+        " pointer-events-none opacity-0  scale-90" : !isNavMenuOpen
+      })} >
+        <ul className='flex flex-col lg:hidden gap-4 justify-end'>
+          {siteConfig.navItems.map((item) => (
+            <div key={item.href}>
+              <Link
+                className={clsx(
+                  linkStyles({ color: 'foreground' }),
+                  ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                )}
+                color='foreground'
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            </div>
+          ))}
+          <Login onOpenPopup={() => {
+            setLoginIsClosed(false);
+          }}/>
+        </ul>
+      </div>
     </div>
   );
 };

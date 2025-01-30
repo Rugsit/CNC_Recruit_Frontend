@@ -23,8 +23,8 @@ export default function HomeDetails() {
     setCurrentImage(currentImage - 1);
   }
   return (
-    <article className="grid max-md:grid-rows-[auto_auto] max-md:grid-cols-1 lg:grid-cols-[minmax(auto,_800px)_minmax(auto,_500px)] gap-10 w-full max-lg:max-w-[500px] mx-auto max-w-fit pt-[200px] px-[100px]" id="about-lab">
-      <div className="relative flex items-center overflow-hidden rounded-lg" >
+    <article className="grid grid-rows-[auto_auto] grid-cols-[minmax(auto,800px)] xl:grid-cols-[minmax(auto,_800px)_minmax(auto,_500px)] gap-10 w-full  mx-auto max-w-fit pt-[200px] px-[20px]" id="about-lab">
+      <div className="relative flex items-center  rounded-lg overflow-hidden" >
         <Button className={clsx("bg-white absolute opacity-100 left-3 z-30", {
           " bg-gray-400" : currentImage == 0,
         })} isIconOnly radius="full" onClick={() => {
@@ -43,11 +43,11 @@ export default function HomeDetails() {
           {
             listOfImage.map((item, index) => {
               return(
-                <div className=" relative w-[800px] h-[500px] transition-all rounded-full" style={{transform: `translateX(-${currentImage * 100}%)`}} key={index}>
+                <div className="w-[800px] h-[500px] transition-all rounded-full" style={{transform: `translateX(-${currentImage * 100}%)`}} key={index}>
                   <Image 
                     src={item}
                     fill={true}
-                    className="rounded-lg mx-auto my-auto object-cover"
+                    className="rounded-lg mx-auto my-auto object-cover object-center"
                     alt="test"
                   />
                 </div>
@@ -66,8 +66,8 @@ export default function HomeDetails() {
           })}
         </div>
       </div>
-      <div className="flex flex-col">
-        <header className="text-[80px]  text-white font-bold">
+      <div className="flex flex-col w-full">
+        <header className="text-[60px]  text-white font-bold  text-center xl:text-start xl:text-[80px]">
         LAB CNC 
         </header>
         <section className="mt-3 lg:text-[16px] xl:text-[20px] text-white bg-[#0374BA]  p-8 rounded-[31] grow font-thin border-white border-[2px]">
