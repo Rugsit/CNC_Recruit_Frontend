@@ -24,8 +24,8 @@ export default function CandidateCard({ props }: { props: CandidateCardProps }) 
             />
             <div className="flex flex-col">
                 <p className="text-lg text-blue-400 font-bold">{fullname}</p>
-                <p>ชั้นปี: {year}</p>
-                <p>สถานะ: {status}</p>
+                <p className="text-[#3B434F] font-bold">ชั้นปี: {year}</p>
+                <p className="text-[#3B434F] font-bold">สถานะ: {status}</p>
             </div>
         </Link>
     );

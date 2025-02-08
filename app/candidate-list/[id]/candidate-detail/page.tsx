@@ -1,4 +1,3 @@
-import React from 'react';
 import TextField from '@/components/candidate-list/textfield';
 import Image from 'next/image';
 import { Button } from '@nextui-org/button';
@@ -11,20 +10,22 @@ interface CandidateDetailProps {
 
 export default function CandidateDetail({ profileUrl, fullname } : CandidateDetailProps) {
     return (
-        <div>
-            <div className="flex flex-col gap-y-5 items-center">
+            <section className="flex flex-col gap-y-5 items-center">
                 <h3 className="text-xl md:text-3xl font-bold text-[#1d9fee]">แบบฟอร์มสมัคร</h3>
                 <Image 
-                src={profileUrl} 
-                alt="profile-image" 
-                width={150}
-                height={150}
-                className="aspect-square rounded-full"
-            />
+                    src={profileUrl} 
+                    alt="profile-image" 
+                    width={150}
+                    height={150}
+                    className="aspect-square rounded-full"
+                />
                 <h3 className="text-xl md:text-3xl font-bold text-[#1d9fee]">{fullname}</h3>
-                <Button startContent={<Image src={JudgeIcon} alt="judge-icon" className="w-8"/>} className="w-full md:w-auto bg-[#1d9fee] text-white font-bold text-md md:text-lg">ตัดสิน</Button>
-                {/* Information Here */}
-                <div className="flex flex-col gap-y-3 w-full">
+                <Button 
+                    startContent={<Image src={JudgeIcon} alt="judge-icon" className="w-8"/>} 
+                    className="w-full md:w-auto bg-[#1d9fee] text-white text-md md:text-lg">
+                    ตัดสิน
+                </Button>
+                <div className="flex flex-col gap-y-3 my-3 w-full">
                     <TextField header='อีเมลล์ (ku.th):' value='Value' />
                     <TextField header='รหัสนิสิต:' value='Value' />
                     <TextField header='ชื่อ-นามสกุล:' value='Value' />
@@ -40,8 +41,6 @@ export default function CandidateDetail({ profileUrl, fullname } : CandidateDeta
                     <TextField header="โปรเจ็คที่เคยทำ:" value='Value' />
                     <TextField header="Tools, Frameworks, Software ที่เคยใช้:" value='Value' />
                 </div>
-            </div>
-
-        </div>
+            </section>
     )
 }

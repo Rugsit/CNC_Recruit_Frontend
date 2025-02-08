@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '@nextui-org/input';
 import Image from 'next/image';
 import SearchIcon from '@/public/search.svg';
@@ -40,12 +40,12 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-6 items-center max-w-[1500px] mx-auto px-4 pt-44">
+    <div className="flex flex-col gap-y-6 items-center max-w-[1500px] mx-auto pb-12 px-4 pt-44">
       <h3 className="text-center text-3xl text-blue-400 font-bold">รายการผู้สมัคร</h3>
       <Input
         classNames={{
           base: "h-[50px] md:w-[530px] w-full",
-          inputWrapper: "p-4 h-full rounded-[30px]",
+          inputWrapper: "p-4 h-full rounded-[30px] shadow-md",
           input: "text-right text-lg",
         }}
         startContent={
@@ -53,11 +53,11 @@ export default function Page() {
         }
       />
       <div className="flex gap-x-2 md:justify-end justify-center items-center w-full">
-        <p>ชั้นปี: </p>
+        <p className="text-[#3B434F]">ชั้นปี: </p>
         <select value={year} onChange={(e) => setYear(parseInt(e.target.value))} className="px-7 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg appearance-none">
           <option value="2">2</option>
         </select>
-        <p>สถานะ: </p>
+        <p className="text-[#3B434F]">สถานะ: </p>
         <select value={status} onChange={(e) => setStatus(e.target.value)} className="px-2 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg appearance-none">
           <option value="all">ทั้งหมด</option>
           <option value="approved">อนุมัติแล้ว</option>
