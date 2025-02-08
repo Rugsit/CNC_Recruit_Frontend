@@ -59,7 +59,7 @@ malesuada, odio fames litora. Velit viverra
             <span className="font-bold mr-4 text-[#3B434F]">คำตอบที่คาดหวัง:</span>ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus.  torquent vehicula nulla porttitor. nuttela num
   eleifend hendrerit integer et aenean congue
           </p>
-          <Textarea label="คำตอบที่ได้รับ" className={clsx("my-8 text-base font-medium",{
+          <Textarea label="ความคิดเห็น" className={clsx("my-8 text-base font-medium",{
             " fixed opacity-0" : !editGrade
           })} classNames={{
               input: "text-base",
@@ -67,7 +67,7 @@ malesuada, odio fames litora. Velit viverra
           <p className={clsx("my-8 leading-7", {
             " fixed opacity-0" : editGrade
           })}>
-            <span className="font-bold mr-4 ">คำตอบที่ได้รับ:</span>ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus.  torquent vehicula nulla porttitor. nuttela num
+            <span className="font-bold mr-4 ">ความคิดเห็น:</span>ipsum odor amet, consectetuer adipiscing elit. Platea sollicitudin elementum malesuada, odio fames litora. Velit viverra iaculis mattis id integer lectus.  torquent vehicula nulla porttitor. nuttela num
   eleifend hendrerit integer et aenean congue
           </p>
           <div className="mt-10 ">

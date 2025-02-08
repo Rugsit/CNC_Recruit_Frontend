@@ -16,7 +16,7 @@ export default function SelectQuestion(
       <XMark className="w-5 absolute top-[20px] right-[20px] cursor-pointer" fill="#42B5FC" onClick={() => {
         setIsOpen(false)
       }}/>
-      <p className="font-bold text-2xl text-center">เลือกคำถาม</p>
+      <p className="text-2xl text-center text-[#3B434F]">เลือกคำถาม</p>
       <div className="relative w-full max-w-[400px] mx-auto flex items-center mt-5">
         <input className="w-full px-10 py-2 shadow-md rounded-full mx-auto block focus:outline-zinc-500" />
         <SearchIcon className="absolute left-3 text-zinc-500"/>
@@ -24,7 +24,7 @@ export default function SelectQuestion(
       <div className="mt-6">
         <div className="">
           <div>
-            <p>{currentIndex == 1 ? "คำถามวัดทัศนคติ" : "คำถามวัดความรู้"}</p>
+            <p className="text-[#3B434F]">{currentIndex == 1 ? "คำถามวัดทัศนคติ" : "คำถามวัดความรู้"}</p>
           </div>
           <div className="  gap-4 px-4 py-2 mt-5 flex flex-col max-h-[300px] overflow-y-auto">
             <QuestionCardShort />

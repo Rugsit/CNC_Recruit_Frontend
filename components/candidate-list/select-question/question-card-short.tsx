@@ -11,7 +11,7 @@ export default function QuestionCardShort (){
           <button className="text-red-500">ลบ</button>
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 text-[#3B434F]">
         Borem ipsum dolor sit amet, consectetur adipiscing elit.
       </div>
     </section>
