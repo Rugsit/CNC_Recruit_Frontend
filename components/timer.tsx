@@ -58,42 +58,42 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
   return (
     <div className='flex flex-col items-center justify-center font-sans-thai'>
       <div className='text-center'>
-        <h3 className='text-[61px] font-bold'>{title}</h3>
-        <p className='text-[39px] font-light'>{desc}</p>
+        <h3 className='md:text-[61px] text-[25px] font-bold text-[#0374BA]'>{title}</h3>
+        <p className='md:text-[39px] text-text[16px] [16px] font-light text-[#0374BA]'>{desc}</p>
       </div>
       <div className='flex items-start justify-center w-full gap-4 count-down-main text-primary'>
-        <div className='timer flex flex-col space-y-[-2rem] '>
-          <span className='text-[140px] text-primary font-bold text-center'>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem] '>
+          <span className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.days}
           </span>
-          <span className='text-[39px] font-normal text-center'>วัน</span>
+          <span className='md:text-[39px] text-[20px] font-normal text-center'>วัน</span>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3 className='font-bold md:text-[140px] text-[20px] '>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.hours}
           </h3>
-          <p className='text-[39px] font-normal text-center w-full'>ชั่วโมง</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>ชั่วโมง</p>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3 className='font-bold md:text-[140px] text-[20px]'>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.minutes}
           </h3>
-          <p className='text-[39px] font-normal text-center w-full'>นาที</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>นาที</p>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3 className='font-bold md:text-[140px] text-[20px]'>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.seconds}
           </h3>
-          <p className='text-[39px] font-normal text-center w-full'>วินาที</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>วินาที</p>
         </div>
       </div>
 
       {buttonAction ? (
         <Button
-          className='mt-8 p-[2rem] text-[32px]'
+          className='mt-8 md:p-[2rem] p-[1rem] md:text-[32px] text-[16px]'
           color='primary'
         >
           {buttonAction}
