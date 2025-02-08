@@ -1,5 +1,5 @@
 'use client';
-import NavbarCandidate from "@/components/candidate-list/navbar-candidate";
+
 import QuestionCard from "@/components/candidate-list/question-card";
 import SelectQuestion from "@/components/candidate-list/select-question/select-question";
 import { Plus } from "@/components/icons";

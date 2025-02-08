@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@nextui-org/button';
 import Image from 'next/image';
 import { UseFormRegisterReturn, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
@@ -22,6 +22,7 @@ export default function FileUpload({ title, description, accept, register, error
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
 
+  // Handle upload file to validate the file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -32,6 +33,7 @@ export default function FileUpload({ title, description, accept, register, error
     }
   };
 
+  // Handle upload file to preview the file in another tab
   const handlePreview = () => {
     if (fileUrl) {
       window.open(fileUrl, '_blank');
@@ -39,16 +41,14 @@ export default function FileUpload({ title, description, accept, register, error
   };
 
   return (
-    <div className="flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg">
+    <section className="flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg">
       <p className="text-base font-bold">{title}</p>
       <div className="flex flex-col gap-y-[15px] items-center py-10 bg-gray-100 border border-gray-300 rounded-lg">
         <Image
           src={icon.src}
           alt={icon.alt}
-          onClick={handlePreview}
-          style={{ cursor: 'pointer' }}
         />
-        <p className="md:text-base text-sm px-2 text-center" onClick={handlePreview} style={{ cursor: 'pointer' }}>
+        <p className="md:text-base text-sm px-2 text-center">
           {description}
         </p>
         <label>
@@ -81,6 +81,6 @@ export default function FileUpload({ title, description, accept, register, error
           <p className="text-base text-black" onClick={handlePreview} style={{ cursor: 'pointer' }}>{selectedFile.name}</p>
         </div>)
       }
-    </div>
+    </section>
   );
 }
