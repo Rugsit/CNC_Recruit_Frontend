@@ -21,7 +21,7 @@ export default function InputText({
                 variant="faded"
                 placeholder={description}
                 classNames={{
-                    inputWrapper: "placeholder-gray-300 bg-gray-100 border-1 border-gray-300",
+                    inputWrapper: "placeholder-gray-300 bg-gray-100 border-1 border-gray-300 focus-within:border-blue-500 focus-within:border-2",
                     input: "placeholder:text-gray-400"
                 }}
             />

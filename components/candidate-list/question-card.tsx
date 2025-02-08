@@ -20,7 +20,7 @@ export default function QuestionCard() {
     console.log(grade);
   }
   return (
-    <article className="bg-white max-w-[750px] mx-auto rounded-xl shadow-md min-[440px]:p-5 max-[440px]:p-3 font-medium">
+    <article className="bg-white max-w-[750px] mx-auto mb-12 rounded-xl shadow-md min-[440px]:p-5 max-[440px]:p-3 font-medium">
       <div className="flex gap-5 justify-start items-center max-[440px]:flex-col">
         <p className="font-bold text-xl text-[#3B434F]">ประเภทวัดคำถาม</p>
         <div className="border-red-400 border-[2px] py-2 px-9 rounded-xl text-red-400">
