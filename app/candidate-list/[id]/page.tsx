@@ -8,8 +8,8 @@ import NavbarCandidate from '@/components/candidate-list/navbar-candidate';
 
 export default function CandidateListId() {
     const { id } = useParams();
-    const CandidatePages = [<CandidateDetail profileUrl="https://loremflickr.com/640/480" fullname="Kerdsiri" />, <QuestionKnowledge />, <QuestionKnowledge />];
     const [pageIndex, setPageIndex] = useState(0);
+    const CandidatePages = [<CandidateDetail profileUrl="https://loremflickr.com/640/480" fullname="Kerdsiri" />, <QuestionKnowledge currentIndex={pageIndex} />, <QuestionKnowledge currentIndex={pageIndex}/>];
     const onChangeIndex = (index: number) => {
         console.log(index);
         setPageIndex(index);

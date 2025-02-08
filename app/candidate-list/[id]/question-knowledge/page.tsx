@@ -7,7 +7,7 @@ import { Button } from "@nextui-org/button";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-export default function QuestionKnowledge() {
+export default function QuestionKnowledge({currentIndex} : {currentIndex : number}) {
   const [openSelectQuestion, setOpenSelectQuestion] = useState(false);
 
   useEffect(()=> {
@@ -24,12 +24,12 @@ export default function QuestionKnowledge() {
         " opacity-0 pointer-events-none" : !openSelectQuestion,
         " opacity-100 " : openSelectQuestion
       })}>
-        <SelectQuestion isOpen={openSelectQuestion} setIsOpen={setOpenSelectQuestion} />
+        <SelectQuestion isOpen={openSelectQuestion} setIsOpen={setOpenSelectQuestion} currentIndex={currentIndex}/>
       </div>
       {/* <NavbarCandidate /> */}
       <div className="relative text-4xl w-full max-lg:max-w-[750px] max-lg:mx-auto text-center text-primary my-10 flex max-lg:flex-col items-center justify-center">
         <p>
-        คำถามห้องวัดความรู้
+          {currentIndex == 2 ? "คำถามวัดความรู้" : "คำถามวัดทัศนคติ"}
         </p>
         <div className="h-full lg:absolute flex lg:justify-end w-full items-center max-lg:justify-between gap-5 top-0 right-0 max-lg:mt-10" >
           <div className="bg-primary py-3 px-3 rounded-full cursor-pointer">
