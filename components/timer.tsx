@@ -1,12 +1,12 @@
 'use client';
-import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Props {
+  id: number
   title: string;
   desc?: string;
   endTime: string;
-  buttonAction?: string;
 }
 
 interface time {
@@ -16,7 +16,13 @@ interface time {
   seconds: string;
 }
 
-export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
+interface State {
+  id: number;
+  path: string;
+  action: string;
+}
+
+export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [timeRemaining, setTimeRemaining] = useState<time>({
     days: '00',
     hours: '00',
@@ -24,23 +30,27 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
     seconds: '00',
   });
 
+  const [state, setState] = useState<State>();
+
   useEffect(() => {
-    const dest = new Date(endTime).getTime();
-    const updateCountdow = () => {
+    const updateCountdown = () => {
+      const date = new Date(endTime).getTime();
       const now = new Date().getTime();
-      const diff = dest - now;
 
-      if (diff <= 0) {
-        clearInterval(timer);
-
-        return;
+      if (date - now <= 0) {
+        return
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      let diff = Math.abs(now - date) / 1000;
+
+      const days = Math.floor(diff / (3600 * 24));
+      diff %= 3600 * 24
+
+      const hours = Math.floor(diff / 3600);
+      diff %= 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = Math.floor(diff % 60);
 
       setTimeRemaining({
         days: days < 10 ? `0${days}` : `${days}`,
@@ -50,10 +60,34 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
       });
     };
 
-    const timer = setInterval(updateCountdow, 1000);
+    setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(timer);
+    path()
   }, []);
+
+  const path = () => {
+    const paths: State[] = [
+      {
+        "id": 2,
+        "path": "/form/register",
+        "action": "สมัครเข้าร่วม LAB"
+      },
+      {
+        "id": 3,
+        "path": "/home",
+        "action": "ลงเวลาสัมภาษณ์"
+      },
+      {
+        "id": 4,
+        "path": "/home",
+        "action": "ผลการคัดเลือก"
+      }
+    ]
+
+    const result = paths.find((item) => item.id === id)
+    setState(result)
+  }
+
 
   return (
     <div className='flex flex-col items-center justify-center font-sans-thai'>
@@ -91,15 +125,13 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
         </div>
       </div>
 
-      {buttonAction ? (
-        <Button
-          className='mt-8 md:p-[2rem] p-[1rem] md:text-[32px] text-[16px]'
-          color='primary'
+      {state && (
+        <Link
+          href={state?.path ?? ""}
+          className='mt-8 p-[1rem] md:text-[32px] text-[16px] bg-primary text-white rounded-lg'
         >
-          {buttonAction}
-        </Button>
-      ) : (
-        <></>
+          {state?.action}
+        </Link>
       )}
     </div>
   );
