@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 export default function QuestionCardShort ({question_type, diff, question, id, fetchQuestion, selectQuestion, setSelectQuestion} : {question_type : string, diff : string, question: string, id: string, fetchQuestion: () => Promise<void>, selectQuestion: string[], setSelectQuestion: Dispatch<SetStateAction<string[]>>}){
   const deleteQuestion = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8001/questions/${id}`, {
+      const response = await axios.delete(`http://localhost:8000/questions/${id}`, {
           headers: { "Content-Type": "application/json" },
       })
       let newArray = selectQuestion.filter((item) => item != id)

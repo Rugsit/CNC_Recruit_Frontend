@@ -19,7 +19,7 @@ const Map: React.FC = () => {
       </div>
 
       <div className="w-full p-6 flex flex-col items-center">
-        <h1 className="text-4xl font-bold text-[#0374BA] mb-8 text-center">
+        <h1 className="text-4xl lg:text-5xl font-bold text-[#0374BA] mb-8 text-center">
           สถานที่สอบสัมภาษณ์
         </h1>
         

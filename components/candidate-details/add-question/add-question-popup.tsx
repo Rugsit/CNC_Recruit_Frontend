@@ -27,7 +27,7 @@ export default function AddQuestion({isOpen, setIsOpen, setStatusPopup} : {isOpe
 
   const onSubmit: SubmitHandler<FormField> = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8001/questions", data, {
+      const response = await axios.post("http://localhost:8000/questions", data, {
         headers: { "Content-Type": "application/json" },
       })
       setStatusPopup({status: true, isShow: true})

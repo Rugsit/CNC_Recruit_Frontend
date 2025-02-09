@@ -96,7 +96,7 @@ export const Navbar = () => {
             }}/>
           </ul>
         </NavbarContent>
-      <Button className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0' isIconOnly onClick={() => {
+      <Button className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0 lg:pointer-events-none' data-hover={false}  isIconOnly onClick={() => {
         setIsNavMenuOpen(!isNavMenuOpen);
       }}>
         <MenuBar width={50} height={50}/>
