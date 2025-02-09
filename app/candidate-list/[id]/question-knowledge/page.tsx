@@ -33,7 +33,7 @@ export default function QuestionKnowledge({currentIndex, setStatusPopup} : {curr
 
   const fetchQuestion =  async () => {
     try {
-      const response = await axios.get(`http://localhost:8001/nisit-question/${id}`)
+      const response = await axios.get(`http://localhost:8000/nisit-question/${id}`)
       if (response.data == null) {
         throw new Error("Error: " + response.status)
       }
@@ -79,7 +79,7 @@ export default function QuestionKnowledge({currentIndex, setStatusPopup} : {curr
           {currentIndex == 2 ? "คำถามวัดความรู้" : "คำถามวัดทัศนคติ"}
         </p>
         <div className="h-full lg:absolute flex lg:justify-end w-full items-center max-lg:justify-between gap-5 top-0 right-0 max-lg:mt-10" >
-          <Button isIconOnly className="bg-primary rounded-full cursor-pointer" size="lg" onClick={() => {
+          <Button isIconOnly className="bg-primary rounded-full cursor-pointer active:scale-85" size="lg" onClick={() => {
             setOpenCreateQuestion(true)
           }}>
             <Plus size={24} fill="white"/>

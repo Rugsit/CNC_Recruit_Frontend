@@ -39,7 +39,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
 
   const deleteQuestion = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8001/nisit-question/${id}/${questionNisit.id}`, {
+      const response = await axios.delete(`http://localhost:8000/nisit-question/${id}/${questionNisit.id}`, {
         headers: { "Content-Type": "applicatio/json" },
       })
       fetchQuestion()
@@ -55,7 +55,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
     if (input.trim() === "") input = "ไม่มีความคิดเห็น"
     let data = {comment: input, score: sum}
     try {
-      const response = await axios.put(`http://localhost:8001/nisit-question/comment-score/${id}/${questionNisit.id}`, data, {
+      const response = await axios.put(`http://localhost:8000/nisit-question/comment-score/${id}/${questionNisit.id}`, data, {
         headers: { "Content-Type": "applicatio/json" },
       })
       fetchQuestion();
@@ -100,7 +100,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
       </section>
       <div className="flex justify-between w-full">
         <p className="font-bold text-lg text-[#3B434F]">รายละเอียดเพิ่มเติม</p>
-        <button className={clsx("transition-all", {
+        <button className={clsx("transition-all focus:outline-none border-none", {
           " rotate-180" : toggleMoreInfo
         })} onClick={() => {
           setToggleMoreInfo(!toggleMoreInfo);
@@ -122,7 +122,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
           })} classNames={{
               input: "text-base",
             }} value={comment} onValueChange={haddleTextarea}/>
-          <p className={clsx("my-8 leading-7", {
+          <p className={clsx("my-8 leading-7 font-normal", {
             " fixed opacity-0" : editGrade
           })}>
             <span className="font-bold mr-4 ">ความคิดเห็น:</span>{questionNisit.comment === "" ? "ไม่มีความคิดเห็น" : questionNisit.comment}

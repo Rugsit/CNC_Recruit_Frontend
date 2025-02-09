@@ -21,6 +21,12 @@ type QuestionData = {
   id: string
 }
 
+const DifficultyLevel: Record<string, number> = {
+  easy: 1,
+  normal: 2,
+  hard: 3
+};
+
 export default function SelectQuestion(
   {isOpen, setIsOpen, currentIndex, fetchQuestionMain} : 
   {isOpen:boolean, setIsOpen:Dispatch<SetStateAction<boolean>>, currentIndex: number, fetchQuestionMain: () => Promise<void>}) {
@@ -40,7 +46,7 @@ export default function SelectQuestion(
 
   const addQuestNisit = async () => {
     selectQuestion.forEach( async (item, index) => {
-      const response = await axios.post(`http://localhost:8001/nisit-question/${id}/${item}`, {
+      const response = await axios.post(`http://localhost:8000/nisit-question/${id}/${item}`, {
           headers: { "Content-Type": "application/json" },
       })
       await fetchQuestion()
@@ -51,19 +57,20 @@ export default function SelectQuestion(
   const fetchQuestion = async () => {
     try {
       console.log("Start")
-      const questionResponse = await axios.get("http://localhost:8001/questions/", {
+      const questionResponse = await axios.get("http://localhost:8000/questions/", {
           headers: { "Content-Type": "application/json" },
       })
-      const Nisitresponse = await axios.get(`http://localhost:8001/nisit-question/${id}`, {
+      const Nisitresponse = await axios.get(`http://localhost:8000/nisit-question/${id}`, {
         headers: { "Content-Type": "application/json" },
       })
+      let nisitdata = Nisitresponse.data
+      let questionData = questionResponse.data.sort((a:QuestionData, b:QuestionData) => DifficultyLevel [a.question_difficulty] - DifficultyLevel [b.question_difficulty])
+
       if (Nisitresponse.data == null) {
         setQuestFilter(questionResponse.data)
         setQuestion(questionResponse.data)
         throw new Error("Error: " + Nisitresponse.status)
       }
-      let nisitdata = Nisitresponse.data
-      let questionData = questionResponse.data
       let newData = questionData.filter((item:any) => {
         let check = true
         for (let i of nisitdata) {
@@ -104,6 +111,7 @@ export default function SelectQuestion(
             <Button  className="text-white bg-green-400 font-normal text-md active:scale-90" onClick={async () => {
               await addQuestNisit()
               setSelectQuestion([])
+              setIsOpen(false)
             }}>เพิ่มคำถาม</Button>
           </div>
           <div className="  gap-4 px-4 py-2 mt-5 flex flex-col max-h-[500px] overflow-y-auto">
