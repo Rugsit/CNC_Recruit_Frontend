@@ -2,7 +2,7 @@ import { UserAdd,Location, Note, Verify } from "./icons";
 
 export default function Timeline() {
   return (
-    <section className="w-full max-w-fit mx-auto">
+    <section className="w-full max-w-fit mx-auto px-5">
       <p className="text-center text-white text-4xl mb-[20px]">กำหนดการ</p>
       <div className="bg-white rounded-lg flex flex-col gap-y-5 md:flex-row w-full max-w-[1500px] items-center p-20">
         <div className="flex flex-col justify-center items-center">

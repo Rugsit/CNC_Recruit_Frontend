@@ -26,7 +26,6 @@ export default function Page() {
         const response = await axios.get(
           'https://675fc49f1f7ad24269994210.mockapi.io/candidate'
         );
-        console.log(response.data);
         setCandidates(response.data);
       } catch (error: any) {
         if (error.response?.status === 404)
@@ -51,6 +50,14 @@ export default function Page() {
         startContent={
           <Image src={SearchIcon} alt="search icon"/>
         }
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            const input = (e.target as HTMLInputElement).value;
+            
+            if (input != "")
+              console.log(input);
+          }
+        }}
       />
       <div className="flex gap-x-2 md:justify-end justify-center items-center w-full">
         <p className="text-[#3B434F]">ชั้นปี: </p>
@@ -67,7 +74,6 @@ export default function Page() {
       <div className="grid md:grid-cols-3 grid-cols-1 gap-8 w-full">
         {
           candidates.map((candidate: Candidate, index: number) => {
-            console.log(candidate.profileUrl);
             return (
               <CandidateCard key={index} props={candidate} />
             )

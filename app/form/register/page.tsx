@@ -2,7 +2,7 @@
 
 import InputText from '@/components/form/input-text';
 import FileUpload from '@/components/form/file-upload';
-import Textarea from '@/components/form/textarea';
+import InputTextArea from '@/components/form/input-textarea';
 import { Button } from '@nextui-org/button';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,6 +16,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
 import FormModal from '@/components/form/form-modal';
+import SelectInput from '@/components/form/select-input';
+import clsx from 'clsx';
 
 interface ApplicationForm {
     nisitId: string,
@@ -38,7 +40,7 @@ interface ApplicationForm {
     hobbies: string,
     transcript: string,
     nisitYearParticipated: number,
-};
+}
 
 export default function RegisterForm() {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -113,24 +115,24 @@ export default function RegisterForm() {
                     </div>
                     <div className="flex flex-col gap-y-5">
                         <InputText title="รหัสนิสิต" register={register("nisitId")} errorMessage={errors.nisitId?.message} />
-                        <InputText title="ชื่อจริง" description="(ไม่ต้องมีคำนำหน้า)" register={register("name")} errorMessage={errors.name?.message} />
+                        <InputText title="ชื่อจริง" desc="(ไม่ต้องมีคำนำหน้า)" register={register("name")} errorMessage={errors.name?.message} />
                         <InputText title="นามสกุล" register={register("lastname")} errorMessage={errors.lastname?.message} />
                         <InputText title="ชื่อเล่น" register={register("nickname")} errorMessage={errors.nickname?.message} />
-                        <InputText title="ภาค" description="(ปกติ, พิเศษ)" register={register("typeOfDpm")} errorMessage={errors.typeOfDpm?.message} />
-                        <InputText title="ปีการศึกษา" description="(2566, 2567)" register={register("nisitYearParticipated")} errorMessage={errors.nisitYearParticipated?.message} />
+                        <SelectInput title="ภาค" options={[{ value: 'normal', label: 'ปกติ' }, { value: 'special', label: 'พิเศษ' }]} register={register("typeOfDpm")} />
+                        <SelectInput title="ปีการศึกษา" options={[{ value: '2567', label: '2567' }]} register={register("nisitYearParticipated")} />
                         <InputText title="เกรดเฉลี่ยรวม" register={register("grade")} errorMessage={errors.grade?.message} />
                         <InputText title="Facebook/IG" register={register("socialContact")} errorMessage={errors.socialContact?.message} />
                         <InputText title="เบอร์โทรศัพท์" register={register("phoneNumber")} errorMessage={errors.phoneNumber?.message} />
-                        <InputText title="ที่อยู่อาศัยปัจจุบัน" register={register("currentLiving")} description="(หอใน, หอนอก, บ้าน)" errorMessage={errors.currentLiving?.message} />
+                        <InputText title="ที่อยู่อาศัยปัจจุบัน" desc="(หอใน, หอนอก, บ้าน)" register={register("currentLiving")} errorMessage={errors.currentLiving?.message} />
                         <InputText title="MBTI" register={register("mbti")} errorMessage={errors.mbti?.message} />
-                        <Textarea title="ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?" register={register("clubs")} errorMessage={errors.clubs?.message} />
-                        <Textarea title="มีความสามารถพิเศษอะไรบ้าง?" register={register("skill")} errorMessage={errors.skill?.message} />
-                        <Textarea title="มีความสนใจในเรื่องอะไร?" description="(ผม/หนู สนใจในเรื่อง UX/UI, Cloud, AI, WebDev, MobileDev, etc.)" register={register("interest")} errorMessage={errors.interest?.message} />
-                        <Textarea title="งานอดิเรกที่ชอบทำ?" register={register("hobbies")} errorMessage={errors.hobbies?.message} />
-                        <Textarea title="ทำไมถึงสมัคร CNC?" register={register("whyCnc")} errorMessage={errors.whyCnc?.message} />
-                        <Textarea title="มีความคาดหวังอย่างไรกับ CNC?" register={register("expected")} errorMessage={errors.expected?.message} />
-                        <Textarea title="โปรเจ็คที่เคยทำมีอะไรบ้าง?" register={register("projects")} errorMessage={errors.projects?.message} />
-                        <Textarea title="Tools, Frameworks, Softwares ที่เคยใช้มีอะไรบ้าง?" register={register("tools")} errorMessage={errors.tools?.message} />
+                        <InputTextArea title="ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?" register={register("clubs")} errorMessage={errors.clubs?.message} />
+                        <InputTextArea title="มีความสามารถพิเศษอะไรบ้าง?" register={register("skill")} errorMessage={errors.skill?.message} />
+                        <InputTextArea title="มีความสนใจในเรื่องอะไร?" desc="(ผม/หนู สนใจในเรื่อง UX/UI, Cloud, AI, WebDev, MobileDev, etc.)" register={register("interest")} errorMessage={errors.interest?.message} />
+                        <InputTextArea title="งานอดิเรกที่ชอบทำ?" register={register("hobbies")} errorMessage={errors.hobbies?.message} />
+                        <InputTextArea title="ทำไมถึงสมัคร CNC?" register={register("whyCnc")} errorMessage={errors.whyCnc?.message} />
+                        <InputTextArea title="มีความคาดหวังอย่างไรกับ CNC?" register={register("expected")} errorMessage={errors.expected?.message} />
+                        <InputTextArea title="โปรเจ็คที่เคยทำมีอะไรบ้าง?" register={register("projects")} errorMessage={errors.projects?.message} />
+                        <InputTextArea title="Tools, Frameworks, Softwares ที่เคยใช้มีอะไรบ้าง?" register={register("tools")} errorMessage={errors.tools?.message} />
                         <FileUpload
                             title="อัพโหลดรูปภาพ"
                             description="ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน"
@@ -158,31 +160,38 @@ export default function RegisterForm() {
                             disabled={isSubmitting}
                             type="reset"
                             variant="bordered"
-                            className="grow border border-black md:text-xl text-base text-black font-medium"
+                            className="grow border border-[#42B5FC] md:text-xl text-base text-[#42B5FC] font-medium"
                         >ยกเลิก
                         </Button>
                         <Button
                             disabled={isSubmitting}
                             type="submit"
                             variant="shadow"
-                            className="grow bg-black md:text-xl text-base text-white font-medium"
+                            className="grow bg-[#42B5FC] md:text-xl text-base text-white font-medium"
                         >ส่งใบสมัคร
                         </Button>
                     </div>
                 </div>
             </form>
-            <FormModal 
-                title={isSuccess ? "ยื่นใบสมัครสำเร็จ" : "ยื่นใบสมัครไม่สำเร็จ"} 
-                desc={isSuccess ? "โปรดเลือกนัดหมายสำหรับสัมภาษณ์" : "เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง"} 
-                isSuccess={isSuccess} 
-                isVisible={isModalVisible} 
-                onClose={
-                    () => { 
-                        setModalVisible(false); 
-                        router.push('/home'); 
+            <div className={clsx("transition-opacity fixed top-0 left-0 right-0 bottom-0 bg-black/[.5] z-50 flex justify-center items-center", {
+                " opacity-0 pointer-events-none" : !isModalVisible,
+                " opacity-100 " : isModalVisible
+            })}>
+                <FormModal
+                    title={isSuccess ? "ยื่นใบสมัครสำเร็จ" : "ยื่นใบสมัครไม่สำเร็จ"}
+                    desc={isSuccess ? "โปรดเลือกนัดหมายสำหรับสัมภาษณ์" : "เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง"}
+                    isSuccess={isSuccess}
+                    isVisible={isModalVisible}
+                    onClose={
+                        () => {
+                            setModalVisible(false);
+                            if (isSuccess)
+                                router.push('/home');
+                        }
                     }
-                } 
-            />
+                />
+             </div>
+            
         </section>
     );
 }

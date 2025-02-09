@@ -1,5 +1,4 @@
 import React from 'react';
-import { Textarea } from '@nextui-org/input';
 
 interface TextFieldProps {
   header: string,
