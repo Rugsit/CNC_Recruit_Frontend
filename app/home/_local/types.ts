@@ -5,4 +5,5 @@ export interface Session {
   time: string;
   buttonAction: any;
   desc: string;
+  status: string
 }
