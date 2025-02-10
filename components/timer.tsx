@@ -1,12 +1,12 @@
 'use client';
-import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Props {
+  id: number
   title: string;
   desc?: string;
   endTime: string;
-  buttonAction?: string;
 }
 
 interface time {
@@ -16,7 +16,13 @@ interface time {
   seconds: string;
 }
 
-export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
+interface State {
+  id: number;
+  path: string;
+  action: string;
+}
+
+export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [timeRemaining, setTimeRemaining] = useState<time>({
     days: '00',
     hours: '00',
@@ -24,23 +30,27 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
     seconds: '00',
   });
 
+  const [state, setState] = useState<State>();
+
   useEffect(() => {
-    const dest = new Date(endTime).getTime();
-    const updateCountdow = () => {
+    const updateCountdown = () => {
+      const date = new Date(endTime).getTime();
       const now = new Date().getTime();
-      const diff = dest - now;
 
-      if (diff <= 0) {
-        clearInterval(timer);
-
-        return;
+      if (date - now <= 0) {
+        return
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      let diff = Math.abs(now - date) / 1000;
+
+      const days = Math.floor(diff / (3600 * 24));
+      diff %= 3600 * 24
+
+      const hours = Math.floor(diff / 3600);
+      diff %= 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = Math.floor(diff % 60);
 
       setTimeRemaining({
         days: days < 10 ? `0${days}` : `${days}`,
@@ -50,56 +60,78 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
       });
     };
 
-    const timer = setInterval(updateCountdow, 1000);
+    setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(timer);
+    path()
   }, []);
 
+  const path = () => {
+    const paths: State[] = [
+      {
+        "id": 2,
+        "path": "/form/register",
+        "action": "สมัครเข้าร่วม LAB"
+      },
+      {
+        "id": 3,
+        "path": "/home",
+        "action": "ลงเวลาสัมภาษณ์"
+      },
+      {
+        "id": 4,
+        "path": "/home",
+        "action": "ผลการคัดเลือก"
+      }
+    ]
+
+    const result = paths.find((item) => item.id === id)
+    setState(result)
+  }
+
+
   return (
-    <div className='flex flex-col items-center justify-center font-sans-thai px-[20px]'>
+    <div className='flex flex-col items-center justify-center font-sans-thai'>
       <div className='text-center'>
-        <h3 className='text-3xl font-bold text-[#0374BA] mb-6 min-[1024px]:text-5xl text-wrap'>{title}</h3>
-        <p className='text-1xl font-light text-[#0374BA] min-[1024px]:text-2xl'>{desc}</p>
+        <h3 className='md:text-[61px] text-[25px] font-bold text-[#0374BA]'>{title}</h3>
+        <p className='md:text-[39px] text-text[16px] [16px] font-light text-[#0374BA]'>{desc}</p>
       </div>
-      <div className='flex items-start justify-center w-full gap-2 md:gap-4 count-down-main text-primary'>
-        <div className='timer flex flex-col space-y-[-1rem] md:space-y-[-2rem]'>
-          <span className='text-[40px] text-primary font-bold text-center md:text-[90px] min-[1024px]:text-[140px]'>
+      <div className='flex items-start justify-center w-full gap-4 count-down-main text-primary'>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem] '>
+          <span className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.days}
           </span>
-          <span className='text-[19px] font-normal  text-center min-[1024px]:text-[39px]'>วัน</span>
+          <span className='md:text-[39px] text-[20px] font-normal text-center'>วัน</span>
         </div>
-        <h3 className='font-bold text-[40px] md:text-[90px] min-[1024px]:text-[140px]'>:</h3>
-        <div className='timer flex flex-col space-y-[-1rem] md:space-y-[-2rem]'>
-          <h3 className='text-[40px] text-primary font-bold text-center md:text-[90px] min-[1024px]:text-[140px]'>
+        <h3 className='font-bold md:text-[140px] text-[20px] '>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.hours}
           </h3>
-          <p className='text-[19px] font-normal text-center w-full min-[1024px]:text-[39px]'>ชั่วโมง</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>ชั่วโมง</p>
         </div>
-        <h3 className='font-bold text-[40px] md:text-[90px] min-[1024px]:text-[140px]'>:</h3>
-        <div className='timer flex flex-col space-y-[-1rem] md:space-y-[-2rem]'>
-          <h3 className='text-[40px] text-primary font-bold text-center md:text-[90px] min-[1024px]:text-[140px]'>
+        <h3 className='font-bold md:text-[140px] text-[20px]'>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.minutes}
           </h3>
-          <p className='text-[19px] font-normal text-center w-full min-[1024px]:text-[39px]'>นาที</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>นาที</p>
         </div>
-        <h3 className='font-bold text-[40px] md:text-[90px] min-[1024px]:text-[140px]'>:</h3>
-        <div className='timer flex flex-col space-y-[-1rem] md:space-y-[-2rem]'>
-          <h3 className='text-[40px] text-primary font-bold text-center md:text-[90px] min-[1024px]:text-[140px]'>
+        <h3 className='font-bold md:text-[140px] text-[20px]'>:</h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-1rem]'>
+          <h3 className='md:text-[140px] text-[50px] text-primary font-bold text-center'>
             {timeRemaining.seconds}
           </h3>
-          <p className='text-[19px] font-normal text-center w-full min-[1024px]:text-[39px]'>วินาที</p>
+          <p className='md:text-[39px] text-[20px] font-normal text-center w-full'>วินาที</p>
         </div>
       </div>
 
-      {buttonAction ? (
-        <Button
-          className='mt-8 p-[2rem] text-lg font-bold hover:scale-90 bg-white text-primary shadow-lg shadow-primary-100] min-[1024px]:text-2xl min-[1024px]:p-[2rem]'
-          
+      {state && (
+        <Link
+          href={state?.path ?? ""}
+          className='mt-8 p-[1rem] md:text-[32px] text-[16px] bg-primary text-white rounded-lg'
         >
-          {buttonAction}
-        </Button>
-      ) : (
-        <></>
+          {state?.action}
+        </Link>
       )}
     </div>
   );

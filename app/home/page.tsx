@@ -7,13 +7,34 @@ import HomeFooter from "@/components/home-footer";
 import LoginPopup from "./_local/loginPopup";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import { Session } from '@/app/home/_local/types';
+import recruitingSchduleService from '@/services/recruitingSchduleService';
 
 export default function Home() {
+  const { getCurrent } = recruitingSchduleService()
   const [isEnterPage, setIsEnterPage] = useState(false);
+  const [session, setSession] = useState<Session | null>();
+
   useEffect(() => {
     setTimeout(() => {
       setIsEnterPage(true);
     }, 500);
+
+    const fetchData = async () => {
+      try {
+        await getCurrent().then((session) => {
+          setSession(session);
+        })
+      } catch (error: any) {
+        if (error.response?.status === 404)
+          console.error('Candidates not found!');
+        else
+          console.error('Fetching data failed!');
+      }
+    }
+
+    fetchData().then(r => {});
+
   }, []);
 
   return (
@@ -22,7 +43,7 @@ export default function Home() {
         <div className={clsx("transition-all duration-1000 h-[100vh]  flex items-center justify-center pt-[100px]", {
           "opacity-0 translate-y-[50px] pt-[150px]" : !isEnterPage
         })} >
-          <Timer title="ปิดลงวันเวลาสัมภาษณ์ในอีก..." endTime="2025-02-15" buttonAction="ลงเวลาสัมภาษณ์" desc="คุณยังไม่เลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด"/>
+          {session && <Timer id={session?.id} title={session?.title } endTime={session?.time} desc=""/>}
         </div>
       <HomeDetails />
       </section>
