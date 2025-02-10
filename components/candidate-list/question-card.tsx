@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AngleDown, Bin } from "../icons";
 import clsx from "clsx";
 import { Textarea } from "@nextui-org/input";
@@ -17,7 +17,7 @@ type QuestionNisit = {
   comment: string
 }
 
-export default function QuestionCard({questionNisit, fetchQuestion} : {questionNisit : QuestionNisit, fetchQuestion: () => Promise<void>}) {
+export default function QuestionCard({questionNisit, fetchQuestion, setStatusPopup} : {questionNisit : QuestionNisit, fetchQuestion: () => Promise<void>, setStatusPopup: Dispatch<SetStateAction<{type: string, status: boolean, isShow: boolean}>>}) {
   const [comment, setComment] = useState<string>("");
   const [editGrade, setEditGrade] = useState(false);
   const [toggleMoreInfo, setToggleMoreInfo] = useState(false);
@@ -43,8 +43,9 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
         headers: { "Content-Type": "applicatio/json" },
       })
       fetchQuestion()
+      setStatusPopup({type: "delete", status: true, isShow: true})
     } catch (e) {
-
+      setStatusPopup({type: "delete", status: false, isShow: true})
     }
   }
 
@@ -100,7 +101,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
       </section>
       <div className="flex justify-between w-full">
         <p className="font-bold text-lg text-[#3B434F]">รายละเอียดเพิ่มเติม</p>
-        <button className={clsx("transition-all focus:outline-none border-none", {
+        <button className={clsx("transition-transform focus:outline-none border-none", {
           " rotate-180" : toggleMoreInfo
         })} onClick={() => {
           setToggleMoreInfo(!toggleMoreInfo);
@@ -122,7 +123,7 @@ export default function QuestionCard({questionNisit, fetchQuestion} : {questionN
           })} classNames={{
               input: "text-base",
             }} value={comment} onValueChange={haddleTextarea}/>
-          <p className={clsx("my-8 leading-7 font-normal", {
+          <p className={clsx("my-8 leading-7 font-normal text-[#3B434F]", {
             " fixed opacity-0" : editGrade
           })}>
             <span className="font-bold mr-4 ">ความคิดเห็น:</span>{questionNisit.comment === "" ? "ไม่มีความคิดเห็น" : questionNisit.comment}

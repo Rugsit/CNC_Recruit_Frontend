@@ -1,3 +1,4 @@
+import { PopupType } from "@/app/candidate-list/[id]/question-knowledge/page";
 import { Bin, Pen } from "@/components/icons";
 import { Button } from "@nextui-org/button";
 import axios from "axios";
@@ -5,7 +6,7 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction } from "react";
 
 
-export default function QuestionCardShort ({question_type, diff, question, id, fetchQuestion, selectQuestion, setSelectQuestion} : {question_type : string, diff : string, question: string, id: string, fetchQuestion: () => Promise<void>, selectQuestion: string[], setSelectQuestion: Dispatch<SetStateAction<string[]>>}){
+export default function QuestionCardShort ({question_type, diff, question, id, fetchQuestion, selectQuestion, setSelectQuestion, setEditIsOpen, setStatusPopup} : {question_type : string, diff : string, question: string, id: string, fetchQuestion: () => Promise<void>, selectQuestion: string[], setSelectQuestion: Dispatch<SetStateAction<string[]>>, setEditIsOpen:Dispatch<SetStateAction<PopupType>>, setStatusPopup: Dispatch<SetStateAction<{type: string, status: boolean, isShow: boolean}>>}){
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(`http://localhost:8000/questions/${id}`, {
@@ -14,8 +15,9 @@ export default function QuestionCardShort ({question_type, diff, question, id, f
       let newArray = selectQuestion.filter((item) => item != id)
       setSelectQuestion(newArray)
       await fetchQuestion();
+      setStatusPopup({type: "delete", status: true, isShow: true})
     } catch (e) {
-      console.log(e)
+      setStatusPopup({type: "delete", status: false, isShow: true})
     }
   }
   return (
@@ -44,7 +46,7 @@ export default function QuestionCardShort ({question_type, diff, question, id, f
         </div>
         <div className="flex gap-4">
           <Button isIconOnly className="text-primary-400 bg-transparent rounded-full" onClick={() => {
-
+            setEditIsOpen({type: "edit", status: true, id: id, func: fetchQuestion})
           }}>
             <Pen />
           </Button>

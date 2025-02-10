@@ -5,6 +5,7 @@ import { Button } from '@nextui-org/button';
 import { fontSansThai, fontKanit } from '@/config/fonts';
 import Image from 'next/image';
 import clsx from 'clsx';
+import axios from 'axios';
 
 interface LoginPopupProps {
   onClose: () => void;
@@ -13,8 +14,16 @@ interface LoginPopupProps {
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess, isOpen }) => {
-  const handleGoogleLogin = () => {
-    onLoginSuccess();
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/auth/google")
+      console.log(response.data)
+      // const frontendRedirect = encodeURIComponent(window.location.origin + "/home");
+      // window.location.href = `http://localhost:8000/auth/google?redirect_uri=${frontendRedirect}`;
+      onLoginSuccess();
+    } catch (e) {
+      
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess, isOpen
 
         <div className='px-4 space-y-4'>
           <Button
-            // onClick={handleGoogleLogin}
+            onClick={handleGoogleLogin}
             className='w-full h-[60] py-6 bg-[#29B6F6] text-white rounded-xl hover:bg-[#0288D1] transition-colors'
           >
             <div className='flex items-center justify-center gap-3'>

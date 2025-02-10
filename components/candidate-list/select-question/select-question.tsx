@@ -6,6 +6,7 @@ import clsx from "clsx";
 import axios from "axios";
 import { Button } from "@nextui-org/button";
 import { useParams } from "next/navigation";
+import { PopupType } from "@/app/candidate-list/[id]/question-knowledge/page";
 
 type FormField = {
   question: string;
@@ -28,8 +29,8 @@ const DifficultyLevel: Record<string, number> = {
 };
 
 export default function SelectQuestion(
-  {isOpen, setIsOpen, currentIndex, fetchQuestionMain} : 
-  {isOpen:boolean, setIsOpen:Dispatch<SetStateAction<boolean>>, currentIndex: number, fetchQuestionMain: () => Promise<void>}) {
+  {isOpen, setIsOpen, currentIndex, fetchQuestionMain, setEditIsOpen, setStatusPopup} : 
+  {isOpen:boolean, setIsOpen:Dispatch<SetStateAction<boolean>>, currentIndex: number, fetchQuestionMain: () => Promise<void>, setEditIsOpen:Dispatch<SetStateAction<PopupType>>, setStatusPopup: Dispatch<SetStateAction<{type: string, status: boolean, isShow: boolean}>>}) {
   const [questFilter, setQuestFilter] = useState<Array<QuestionData>>([]);
   const [question, setQuestion] = useState<Array<QuestionData>>([]);
   const [selectQuestion, setSelectQuestion] = useState<Array<string>>([]);
@@ -45,13 +46,18 @@ export default function SelectQuestion(
   }
 
   const addQuestNisit = async () => {
-    selectQuestion.forEach( async (item, index) => {
-      const response = await axios.post(`http://localhost:8000/nisit-question/${id}/${item}`, {
-          headers: { "Content-Type": "application/json" },
+    try {
+      selectQuestion.forEach( async (item, index) => {
+        const response = await axios.post(`http://localhost:8000/nisit-question/${id}/${item}`, {
+            headers: { "Content-Type": "application/json" },
+        })
+        await fetchQuestion()
+        await fetchQuestionMain()
       })
-      await fetchQuestion()
-      await fetchQuestionMain()
-    })
+      setStatusPopup({type: "add", status: true, isShow: true}) 
+    } catch(e) {
+      setStatusPopup({type: "add", status: false, isShow: true}) 
+    }
   }
 
   const fetchQuestion = async () => {
@@ -90,7 +96,7 @@ export default function SelectQuestion(
   }, [isOpen])
 
   return (
-    <div className={clsx("transition-all my-[40px] max-h-[700px] h-full w-full max-w-[700px] mx-[40px] bg-white shadow-md rounded-lg p-5  relative box-border", {
+    <div className={clsx("transition-all my-[40px] max-h-[600px] h-full w-full max-w-[700px] mx-[40px] bg-white shadow-md rounded-lg p-5  relative box-border", {
       " scale-100" : isOpen,
       " scale-90" : !isOpen
     })
@@ -114,12 +120,12 @@ export default function SelectQuestion(
               setIsOpen(false)
             }}>เพิ่มคำถาม</Button>
           </div>
-          <div className="  gap-4 px-4 py-2 mt-5 flex flex-col max-h-[500px] overflow-y-auto">
+          <div className="  gap-4 px-4 py-2 mt-5 flex flex-col max-h-[400px] overflow-y-auto">
             {questFilter.map((item, index) => {
               if (item.question_type == "attitude" && currentIndex == 1) {
-                return <QuestionCardShort question={item.question} question_type={item.question_type} diff={item.question_difficulty} key={item.id} id={item.id} fetchQuestion={fetchQuestion} selectQuestion={selectQuestion} setSelectQuestion={setSelectQuestion}/> 
+                return <QuestionCardShort question={item.question} question_type={item.question_type} diff={item.question_difficulty} key={item.id} id={item.id} fetchQuestion={fetchQuestion} selectQuestion={selectQuestion} setSelectQuestion={setSelectQuestion} setEditIsOpen={setEditIsOpen} setStatusPopup={setStatusPopup}/> 
               } else if (item.question_type == "knowledge" && currentIndex == 2) {
-                return <QuestionCardShort question={item.question} question_type={item.question_type} diff={item.question_difficulty} key={item.id} id={item.id} fetchQuestion={fetchQuestion} selectQuestion={selectQuestion} setSelectQuestion={setSelectQuestion}/> 
+                return <QuestionCardShort question={item.question} question_type={item.question_type} diff={item.question_difficulty} key={item.id} id={item.id} fetchQuestion={fetchQuestion} selectQuestion={selectQuestion} setSelectQuestion={setSelectQuestion} setEditIsOpen={setEditIsOpen} setStatusPopup={setStatusPopup}/> 
               }
             })}
           </div>
