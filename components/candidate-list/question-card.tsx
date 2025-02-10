@@ -61,7 +61,7 @@ export default function QuestionCard({questionNisit, fetchQuestion, setStatusPop
       })
       fetchQuestion();
     } catch(e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -105,7 +105,6 @@ export default function QuestionCard({questionNisit, fetchQuestion, setStatusPop
           " rotate-180" : toggleMoreInfo
         })} onClick={() => {
           setToggleMoreInfo(!toggleMoreInfo);
-          console.log("Test")
         }}>
           <AngleDown size={25} fill="#3B434F" className="cursor-pointer focus:outline-none"/>
         </button>

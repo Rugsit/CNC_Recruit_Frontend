@@ -134,12 +134,12 @@ export default function AddQuestion({isOpen, setIsOpen, setStatusPopup} : {isOpe
           </div>
         </div>
         <div className="flex justify-center items-center gap-5 mt-10">
-          <Button type="submit" className="bg-primary text-white w-full h-11 text-xl" onClick={() => {
-          }}>ยืนยัน</Button>
           <Button className="bg-red-400 text-white w-full h-11 text-xl" onClick={async () => {
             setIsOpen({type: isOpen.type, status: false, id: isOpen.id})
           }
           }>ยกเลิก</Button>
+          <Button type="submit" className="bg-primary text-white w-full h-11 text-xl" onClick={() => {
+          }}>ยืนยัน</Button>
         </div>
       </form>
     </section>
