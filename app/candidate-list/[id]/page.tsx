@@ -10,12 +10,11 @@ import clsx from 'clsx';
 
 export default function CandidateListId() {
     let timoutId: ReturnType<typeof setTimeout>;
-    const [statusPopup, setStatusPopup] = useState({status : true, isShow: false});
+    const [statusPopup, setStatusPopup] = useState({type: "create", status : true, isShow: false});
     const { id } = useParams();
     const [pageIndex, setPageIndex] = useState(0);
     const CandidatePages = [<CandidateDetail profileUrl="https://loremflickr.com/640/480" fullname="Kerdsiri" />, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup} />, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup}/>];
     const onChangeIndex = (index: number) => {
-        console.log(index);
         setPageIndex(index);
     };
 
@@ -28,8 +27,10 @@ export default function CandidateListId() {
 
     const ticklePopup = () => {
         clearTimeout(timoutId);
+        setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : false}) 
+        setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : true}) 
         timoutId = setTimeout(() => {
-               setStatusPopup({status : statusPopup.status, isShow : false}) 
+               setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : false}) 
             }, 3000)
     }
 
@@ -54,7 +55,7 @@ export default function CandidateListId() {
                 <p className={clsx('text-lg', {
                     "text-red-500" : !statusPopup.status,
                     "text-green-500" : statusPopup.status
-                })}>{statusPopup.status ? "สร้างคำถามเสร็จเรียบร้อย" : "ไม่สามารถสร้างคำถามได้"}</p>
+                })}>{(statusPopup.type == "create" ? "สร้างคำถาม" : statusPopup.type == "edit" ? "แก้ไขคำถาม" : statusPopup.type == "delete" ? "ลบคำถาม" : "เพิ่มคำถาม") + (statusPopup.status ? "สำเร็จ" : "ไม่สำเร็จ")}</p>
             </button>
             {CandidatePages[pageIndex]}
         </div>

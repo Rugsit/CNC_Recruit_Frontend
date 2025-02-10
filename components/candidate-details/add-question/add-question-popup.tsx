@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button";
 import { Textarea } from "@nextui-org/input";
 import axios from "axios";
 import clsx from "clsx";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type FormField = {
@@ -13,40 +13,95 @@ type FormField = {
   expected_ans: string;
   question_difficulty: string;
 }
+type FormFieldPut = {
+  question: string;
+  question_type: string;
+  expected_ans: string;
+  question_difficulty: string;
+  id: string;
+}
+type PopupType = {
+  type : string,
+  status: boolean,
+  id: string
+  func?: () => Promise<void>
+}
 
-export default function AddQuestion({isOpen, setIsOpen, setStatusPopup} : {isOpen: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>, setStatusPopup: Dispatch<SetStateAction<{
+export default function AddQuestion({isOpen, setIsOpen, setStatusPopup} : {isOpen: PopupType, setIsOpen: Dispatch<SetStateAction<PopupType>>, setStatusPopup: Dispatch<SetStateAction<{
+    type: string
     status: boolean;
     isShow: boolean;
 }>>}) {
   const refForm = useRef(null);
-  const [statusSelectDif, setStatusSelectDif] = useState("hard");
-  const [statusSelectType, setStatusSelectType] = useState("knowledge");
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [statusSelectDif, setStatusSelectDif] = useState("easy");
+  const [statusSelectType, setStatusSelectType] = useState("attitude");
   const { register, handleSubmit, formState: {errors}, reset} = useForm<FormField>();
+
+  const targetQuestionEdit = async () => {
+    const response = await axios.get(`http://localhost:8000/questions/${isOpen.id}`)
+    const data = response.data
+    const newData = {
+      question: data.question,
+      question_type: data.question_type,
+      expected_ans: data.expected_ans,
+      question_difficulty: data.question_difficulty
+    } 
+    reset(newData)
+  }
+
+  useEffect(() => {
+    if (isOpen.type == "edit" && isOpen.status) {
+      targetQuestionEdit()
+    } else if (!isOpen.status) {
+      const newData = {
+        question: "",
+        question_type: "attitude",
+        expected_ans: "",
+        question_difficulty: "easy" 
+      } 
+      reset(newData)
+    }
+  }, [isOpen])
 
   const onSubmit: SubmitHandler<FormField> = async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/questions", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      setStatusPopup({status: true, isShow: true})
-    } catch (e) {
-      setStatusPopup({status: false, isShow: true})
-      console.log(e)
-      console.log(data)
+      try {
+        if (isOpen.type === "create") {
+          const response = await axios.post("http://localhost:8000/questions", data, {
+            headers: { "Content-Type": "application/json" },
+          })
+          setStatusPopup({type: "create" , status: true, isShow: true})
+        }
+      } catch (e) {
+        throw new Error("create")
+      } 
+      if (isOpen.type === "edit"){
+        let newData = data as FormFieldPut
+        newData.id = isOpen.id
+        const response = await axios.put(`http://localhost:8000/questions/${isOpen.id}`, newData, {
+          headers: { "Content-Type": "application/json" },
+        })
+        if (isOpen.func) isOpen.func()
+        setStatusPopup({type: "edit" , status: true, isShow: true})
+      }
+    } catch (e:any) {
+      if (e.message == "create") {
+        setStatusPopup({type: "create" , status: false, isShow: true})
+      } else {
+        setStatusPopup({type: "edit" , status: false, isShow: true})
+      }
     }
     reset();
-    setIsOpen(false)
+    setIsOpen({type: isOpen.type, status: false, id: isOpen.id})
   }
   return (
     <section className={clsx("transition-all relative bg-white rounded-lg p-12 max-w-[500px] w-full text-[#3B434F] m-[20px]", {
-      " scale-100" : isOpen,
-      " scale-90" : !isOpen
+      " scale-100" : isOpen.status,
+      " scale-90" : !isOpen.status
     })}>
-      <p className="text-2xl text-center mb-4">เพิ่มคำถาม</p>
+      <p className="text-2xl text-center mb-4">{isOpen.type === "edit" ? "แก้ไขคำถาม" : "เพิ่มคำถาม"}</p>
       <XMark className="w-5 absolute top-[15px] right-[15px] cursor-pointer" fill="#42B5FC" onClick={() => {
-        setIsOpen(false);
+        setIsOpen({type: isOpen.type, status: false, id: isOpen.id})
       }}/>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)} ref={refForm}>
         <label className="text-lg mb-3">คำถาม</label>
@@ -81,9 +136,8 @@ export default function AddQuestion({isOpen, setIsOpen, setStatusPopup} : {isOpe
         <div className="flex justify-center items-center gap-5 mt-10">
           <Button type="submit" className="bg-primary text-white w-full h-11 text-xl" onClick={() => {
           }}>ยืนยัน</Button>
-          <Button className="bg-red-400 text-white w-full h-11 text-xl" onClick={() => {
-            reset()
-            setIsOpen(false)
+          <Button className="bg-red-400 text-white w-full h-11 text-xl" onClick={async () => {
+            setIsOpen({type: isOpen.type, status: false, id: isOpen.id})
           }
           }>ยกเลิก</Button>
         </div>
