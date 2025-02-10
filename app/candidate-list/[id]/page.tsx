@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CandidateDetail from "@/app/candidate-list/[id]/candidate-detail/page";
 import QuestionKnowledge from "@/app/candidate-list/[id]/question-knowledge/page";
@@ -9,7 +9,7 @@ import { CheckMark, XMark } from '@/components/icons';
 import clsx from 'clsx';
 
 export default function CandidateListId() {
-    let timoutId: ReturnType<typeof setTimeout>;
+    let timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [statusPopup, setStatusPopup] = useState({type: "create", status : true, isShow: false});
     const { id } = useParams();
     const [pageIndex, setPageIndex] = useState(0);
@@ -18,18 +18,10 @@ export default function CandidateListId() {
         setPageIndex(index);
     };
 
-    useEffect(() => {
-        if (id) {
-            console.log(id);
-            // Fetch Candidate Detail by ID (From Database)
-        }
-    }, [id]);
-
     const ticklePopup = () => {
-        clearTimeout(timoutId);
-        setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : false}) 
-        setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : true}) 
-        timoutId = setTimeout(() => {
+        if (timeoutRef.current != null) clearTimeout(timeoutRef.current);
+
+        timeoutRef.current = setTimeout(() => {
                setStatusPopup({type: statusPopup.type, status : statusPopup.status, isShow : false}) 
             }, 3000)
     }
