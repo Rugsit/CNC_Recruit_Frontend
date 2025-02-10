@@ -89,12 +89,12 @@ export default function QuestionKnowledge({currentIndex, setStatusPopup} : {curr
             {currentIndex == 2 ? "คำถามวัดความรู้" : "คำถามวัดทัศนคติ"}
           </p>
           <div className="h-full lg:absolute flex lg:justify-end w-full items-center max-lg:justify-between gap-5 top-0 right-0 max-lg:mt-10" >
-            <Button isIconOnly className="bg-primary rounded-full cursor-pointer active:scale-85" size="lg" onClick={() => {
+            <Button isIconOnly className="bg-primary rounded-full cursor-pointer active:scale-85 hover:scale-95" size="lg" onClick={() => {
               setOpenCreateQuestion({type: "create", status: true, id : openCreateQuestion.id})
             }}>
               <Plus size={24} fill="white"/>
             </Button> 
-            <Button className="text-base bg-primary p-6 rounded-lg text-white" onClick={() => {
+            <Button className="text-base bg-primary p-6 rounded-lg text-white hover:scale-95" onClick={() => {
               setOpenSelectQuestion(true);
             }}>
               เลือกคำถามเพิ่มเติม

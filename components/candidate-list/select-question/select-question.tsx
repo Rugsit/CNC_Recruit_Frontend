@@ -62,7 +62,6 @@ export default function SelectQuestion(
 
   const fetchQuestion = async () => {
     try {
-      console.log("Start")
       const questionResponse = await axios.get("http://localhost:8000/questions/", {
           headers: { "Content-Type": "application/json" },
       })
@@ -75,7 +74,7 @@ export default function SelectQuestion(
       if (Nisitresponse.data == null) {
         setQuestFilter(questionResponse.data)
         setQuestion(questionResponse.data)
-        throw new Error("Error: " + Nisitresponse.status)
+        return;
       }
       let newData = questionData.filter((item:any) => {
         let check = true
@@ -87,7 +86,7 @@ export default function SelectQuestion(
       setQuestion(newData)
       setQuestFilter(newData)
     } catch (e) {
-      console.log(e)
+      console.error(e)
       
     }
   }

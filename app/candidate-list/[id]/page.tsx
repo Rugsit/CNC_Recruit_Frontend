@@ -35,7 +35,7 @@ export default function CandidateListId() {
     return (
         <div className="w-full max-w-[1500px] mx-auto flex flex-col gap-y-10 px-4 pt-32 ">
             <NavbarCandidate onChangeIndex={(index) => {onChangeIndex(index)}} />
-            <button className={clsx("transition-all fixed bottom-5 right-5 flex bg-white shadow-lg p-5 gap-3 rounded-lg items-center justify-center cursor-default", {
+            <button className={clsx("transition-all fixed bottom-5 right-5 flex bg-white shadow-lg p-5 gap-3 rounded-lg items-center justify-center cursor-default z-50", {
                 "translate-y-56 scale-80" : !statusPopup.isShow
             })} onClick={() => {
                 ticklePopup();

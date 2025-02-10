@@ -28,11 +28,9 @@ export default function QuestionCardShort ({question_type, diff, question, id, f
       let index = selectQuestion.indexOf(id);
       if (index != -1) {
         let newArray = selectQuestion.filter((item) => item != id)
-        console.log(newArray)
         setSelectQuestion(newArray)
       } else {
         setSelectQuestion([...selectQuestion, id])
-        console.log([...selectQuestion, id])
       }
     }}>
       <div className="flex justify-between items-center">
