@@ -6,6 +6,7 @@ import { fontSansThai, fontKanit } from '@/config/fonts';
 import Image from 'next/image';
 import clsx from 'clsx';
 import axios from 'axios';
+import { signIn } from 'next-auth/react';
 
 interface LoginPopupProps {
   onClose: () => void;
@@ -14,16 +15,8 @@ interface LoginPopupProps {
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ onClose, onLoginSuccess, isOpen }) => {
-  const handleGoogleLogin = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/auth/google")
-      console.log(response.data)
-      // const frontendRedirect = encodeURIComponent(window.location.origin + "/home");
-      // window.location.href = `http://localhost:8000/auth/google?redirect_uri=${frontendRedirect}`;
-      onLoginSuccess();
-    } catch (e) {
-      
-    }
+  const handleGoogleLogin = async() => {
+    await signIn('google');
   };
 
   return (
