@@ -18,34 +18,14 @@ import { useState } from 'react';
 import FormModal from '@/components/form/form-modal';
 import SelectInput from '@/components/form/select-input';
 import clsx from 'clsx';
-
-interface ApplicationForm {
-    nisitId: string,
-    name: string,
-    lastname: string,
-    nickname: string,
-    typeOfDpm: string,
-    socialContact: string,
-    phoneNumber: string,
-    currentLiving: string,
-    imageUrl: string,
-    grade: number,
-    expected: string,
-    whyCnc: string,
-    mbti: string,
-    clubs: string,
-    tools: string,
-    projects: string,
-    interest: string,
-    hobbies: string,
-    transcript: string,
-    nisitYearParticipated: number,
-}
+import { useSession } from 'next-auth/react';
 
 export default function RegisterForm() {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isSuccess, setSuccess] = useState(false);
     const router = useRouter();
+    const { data } = useSession();
+    // console.log(data);
 
     const {
         register,
@@ -57,37 +37,20 @@ export default function RegisterForm() {
         resolver: zodResolver(formSchema),
     });
 
-    const onSubmit = async (data: FormFields) => {
-        const application: ApplicationForm = {
-            nisitId: data.nisitId || "",
-            name: data.name || "",
-            lastname: data.lastname || "",
-            nickname: data.nickname || "",
-            typeOfDpm: data.typeOfDpm || "", // This is ENUM
-            socialContact: data.socialContact || "",
-            phoneNumber: data.phoneNumber || "",
-            currentLiving: data.currentLiving || "",
-            imageUrl: "URL OF NISIT-IMAGE", // No field available yet
-            grade: data.grade ? parseFloat(data.grade.toString()) : 0.0,
-            expected: data.expected || "",
-            whyCnc: data.whyCnc || "",
-            mbti: data.mbti || "",
-            clubs: data.clubs || "",
-            tools: data.tools || "",
-            projects: data.projects || "",
-            interest: data.interest || "",
-            hobbies: data.hobbies || "",
-            transcript: "URL OF TRANSCRIPT-PDF", // No field available yet
-            nisitYearParticipated: data.nisitYearParticipated ? parseInt(data.nisitYearParticipated.toString()) : new Date().getFullYear(),
-        };
-
-        // console.log(application); // Debugging
-
+    const onSubmit = async (formData: FormFields) => {
         try {
+            // COOKIE (NEXT AUTH) -> POST -> CHECK (Applied or not?) -> YES (GET, PUT) 
+                                                                  // -> NO (POST)
+            const application = {
+                ...formData,
+                imageUrl: formData.imageUrl.name,
+                transcript: formData.transcript.name,
+            }
+
             const response = await axios.post("http://localhost:8000/app", application, {
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvd29ybnJhdC50QGt1LnRoIiwiZXhwIjoxNzM5MjU5NjkwLCJpZCI6IjAxOTRmM2Q5LWRkZmMtNzc3OC05YjVmLWY2ZTg2OGQ4OGQxOCIsIm5hbWUiOiJCb3dvcm5yYXQgVEFOR05BUkFSQVRDSEFLSVQiLCJyb2xlIjoiY2FuZGlkYXRlIn0.Ue4QtTDCfHVgfa6JWltBLW_q94fEyn8tgVssHH38jA0` }
             });
-            // console.log("Response:", response.data);
+            console.log("Response:", response.data);
             setSuccess(true);
             setModalVisible(true);
         } catch (error) {
@@ -191,7 +154,6 @@ export default function RegisterForm() {
                     }
                 />
              </div>
-            
         </section>
     );
 }
