@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbar - Chrome, Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar - Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar - & Edge */
+html {
+  -ms-overflow-style: none;
+}
+
 @layer components {
   .circle-grader {
     @apply  flex justify-center relative border-3 border-zinc-400 rounded-full transition-colors
