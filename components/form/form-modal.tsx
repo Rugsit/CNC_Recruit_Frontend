@@ -13,7 +13,7 @@ const FormModal: React.FC<FormModalProps> = ({ title, desc, isSuccess, isVisible
     if (!isVisible) return null;
 
     return (
-        <div className={clsx("transition-all my-[40px] max-h-[350px] h-full w-full max-w-[450px] mx-[40px] bg-white shadow-md rounded-lg p-5  relative box-border", {
+        <div className={clsx("transition-all my-[40px] max-h-[320px] h-full w-full max-w-[420px] mx-[40px] bg-white shadow-md rounded-lg p-5  relative box-border", {
             " scale-100" : isVisible,
             " scale-90" : !isVisible
           })
@@ -23,7 +23,7 @@ const FormModal: React.FC<FormModalProps> = ({ title, desc, isSuccess, isVisible
                 onClick={onClose}
                 fill={isSuccess ? "#1EBD53" : "#ED3B3C"}
             />
-            <div className="h-full flex flex-col justify-center items-center gap-y-11">
+            <div className="h-full flex flex-col justify-center items-center gap-y-6">
                 <h2 className={`text-3xl text-center font-bold ${isSuccess ? "text-green-500" : "text-red-500"}`}>{title}</h2>
                 <div
                     className={`w-24 h-24 flex items-center justify-center rounded-full ${isSuccess ? 'bg-green-100' : 'bg-red-100'}`}
@@ -62,7 +62,7 @@ const FormModal: React.FC<FormModalProps> = ({ title, desc, isSuccess, isVisible
                         </svg>
                     )}
                 </div>
-                <p className="font-light text-center text-gray-500">
+                <p className="font-normal text-center text-gray-500">
                     {desc}
                 </p>
             </div>

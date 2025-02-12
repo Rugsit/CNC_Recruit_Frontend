@@ -14,6 +14,7 @@ export default function InputText({title, desc, register, errorMessage}: InputTe
             <label className="text-base text-[#3B434F] font-bold">{title}</label>
             <Input
                 {...register}
+                id={register.name}
                 variant="faded"
                 placeholder={desc}
                 classNames={{

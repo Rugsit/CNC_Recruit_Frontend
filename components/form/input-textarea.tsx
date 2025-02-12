@@ -14,6 +14,7 @@ export default function InputTextArea({title, desc, register, errorMessage}: Inp
             <label className="text-base font-bold">{title}</label>
             <Textarea
                 {...register}
+                id={register.name}
                 variant="faded"
                 placeholder={desc}
                 maxRows={3}
