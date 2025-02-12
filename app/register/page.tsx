@@ -94,6 +94,8 @@ export default function RegisterForm() {
                 ...formData,
                 nisitYearParticipated: Number(formData.nisitYearParticipated),
                 grade: Number(formData.grade),
+                imageUrl: formData.imageUrl.name || "example.com",
+                transcriptUrl: formData.transcriptUrl.name || "example.com",
             };
 
             const response = await axios({
@@ -205,7 +207,7 @@ export default function RegisterForm() {
                     " opacity-100 ": isModalVisible
                 })}>
                     <FormModal
-                        title={isSuccess ? "ยื่นใบสมัครสำเร็จ" : "ยื่นใบสมัครไม่สำเร็จ"}
+                        title={isSuccess ? (applicationForm ? "สร้างใบสมัครสำเร็จ" : "แก้ไขใบสมัครเสร็จสิน") : "ยื่นใบสมัครไม่สำเร็จ"}
                         desc={isSuccess ? "โปรดเลือกวันนัดหมายสำหรับสัมภาษณ์" : "เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง"}
                         isSuccess={isSuccess}
                         isVisible={isModalVisible}
