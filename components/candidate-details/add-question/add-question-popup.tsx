@@ -134,7 +134,7 @@ export default function AddQuestion({
   return (
     <section
       className={clsx(
-        'transition-all relative bg-white rounded-lg p-12 max-w-[500px] w-full text-[#3B434F] m-[20px]',
+        'transition-all relative bg-white rounded-lg p-12 max-w-[500px] w-full text-[#3B434F] m-[20px] ',
         {
           ' scale-100': isOpen.status,
           ' scale-90': !isOpen.status,
@@ -161,7 +161,7 @@ export default function AddQuestion({
           {...register('question', {
             required: 'กรุณากรอกคำถาม',
           })}
-          className='p-4 border-primary border-[1px] rounded-lg focus:outline-none h-28 font-normal'
+          className='p-4 border-primary border-[1px] rounded-lg focus:outline-none h-28 font-normal max-h-[170px]'
         />
         {errors.question && (
           <p className='text-red-400 font-normal mt-1'>
@@ -173,7 +173,7 @@ export default function AddQuestion({
           {...register('expected_ans', {
             required: 'กรุณากรอกคำตอบ',
           })}
-          className='p-4 border-primary border-[1px] rounded-lg focus:outline-none h-28 font-normal'
+          className='p-4 border-primary border-[1px] rounded-lg focus:outline-none h-28 font-normal max-h-[170px]'
         />
         {errors.expected_ans && (
           <p className='text-red-400 font-normal mt-1'>
