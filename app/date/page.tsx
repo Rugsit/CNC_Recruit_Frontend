@@ -15,12 +15,10 @@ interface TimeSlot {
   isBooked: boolean;
 }
 
-// Configurable interview dates (can be modified for future years)
-const INTERVIEW_DATES = ['2025-02-14', '2025-02-15'];
+const INTERVIEW_DATES = ['2025-02-25', '2025-02-26'];
 
-// Time slots for each date
 const TIME_SLOTS_BY_DATE: { [key: string]: TimeSlot[] } = {
-  '2025-02-14': [
+  '2025-02-25': [
     { id: 1, start: '09:00', end: '09:30', isBooked: false },
     { id: 2, start: '09:31', end: '10:00', isBooked: true },
     { id: 3, start: '10:01', end: '10:30', isBooked: false },
@@ -36,7 +34,7 @@ const TIME_SLOTS_BY_DATE: { [key: string]: TimeSlot[] } = {
     { id: 13, start: '16:01', end: '16:30', isBooked: true },
     { id: 14, start: '16:31', end: '17:00', isBooked: false },
   ],
-  '2025-02-15': [
+  '2025-02-26': [
     { id: 1, start: '09:00', end: '09:30', isBooked: true },
     { id: 2, start: '09:31', end: '10:00', isBooked: false },
     { id: 3, start: '10:01', end: '10:30', isBooked: true },
@@ -55,7 +53,7 @@ const TIME_SLOTS_BY_DATE: { [key: string]: TimeSlot[] } = {
 };
 
 export default function InterviewCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Value>(null);
+  const [selectedDate, setSelectedDate] = useState<Value>(new Date(INTERVIEW_DATES[0]));
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<number | null>(null);
 
   const handleDateChange = (value: Value) => {
@@ -77,13 +75,15 @@ export default function InterviewCalendar() {
   };
 
   const tileDisabled = ({ date }: { date: Date }) => {
-    return !INTERVIEW_DATES.includes(date.toISOString().split('T')[0]);
+    const formattedDate = date.toLocaleDateString('en-CA'); // ใช้ฟอร์แมต 'YYYY-MM-DD'
+    return !INTERVIEW_DATES.includes(formattedDate);
   };
-
+  
   const getTimeSlotsForDate = (date: Date) => {
-    const dateString = date.toISOString().split('T')[0];
-    return TIME_SLOTS_BY_DATE[dateString] || [];
+    const formattedDate = date.toLocaleDateString('en-CA'); // ใช้ฟอร์แมต 'YYYY-MM-DD'
+    return TIME_SLOTS_BY_DATE[formattedDate] || [];
   };
+  
 
   return (
     <div className="container">
@@ -143,7 +143,7 @@ export default function InterviewCalendar() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 2rem;
-          font-family: 'Kanit', sans-serif;
+          font-family: 'Noto Sans Thai', sans-serif;
         }
 
         .title {
@@ -196,7 +196,7 @@ export default function InterviewCalendar() {
         }
 
         .time-slot {
-          background-color: #60a5fa;
+          background-color: #47B4F8;
           border: none;
           padding: 0.75rem;
           border-radius: 6px;
@@ -208,15 +208,15 @@ export default function InterviewCalendar() {
         }
 
         .time-slot:hover:not(:disabled) {
-          background-color: #3b82f6;
+          background-color: #8CD2FD;
         }
 
         .time-slot.selected {
-          background-color: #22c55e;
+          background-color: #2DCE89;
         }
 
         .time-slot.booked {
-          background-color: #94a3b8;
+          background-color: #D9DDE3;
           cursor: not-allowed;
         }
 
@@ -224,9 +224,9 @@ export default function InterviewCalendar() {
           margin-top: 1.5rem;
           width: 100%;
           padding: 0.75rem;
-          background-color: #1e40af;
-          color: white;
-          border: none;
+          background-color: #EBF7FF;
+          color: #49B4F7; 
+          border: 2px solid #8CD2FD; 
           border-radius: 6px;
           font-size: 1rem;
           cursor: pointer;
@@ -234,7 +234,8 @@ export default function InterviewCalendar() {
         }
 
         .confirm-button:hover {
-          background-color: #1e3a8a;
+          background-color: #8CD2FD;
+          color: #fff;
         }
 
         @media (max-width: 768px) {
@@ -258,13 +259,29 @@ export default function InterviewCalendar() {
         }
 
         .slots::-webkit-scrollbar-thumb {
-          background: #888;
+          background: #c1c1c1;
           border-radius: 3px;
         }
 
         .slots::-webkit-scrollbar-thumb:hover {
-          background: #555;
+          background: #a8a8a8;
         }
+
+        .calendar-section :global(.react-calendar__tile) {
+          color: #ababab;
+        }
+
+        .calendar-section :global(.react-calendar__tile--active) {
+          background-color: #42B5FC;
+          color: white;
+          // border-radius: 20px;
+        }
+
+        .calendar-section :global(.react-calendar__tile--now) {
+          background-color: #E9E9E9;
+        }
+
+
       `}</style>
     </div>
   );
