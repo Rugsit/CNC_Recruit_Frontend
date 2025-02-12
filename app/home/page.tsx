@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Session } from '@/app/home/_local/types';
 import recruitingSchduleService from '@/services/recruitingSchduleService';
+import ShowImageLab from "@/components/show-image-lab";
 
 export default function Home() {
   const { getCurrent } = recruitingSchduleService()
@@ -46,6 +47,7 @@ export default function Home() {
           {session && <Timer id={session?.id} title={session?.title } endTime={session?.time} desc=""/>}
         </div>
       <HomeDetails />
+      <ShowImageLab />
       </section>
       <section className='bg-gradient-to-t from-white to-primary pt-[200px]' id="timeline">
         <Timeline />

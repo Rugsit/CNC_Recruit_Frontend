@@ -3,14 +3,16 @@ import { Bin, Pen } from "@/components/icons";
 import { Button } from "@nextui-org/button";
 import axios from "axios";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 
 
 export default function QuestionCardShort ({question_type, diff, question, id, fetchQuestion, selectQuestion, setSelectQuestion, setEditIsOpen, setStatusPopup} : {question_type : string, diff : string, question: string, id: string, fetchQuestion: () => Promise<void>, selectQuestion: string[], setSelectQuestion: Dispatch<SetStateAction<string[]>>, setEditIsOpen:Dispatch<SetStateAction<PopupType>>, setStatusPopup: Dispatch<SetStateAction<{type: string, status: boolean, isShow: boolean}>>}){
+  const { data } = useSession();
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(`http://localhost:8000/questions/${id}`, {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${data?.backendToken}`},
       })
       let newArray = selectQuestion.filter((item) => item != id)
       setSelectQuestion(newArray)

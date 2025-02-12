@@ -72,7 +72,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       {
         "id": 2,
         "path": "/form/register",
-        "action": "สมัครเข้าร่วม LAB",
+        "action": "สมัครเข้าร่วม Lab",
         "desc": ""
 
       },
