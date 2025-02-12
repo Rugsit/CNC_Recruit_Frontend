@@ -1,6 +1,5 @@
 'use client';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8000',

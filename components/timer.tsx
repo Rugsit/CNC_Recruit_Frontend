@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 
 interface Props {
-  id: number
+  id: number;
   title: string;
   desc?: string;
   endTime: string;
@@ -40,13 +40,13 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       const now = new Date().getTime();
 
       if (date - now <= 0) {
-        return
+        return;
       }
 
       let diff = Math.abs(now - date) / 1000;
 
       const days = Math.floor(diff / (3600 * 24));
-      diff %= 3600 * 24
+      diff %= 3600 * 24;
 
       const hours = Math.floor(diff / 3600);
       diff %= 3600;
@@ -64,80 +64,119 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
     setInterval(updateCountdown, 1000);
 
-    path()
+    path();
   }, []);
 
   const path = () => {
     const paths: State[] = [
       {
-        "id": 2,
-        "path": "/form/register",
-        "action": "สมัครเข้าร่วม Lab",
-        "desc": ""
-
+        id: 2,
+        path: '/form/register',
+        action: 'สมัครเข้าร่วม Lab',
+        desc: 'เข้าร่วม Lab CNC เพื่อพัฒนาทักษะด้านวิทยาการคอมพิวเตอร์และร่วมทำงานวิจัย/โปรเจกต์ที่ท้าทาย',
       },
       {
-        "id": 3,
-        "path": "/home",
-        "action": "ลงเวลาสัมภาษณ์",
-        "desc": "คุณยังไม่เลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด"
+        id: 3,
+        path: '/home',
+        action: 'ลงเวลาสัมภาษณ์',
+        desc: 'อย่าลืมเลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด !!!',
       },
       {
-        "id": 4,
-        "path": "/home",
-        "action": "ผลการคัดเลือก",
-        "desc": ""
-      }
-    ]
+        id: 4,
+        path: '/home',
+        action: 'ผลการคัดเลือก',
+        desc: 'ขอบคุณที่ให้ความสนใจแล้วพบกันใหม่ในกิจกรรมต่อไป',
+      },
+    ];
 
-    const result = paths.find((item) => item.id === id)
-    setState(result)
-  }
+    const result = paths.find((item) => item.id === id);
+    setState(result);
+  };
 
-  let largeTextSize = "39px"
-  let mediumTextSize = "30px"
-  let smallTextSize = "20px"
+  let largeTextSize = '39px';
+  let mediumTextSize = '30px';
+  let smallTextSize = '20px';
 
   return (
-    <div className='flex flex-col items-center justify-center font-sans-thai m-[20px]'>
+    <div className='flex flex-col items-center justify-center font-sans-thai m-[50px] '>
       <div className='text-center'>
-        <h3 className='lg:text-[50px] md:text-[40px] text-[25px] font-bold text-[#0374BA]'>{title}</h3>
-        <p className='lg:text-[30px] md:text-[25px] text-[16px] font-light text-[#0374BA]'>{state && state.desc}</p>
+        <h3 className='lg:text-[50px] md:text-[40px] text-[25px] font-bold text-[#0374BA]'>
+          {title}
+        </h3>
+        <p className='lg:text-[30px] md:text-[25px] text-[16px] font-light text-[#0374BA]'>
+          {state && state.desc}
+        </p>
       </div>
-      <div className='flex items-start justify-center w-full sm:gap-4 gap-2 count-down-main text-primary'>
+      <div className='flex items-start justify-center w-full sm:gap-4 gap-2 count-down-main bg-gradient-to-t from-primary to-[#0374BA] text-transparent bg-clip-text'>
         <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem] '>
-          <span className={`text-[40px] sm:text-[50px]  md:text-[90px] lg:text-[140px] text-primary font-bold text-center`}>
+          <span
+            className={`text-[40px] sm:text-[50px]  md:text-[90px] lg:text-[140px] font-bold text-center `}
+          >
             {timeRemaining.days}
           </span>
-          <span className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}>วัน</span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            วัน
+          </span>
         </div>
-        <h3 className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}>:</h3>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
         <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
-        <span className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] text-primary font-bold text-center`}>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.hours}
           </span>
-          <span className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}>ชั่วโมง</span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            ชั่วโมง
+          </span>
         </div>
-        <h3 className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}>:</h3>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
         <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
-        <span className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] text-primary font-bold text-center`}>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.minutes}
           </span>
-          <span className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}>นาที</span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            นาที
+          </span>
         </div>
-        <h3 className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}>:</h3>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
         <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
-        <span className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] text-primary font-bold text-center`}>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.seconds}
           </span>
-          <span className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}>วินาที</span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            วินาที
+          </span>
         </div>
       </div>
 
       {state && (
         <Button className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95'>
           <Link
-            href={state?.path ?? ""}
+            href={state?.path ?? ''}
             className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
           >
             {state?.action}
