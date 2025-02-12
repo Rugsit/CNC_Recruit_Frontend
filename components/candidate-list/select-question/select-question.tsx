@@ -69,7 +69,6 @@ export default function SelectQuestion({
   const addQuestNisit = async () => {
     try {
       selectQuestion.forEach(async (item) => {
-        console.log(`Bearer ${data?.backendToken}`)
         const response = await axios.post(`http://localhost:8000/nisit-question/${id}/${item}`,{}, {
           headers: {
             'Content-Type': 'application/json',

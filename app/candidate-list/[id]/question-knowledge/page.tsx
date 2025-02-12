@@ -65,7 +65,6 @@ export default function QuestionKnowledge({
 
   const fetchQuestion = async () => {
     try {
-      console.log(data?.backendToken)
       const response = await axios.get(
         `http://localhost:8000/nisit-question/${id}`,
         {

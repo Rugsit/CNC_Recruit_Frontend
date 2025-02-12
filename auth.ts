@@ -21,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async jwt({token, user ,  account}) {
       if (account && account.provider === "google") {
-        console.log("user : " , user)
+        // console.log("user : " , user)
         try {
           const res = await fetch("http://localhost:8000/auth/google", {
             method: "POST",
@@ -32,8 +32,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           })
           const data = await res.json()
-          console.log( "responses status : ", res.status)
-          console.log("data : ", data)
+          // console.log( "responses status : ", res.status)
+          // console.log("data : ", data)
           token.backendToken = data.token
           token.id = data.id
         } catch (e) { 
