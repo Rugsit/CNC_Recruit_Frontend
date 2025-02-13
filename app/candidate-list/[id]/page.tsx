@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'next/navigation';
 import CandidateDetail from "@/app/candidate-list/[id]/candidate-detail/page";
 import QuestionKnowledge from "@/app/candidate-list/[id]/question-knowledge/page";
 import NavbarCandidate from '@/components/candidate-list/navbar-candidate';
@@ -11,9 +10,8 @@ import clsx from 'clsx';
 export default function CandidateListId() {
     let timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [statusPopup, setStatusPopup] = useState({type: "create", status : true, isShow: false});
-    const { id } = useParams();
     const [pageIndex, setPageIndex] = useState(0);
-    const CandidatePages = [<CandidateDetail profileUrl="https://loremflickr.com/640/480" fullname="Kerdsiri" />, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup} />, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup}/>];
+    const CandidatePages = [<CandidateDetail/>, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup} />, <QuestionKnowledge currentIndex={pageIndex} setStatusPopup={setStatusPopup}/>];
     const onChangeIndex = (index: number) => {
         setPageIndex(index);
     };

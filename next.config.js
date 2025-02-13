@@ -4,9 +4,6 @@ const { redirect } = require('next/dist/server/api-utils');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  images: {
-    domains: ['loremflickr.com'],
-  },
   async redirects(){ 
     return [
       {
