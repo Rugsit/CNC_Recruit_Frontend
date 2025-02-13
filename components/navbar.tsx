@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -23,29 +23,62 @@ import LoginPopup from '@/app/home/_local/loginPopup';
 import { useEffect, useState } from 'react';
 import { MenuBar } from './icons';
 import { Button } from '@nextui-org/button';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
 
 export const Navbar = () => {
   const [loginIsClosed, setLoginIsClosed] = useState(true);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
+  const [role, setRole] = useState('candidate');
+  const { data, status } = useSession();
   const closeLoginPopup = () => {
     setLoginIsClosed(true);
   };
 
-  useEffect(()=> {
-    if (!loginIsClosed) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto"
+  const fetchRole = async () => {
+    try {
+      const resp = await axios.get('http://localhost:8000/user', {
+        headers: {
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
+      console.log(resp);
+      setRole(resp.data.role);
+    } catch (e) {
+      console.error(e);
     }
-  }, [loginIsClosed])
+  };
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchRole();
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (!loginIsClosed) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [loginIsClosed]);
+
   return (
-    <div className={clsx('p-4 fixed w-full z-40', {
-    })}>
-      <div className={clsx("bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all", {
-        " pointer-events-none opacity-0" : loginIsClosed,
-        " opacity-100" : !loginIsClosed
-      })}>
-        <LoginPopup onClose={closeLoginPopup} onLoginSuccess={() => {}} isOpen={loginIsClosed}/>
+    <div className={clsx('p-4 fixed w-full z-40', {})}>
+      <div
+        className={clsx(
+          'bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all',
+          {
+            ' pointer-events-none opacity-0': loginIsClosed,
+            ' opacity-100': !loginIsClosed,
+          }
+        )}
+      >
+        <LoginPopup
+          onClose={closeLoginPopup}
+          onLoginSuccess={() => {}}
+          isOpen={loginIsClosed}
+        />
       </div>
       <NextUINavbar
         className='bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-500 rounded-2xl shadow-lg'
@@ -77,9 +110,77 @@ export const Navbar = () => {
         </NavbarContent>
         <NavbarContent justify='end'>
           <ul className='hidden lg:flex gap-4 ml-2 justify-end'>
-            {siteConfig.navItems.map((item) => (
-              <NavbarItem key={item.href}>
-                <NextLink
+            {role === 'candidate' ? (
+              siteConfig.navItems.map((item) => (
+                <NavbarItem key={item.href}>
+                  <NextLink
+                    className={clsx(
+                      linkStyles({ color: 'foreground' }),
+                      ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                    )}
+                    color='foreground'
+                    href={item.href}
+                  >
+                    {item.label}
+                  </NextLink>
+                </NavbarItem>
+              ))
+            ) : (
+              <div>
+                <Link
+                  className={clsx(
+                    linkStyles({ color: 'foreground' }),
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                  )}
+                  color='foreground'
+                  href={'/candidate-list'}
+                >
+                  รายละเอียดผู้สมัคร
+                </Link>
+              </div>
+            )}
+            <Login
+              onOpenPopup={() => {
+                setLoginIsClosed(false);
+              }}
+            />
+          </ul>
+        </NavbarContent>
+        <Button
+          className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0 lg:pointer-events-none'
+          data-hover={false}
+          isIconOnly
+          onClick={() => {
+            setIsNavMenuOpen(!isNavMenuOpen);
+          }}
+        >
+          <MenuBar
+            width={50}
+            height={50}
+          />
+        </Button>
+      </NextUINavbar>
+      <button
+        className={clsx('fixed left-0 right-0 top-0 bottom-0 bg-black/20 ', {
+          ' pointer-events-none opacity-0': !isNavMenuOpen,
+        })}
+        onClick={() => {
+          setIsNavMenuOpen(!isNavMenuOpen);
+        }}
+      ></button>
+      <div
+        className={clsx(
+          'fixed top-[100px] m-[16px] left-0 right-0 transition-all bg-white rounded-md  p-5 lg:opacity-0 lg:pointer-events-none',
+          {
+            ' pointer-events-none opacity-0 scale-75': !isNavMenuOpen,
+          }
+        )}
+      >
+        <ul className='flex flex-col lg:hidden gap-4 justify-end'>
+          {role === 'candidate' ? (
+            siteConfig.navItems.map((item) => (
+              <div key={item.href}>
+                <Link
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
                     ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
@@ -88,46 +189,28 @@ export const Navbar = () => {
                   href={item.href}
                 >
                   {item.label}
-                </NextLink>
-              </NavbarItem>
-            ))}
-            <Login onOpenPopup={() => {
-              setLoginIsClosed(false);
-            }}/>
-          </ul>
-        </NavbarContent>
-      <Button className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0 lg:pointer-events-none' data-hover={false}  isIconOnly onClick={() => {
-        setIsNavMenuOpen(!isNavMenuOpen);
-      }}>
-        <MenuBar width={50} height={50}/>
-      </Button>
-      </NextUINavbar>
-      <button className={clsx('fixed left-0 right-0 top-0 bottom-0 bg-black/20 ', {
-        " pointer-events-none opacity-0" : !isNavMenuOpen
-      })} onClick={() => {
-        setIsNavMenuOpen(!isNavMenuOpen);
-      }}></button>
-      <div className={clsx('fixed top-[100px] m-[16px] left-0 right-0 transition-all bg-white rounded-md  p-5 lg:opacity-0 lg:pointer-events-none', {
-        " pointer-events-none opacity-0 scale-75" : !isNavMenuOpen
-      })} >
-        <ul className='flex flex-col lg:hidden gap-4 justify-end'>
-          {siteConfig.navItems.map((item) => (
-            <div key={item.href}>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div>
               <Link
                 className={clsx(
                   linkStyles({ color: 'foreground' }),
                   ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
                 )}
                 color='foreground'
-                href={item.href}
+                href={'/candidate-list'}
               >
-                {item.label}
+                รายละเอียดผู้สมัคร
               </Link>
             </div>
-          ))}
-          <Login onOpenPopup={() => {
-            setLoginIsClosed(false);
-          }}/>
+          )}
+          <Login
+            onOpenPopup={() => {
+              setLoginIsClosed(false);
+            }}
+          />
         </ul>
       </div>
     </div>

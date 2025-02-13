@@ -1,18 +1,34 @@
-"use client"
+'use client';
 import { Button } from '@nextui-org/button';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 interface LoginProps {
   onOpenPopup: () => void;
 }
 export default function Login({ onOpenPopup: openPopup }: LoginProps) {
+  const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  }, [status]);
+
   return (
     <>
       <Button
-        className={`justify-center font-sans-thai font-semibold p-6 shadow-[rgba(29,159,238,255)_0px_0px_10px_0px] hover:scale-95  focus:outline-none`}
+        className={`justify-center font-sans-thai font-semibold p-6 shadow-[rgba(29,159,238,255)_0px_0px_10px_0px] hover:scale-95  focus:outline-none `}
         color='primary'
+        isDisabled={isLogin}
         onClick={() => {
-          openPopup();
+          if (!isLogin) {
+            openPopup();
+          }
         }}
       >
         <Image
@@ -22,7 +38,7 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
           height={20}
           className='brightness-0 invert'
         />
-        สมัครเข้าร่วม Lab
+        {isLogin ? 'เข้าสู่ระบบเรียบร้อย' : 'เข้าสู่ระบบ'}
       </Button>
     </>
   );
