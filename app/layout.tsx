@@ -48,9 +48,7 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'light' }}>
           <div className='relative flex flex-col'>
             <Navbar />
-            <main className=''>
-              {children}
-            </main>
+            <main className=''>{children}</main>
           </div>
         </Providers>
       </body>

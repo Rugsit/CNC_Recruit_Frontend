@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@nextui-org/button';
+import { useSession } from 'next-auth/react';
+import clsx from 'clsx';
+import LoginPopup from '@/app/home/_local/loginPopup';
 
 interface Props {
   id: number;
@@ -71,7 +74,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
     const paths: State[] = [
       {
         id: 2,
-        path: '/form/register',
+        path: '/register',
         action: 'สมัครเข้าร่วม Lab',
         desc: 'เข้าร่วม Lab CNC เพื่อพัฒนาทักษะด้านวิทยาการคอมพิวเตอร์และร่วมทำงานวิจัย/โปรเจกต์ที่ท้าทาย',
       },
@@ -83,7 +86,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       },
       {
         id: 4,
-        path: '/home',
+        path: '',
         action: 'ผลการคัดเลือก',
         desc: 'ขอบคุณที่ให้ความสนใจแล้วพบกันใหม่ในกิจกรรมต่อไป',
       },
@@ -93,12 +96,40 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
     setState(result);
   };
 
-  let largeTextSize = '39px';
-  let mediumTextSize = '30px';
-  let smallTextSize = '20px';
+  const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
+  const [loginIsClosed, setLoginIsClosed] = useState(true);
+
+  useEffect(() => {
+    console.log(data);
+    console.log(status);
+    if (status === 'unauthenticated') {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  }, [status]);
+  const closeLoginPopup = () => {
+    setLoginIsClosed(true);
+  };
 
   return (
     <div className='flex flex-col items-center justify-center font-sans-thai m-[50px] '>
+      <div
+        className={clsx(
+          'bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all',
+          {
+            ' pointer-events-none opacity-0': loginIsClosed,
+            ' opacity-100': !loginIsClosed,
+          }
+        )}
+      >
+        <LoginPopup
+          onClose={closeLoginPopup}
+          onLoginSuccess={() => {}}
+          isOpen={loginIsClosed}
+        />
+      </div>
       <div className='text-center'>
         <h3 className='lg:text-[50px] md:text-[40px] text-[25px] font-bold text-[#0374BA]'>
           {title}
@@ -173,14 +204,30 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         </div>
       </div>
 
-      {state && (
-        <Button className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95'>
-          <Link
-            href={state?.path ?? ''}
-            className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
-          >
-            {state?.action}
-          </Link>
+      {state?.path != '' && (
+        <Button
+          className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95'
+          onClick={() => {
+            if (!isLogin) {
+              setLoginIsClosed(false);
+            }
+          }}
+        >
+          {isLogin ? (
+            <Link
+              href={state?.path}
+              className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+            >
+              {state?.action}
+            </Link>
+          ) : (
+            <Link
+              href={''}
+              className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+            >
+              {state?.action}
+            </Link>
+          )}
         </Button>
       )}
     </div>
