@@ -215,7 +215,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         >
           {isLogin ? (
             <Link
-              href={state?.path}
+              href={state?.path || ''}
               className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
             >
               {state?.action}
