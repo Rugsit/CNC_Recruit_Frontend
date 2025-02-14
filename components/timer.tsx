@@ -5,6 +5,7 @@ import { Button } from '@nextui-org/button';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import LoginPopup from '@/app/home/_local/loginPopup';
+import axios from 'axios';
 
 interface Props {
   id: number;
@@ -80,7 +81,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       },
       {
         id: 3,
-        path: '/home',
+        path: '/date',
         action: 'ลงเวลาสัมภาษณ์',
         desc: 'อย่าลืมเลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด !!!',
       },
@@ -100,13 +101,22 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [loginIsClosed, setLoginIsClosed] = useState(true);
 
-  useEffect(() => {
-    console.log(data);
-    console.log(status);
-    if (status === 'unauthenticated') {
-      setIsLogin(false);
-    } else {
+  const fetchRole = async () => {
+    try {
+      const resp = await axios.get('http://localhost:8000/user', {
+        headers: {
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
       setIsLogin(true);
+    } catch (e) {
+      setIsLogin(false);
+    }
+  };
+
+  useEffect(() => {
+    if (status !== 'loading') {
+      fetchRole();
     }
   }, [status]);
   const closeLoginPopup = () => {

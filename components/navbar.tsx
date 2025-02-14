@@ -42,15 +42,14 @@ export const Navbar = () => {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
-      console.log(resp);
       setRole(resp.data.role);
     } catch (e) {
-      console.error(e);
+      console.log('please login');
     }
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (status != 'loading') {
       fetchRole();
     }
   }, [status]);
