@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@nextui-org/button';
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,11 +12,22 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
   const { data, status } = useSession();
   const [isLogin, setIsLogin] = useState(false);
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      setIsLogin(false);
-    } else {
+  const fetchRole = async () => {
+    try {
+      const resp = await axios.get('http://localhost:8000/user', {
+        headers: {
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
       setIsLogin(true);
+    } catch (e) {
+      setIsLogin(false);
+    }
+  };
+
+  useEffect(() => {
+    if (status != 'loading') {
+      fetchRole();
     }
   }, [status]);
 
