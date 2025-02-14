@@ -45,9 +45,9 @@ interface ApplicationForm {
 
 export default function RegisterForm() {
     const [applicationForm, setApplicationForm] = useState<ApplicationForm | null>(null);
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isSuccess, setSuccess] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isModalVisible, setModalVisible] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const router = useRouter();
     const { data, status } = useSession();
     // console.log(`Token = ${data?.backendToken}`);
@@ -120,7 +120,7 @@ export default function RegisterForm() {
             <div className="fixed inset-0 flex flex-col gap-y-5 justify-center items-center">
                 <div className="w-16 h-16 border-5 border-[#42B5FC] border-t-transparent rounded-full animate-spin"></div>
                 <h1 className="text-[#42B5FC] text-xl font-bold">
-                    กำลังโหลดรายการผู้สมัคร...
+                    กำลังโหลดแบบฟอร์มสมัคร...
                 </h1>
             </div>
         );
