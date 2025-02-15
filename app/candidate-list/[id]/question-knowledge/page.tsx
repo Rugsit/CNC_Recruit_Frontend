@@ -1,23 +1,16 @@
 'use client';
 
-import AddQuestion from '@/components/candidate-details/add-question/add-question-popup';
-import QuestionCard from '@/components/candidate-list/question-card';
-import SelectQuestion from '@/components/candidate-list/select-question/select-question';
-import { Plus } from '@/components/icons';
 import { Button } from '@nextui-org/button';
 import axios from 'axios';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
-import { fetchInternalImage } from 'next/dist/server/image-optimizer';
 import { useParams } from 'next/navigation';
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { createContext } from 'vm';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
+import { Plus } from '@/components/icons';
+import SelectQuestion from '@/components/candidate-list/select-question/select-question';
+import QuestionCard from '@/components/candidate-list/question-card';
+import AddQuestion from '@/components/candidate-details/add-question/add-question-popup';
 
 type QuestionNisit = {
   id: string;
@@ -74,6 +67,7 @@ export default function QuestionKnowledge({
           },
         }
       );
+
       if (response.data == null) {
         throw new Error('Error: ' + response.status);
       }
@@ -82,6 +76,7 @@ export default function QuestionKnowledge({
           (item.question_type == 'knowledge' && currentIndex == 2) ||
           (item.question_type == 'attitude' && currentIndex == 1)
       );
+
       setQuestionNisit(newData);
     } catch (e) {
       setQuestionNisit([]);
@@ -114,11 +109,11 @@ export default function QuestionKnowledge({
         )}
       >
         <SelectQuestion
-          isOpen={openSelectQuestion}
-          setIsOpen={setOpenSelectQuestion}
           currentIndex={currentIndex}
           fetchQuestionMain={fetchQuestion}
+          isOpen={openSelectQuestion}
           setEditIsOpen={setOpenCreateQuestion}
+          setIsOpen={setOpenSelectQuestion}
           setStatusPopup={setStatusPopup}
         />
       </div>
@@ -153,8 +148,8 @@ export default function QuestionKnowledge({
             }}
           >
             <Plus
-              size={24}
               fill='white'
+              size={24}
             />
           </Button>
           <Button
@@ -170,9 +165,9 @@ export default function QuestionKnowledge({
       {questionNisit.map((item) => {
         return (
           <QuestionCard
-            questionNisit={item}
             key={item.id}
             fetchQuestion={fetchQuestion}
+            questionNisit={item}
             setStatusPopup={setStatusPopup}
           />
         );

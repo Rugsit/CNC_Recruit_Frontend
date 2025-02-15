@@ -1,9 +1,11 @@
 'use client';
 import { Button } from '@nextui-org/button';
 import clsx from 'clsx';
-import { AngleRight } from './icons';
 import Image, { StaticImageData } from 'next/image';
 import { useState } from 'react';
+
+import { AngleRight } from './icons';
+
 import image1 from '@/public/images/image_1.jpg';
 import image2 from '@/public/images/image_2.jpg';
 import image3 from '@/public/images/image_3.jpg';
@@ -27,18 +29,21 @@ export default function ShowImageLab() {
   const prev = () => {
     setCurrentImage(currentImage - 1);
   };
+
   return (
     <div className='mx-[20px] mt-[200px]'>
-      <p className='text-center lg:text-4xl text-3xl text-white mb-5'>บรรยากาศภายใน Lab</p>
+      <p className='text-center lg:text-4xl text-3xl text-white mb-5'>
+        บรรยากาศภายใน Lab
+      </p>
       <div className='transition-transform relative flex items-center rounded-lg overflow-hidden max-w-[1000px] mx-auto hover:scale-105 '>
         <Button
+          isIconOnly
           className={clsx('bg-white absolute opacity-100 left-3 z-30', {
             'bg-gray-400': currentImage === 0,
           })}
-          isIconOnly
+          isDisabled={currentImage === 0}
           radius='full'
           onClick={prev}
-          isDisabled={currentImage === 0}
         >
           <AngleRight
             className='w-4 rotate-180'
@@ -57,9 +62,9 @@ export default function ShowImageLab() {
                 className='inline-flex w-full max-w-[1000px] sm:h-[500px] h-[300px] object-center rounded-lg shrink-0'
               >
                 <Image
-                  src={item}
-                  className='w-full h-full rounded-lg object-cover object-center'
                   alt='test'
+                  className='w-full h-full rounded-lg object-cover object-center'
+                  src={item}
                 />
               </div>
             ))}
@@ -68,13 +73,13 @@ export default function ShowImageLab() {
 
         {/* ปุ่มถัดไป */}
         <Button
+          isIconOnly
           className={clsx('bg-white absolute opacity-100 right-3 z-30', {
             'bg-gray-400': currentImage === listOfImage.length - 1,
           })}
-          isIconOnly
+          isDisabled={currentImage === listOfImage.length - 1}
           radius='full'
           onClick={next}
-          isDisabled={currentImage === listOfImage.length - 1}
         >
           <AngleRight
             className='w-4'

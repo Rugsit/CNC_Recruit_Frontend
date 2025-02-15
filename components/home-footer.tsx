@@ -1,7 +1,9 @@
 import Image from 'next/image';
+
+import { Facebook, IG } from './icons';
+
 import logo from '@/public/cnc_logo_white.png';
 import ku_logo from '@/public/images/logo_ku_th.jpg';
-import { Facebook, IG } from './icons';
 
 export default function HomeFooter() {
   return (
@@ -9,19 +11,18 @@ export default function HomeFooter() {
       className='grid grid-cols-1 lg:flex justify-between pl-[20px] pr-[20px] pb-10 pt-[50] bg-gradient-to-b from-primary to-[#0374BA]'
       id='connect'
     >
-      
       <div className='w-full'>
         <div className='flex justify-center items-center gap-3 lg-gap-10 mb-[20px] lg:justify-start'>
           <Image
+            alt='cnc logo'
             className='mt-3'
             src={logo}
-            alt='cnc logo'
             width={150}
           />
           <Image
+            alt='ku logo'
             className='rounded-full w-[90px] h-[90px] lg:w-[130px] lg:h-[130px]'
             src={ku_logo}
-            alt='ku logo'
           />
         </div>
         <p className='text-white w-full text-lg font-bold text-center lg:text-start lg:text-2xl'>
@@ -39,14 +40,14 @@ export default function HomeFooter() {
         <div className='flex justify-center gap-8 mt-5'>
           <a href='https://www.facebook.com/CNCXisAwesome'>
             <Facebook
-              width={50}
               height={50}
+              width={50}
             />
           </a>
           <a href='https://www.instagram.com/cnc.csku/'>
             <IG
-              width={50}
               height={50}
+              width={50}
             />
           </a>
         </div>

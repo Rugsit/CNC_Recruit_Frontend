@@ -1,13 +1,15 @@
 'use client';
-import { SearchIcon, XMark } from '@/components/icons';
-import QuestionCardShort from './question-card-short';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import axios from 'axios';
 import { Button } from '@nextui-org/button';
 import { useParams } from 'next/navigation';
-import { PopupType } from '@/app/candidate-list/[id]/question-knowledge/page';
 import { useSession } from 'next-auth/react';
+
+import QuestionCardShort from './question-card-short';
+
+import { PopupType } from '@/app/candidate-list/[id]/question-knowledge/page';
+import { SearchIcon, XMark } from '@/components/icons';
 
 type FormField = {
   question: string;
@@ -58,11 +60,13 @@ export default function SelectQuestion({
   const search = (event: any) => {
     if (event.target.value == '') {
       setQuestFilter(question);
+
       return;
     }
     let filQuestion = question.filter((item) =>
       item.question.includes(event.target.value)
     );
+
     setQuestFilter(filQuestion);
   };
 
@@ -79,6 +83,7 @@ export default function SelectQuestion({
             },
           }
         );
+
         if (selectQuestion.length != 0) {
           await fetchQuestion();
           await fetchQuestionMain();
@@ -122,18 +127,22 @@ export default function SelectQuestion({
           (item.question_type === 'knowledge' && currentIndex === 2) ||
           (item.question_type === 'attitude' && currentIndex === 1)
       );
+
       if (Nisitresponse.data == null) {
         setQuestFilter(filterData);
         setQuestion(filterData);
+
         return;
       }
       let newData = filterData.filter((item: any) => {
         let check = true;
+
         for (let i of nisitdata) {
           if (i.id === item.id) check = false;
         }
         if (check) return item;
       });
+
       setQuestion(newData);
       setQuestFilter(newData);
     } catch (e: any) {
@@ -142,6 +151,7 @@ export default function SelectQuestion({
       setErrorMessage('ไม่สามารถดึงข้อมูลจากฐานข้อมูลได้ ' + e.status);
     }
   };
+
   useEffect(() => {
     fetchQuestion();
   }, [isOpen]);
@@ -192,15 +202,15 @@ export default function SelectQuestion({
             {questFilter.map((item, index) => {
               return (
                 <QuestionCardShort
+                  key={item.id}
+                  diff={item.question_difficulty}
+                  fetchQuestion={fetchQuestion}
+                  id={item.id}
                   question={item.question}
                   question_type={item.question_type}
-                  diff={item.question_difficulty}
-                  key={item.id}
-                  id={item.id}
-                  fetchQuestion={fetchQuestion}
                   selectQuestion={selectQuestion}
-                  setSelectQuestion={setSelectQuestion}
                   setEditIsOpen={setEditIsOpen}
+                  setSelectQuestion={setSelectQuestion}
                   setStatusPopup={setStatusPopup}
                 />
               );

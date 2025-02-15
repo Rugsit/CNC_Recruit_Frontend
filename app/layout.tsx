@@ -1,6 +1,5 @@
 import '@/styles/globals.css';
 import { Metadata, Viewport } from 'next';
-import { Link } from '@nextui-org/link';
 import clsx from 'clsx';
 
 import { Providers } from './providers';
@@ -34,8 +33,8 @@ export default function RootLayout({
 }) {
   return (
     <html
-      className='scroll-smooth'
       suppressHydrationWarning
+      className='scroll-smooth'
       lang='en'
     >
       <head />
