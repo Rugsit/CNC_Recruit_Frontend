@@ -1,12 +1,13 @@
 'use client';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { AngleDown, Bin } from '../icons';
 import clsx from 'clsx';
 import { Textarea } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+
+import { AngleDown, Bin } from '../icons';
 
 type QuestionNisit = {
   id: string;
@@ -39,6 +40,7 @@ export default function QuestionCard({
   const handdleGrader = (level: number) => {
     setGrader(clearGrade);
     const grade: boolean[] = [false, false, false, false, false];
+
     for (let i: number = 0; i < level; i++) {
       grade[i] = true;
     }
@@ -60,6 +62,7 @@ export default function QuestionCard({
           },
         }
       );
+
       fetchQuestion();
       setStatusPopup({ type: 'delete', status: true, isShow: true });
     } catch (e) {
@@ -69,14 +72,17 @@ export default function QuestionCard({
 
   const updateQuestion = async () => {
     let sum = 0;
+
     grader.forEach((item) => {
       if (item) {
         sum++;
       }
     });
     let input = comment;
+
     if (input.trim() === '') input = 'ไม่มีความคิดเห็น';
     let data = { comment: input, score: sum };
+
     try {
       const response = await axios.put(
         `http://localhost:8000/nisit-question/comment-score/${id}/${questionNisit.id}`,
@@ -85,6 +91,7 @@ export default function QuestionCard({
           headers: { 'Content-Type': 'applicatio/json' },
         }
       );
+
       fetchQuestion();
     } catch (e) {
       console.error(e);
@@ -155,9 +162,9 @@ export default function QuestionCard({
           }}
         >
           <AngleDown
-            size={25}
-            fill='#3B434F'
             className='cursor-pointer focus:outline-none'
+            fill='#3B434F'
+            size={25}
           />
         </button>
       </div>
@@ -175,13 +182,13 @@ export default function QuestionCard({
             {questionNisit.expected_ans}
           </p>
           <Textarea
-            label='ความคิดเห็น'
             className={clsx('my-8 text-base font-normal', {
               ' fixed opacity-0 pointer-events-none': !editGrade,
             })}
             classNames={{
               input: 'text-base',
             }}
+            label='ความคิดเห็น'
             value={comment}
             onValueChange={haddleTextarea}
           />
@@ -224,7 +231,7 @@ export default function QuestionCard({
                 onClick={() => {
                   handdleGrader(2);
                 }}
-              ></button>
+              />
               <button
                 className={clsx('circle-grader p-3', {
                   ' bg-primary outline outline-5 outline-offset-[-5px] outline-white':
@@ -233,7 +240,7 @@ export default function QuestionCard({
                 onClick={() => {
                   handdleGrader(3);
                 }}
-              ></button>
+              />
               <button
                 className={clsx('circle-grader p-4', {
                   ' bg-primary outline outline-5 outline-offset-[-5px] outline-white':
@@ -242,7 +249,7 @@ export default function QuestionCard({
                 onClick={() => {
                   handdleGrader(4);
                 }}
-              ></button>
+              />
               <button
                 className={clsx('circle-grader p-6', {
                   ' bg-primary outline outline-5 outline-offset-[-5px] outline-white':

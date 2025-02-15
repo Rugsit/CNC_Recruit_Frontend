@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
-import LoginPopup from '@/app/home/_local/loginPopup';
 import axios from 'axios';
+
+import LoginPopup from '@/app/home/_local/loginPopup';
 
 interface Props {
   id: number;
@@ -50,9 +51,11 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       let diff = Math.abs(now - date) / 1000;
 
       const days = Math.floor(diff / (3600 * 24));
+
       diff %= 3600 * 24;
 
       const hours = Math.floor(diff / 3600);
+
       diff %= 3600;
 
       const minutes = Math.floor(diff / 60);
@@ -94,6 +97,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
     ];
 
     const result = paths.find((item) => item.id === id);
+
     setState(result);
   };
 
@@ -108,6 +112,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
+
       setIsLogin(true);
     } catch (e) {
       setIsLogin(false);
@@ -135,9 +140,9 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         )}
       >
         <LoginPopup
+          isOpen={loginIsClosed}
           onClose={closeLoginPopup}
           onLoginSuccess={() => {}}
-          isOpen={loginIsClosed}
         />
       </div>
       <div className='text-center'>
@@ -225,15 +230,15 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         >
           {isLogin ? (
             <Link
-              href={state?.path || ''}
               className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+              href={state?.path || ''}
             >
               {state?.action}
             </Link>
           ) : (
             <Link
-              href={''}
               className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+              href={''}
             >
               {state?.action}
             </Link>

@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+
 import logo from '@/public/cnc_logo_white.png';
 
 export default function HomeDetails() {
@@ -10,9 +11,9 @@ export default function HomeDetails() {
     >
       <div className='flex justify-center items-center'>
         <Image
+          alt='cnc logo'
           className='mt-3 w-[90%] h-[90%] object-contain'
           src={logo}
-          alt='cnc logo'
         />
       </div>
       <div className='flex flex-col w-full'>

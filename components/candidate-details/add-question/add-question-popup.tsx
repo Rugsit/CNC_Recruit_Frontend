@@ -1,12 +1,12 @@
 'use client';
-import { XMark } from '@/components/icons';
 import { Button } from '@nextui-org/button';
-import { Textarea } from '@nextui-org/input';
 import axios from 'axios';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { XMark } from '@/components/icons';
 
 type FormField = {
   question: string;
@@ -69,6 +69,7 @@ export default function AddQuestion({
       expected_ans: dataEdit.expected_ans,
       question_difficulty: dataEdit.question_difficulty,
     };
+
     reset(newData);
   };
 
@@ -82,6 +83,7 @@ export default function AddQuestion({
         expected_ans: '',
         question_difficulty: 'easy',
       };
+
       reset(newData);
     }
   }, [isOpen]);
@@ -100,6 +102,7 @@ export default function AddQuestion({
               },
             }
           );
+
           setStatusPopup({ type: 'create', status: true, isShow: true });
         }
       } catch (e) {
@@ -107,6 +110,7 @@ export default function AddQuestion({
       }
       if (isOpen.type === 'edit') {
         let newData = dataForm as FormFieldPut;
+
         newData.id = isOpen.id;
         const response = await axios.put(
           `http://localhost:8000/questions/${isOpen.id}`,
@@ -118,6 +122,7 @@ export default function AddQuestion({
             },
           }
         );
+
         if (isOpen.func) isOpen.func();
         setStatusPopup({ type: 'edit', status: true, isShow: true });
       }
@@ -131,6 +136,7 @@ export default function AddQuestion({
     reset();
     setIsOpen({ type: isOpen.type, status: false, id: isOpen.id });
   };
+
   return (
     <section
       className={clsx(
@@ -152,9 +158,9 @@ export default function AddQuestion({
         }}
       />
       <form
+        ref={refForm}
         className='flex flex-col'
         onSubmit={handleSubmit(onSubmit)}
-        ref={refForm}
       >
         <label className='text-lg mb-3'>คำถาม</label>
         <textarea
@@ -213,8 +219,8 @@ export default function AddQuestion({
             ยกเลิก
           </Button>
           <Button
-            type='submit'
             className='bg-primary text-white w-full h-11 text-xl'
+            type='submit'
             onClick={() => {}}
           >
             ยืนยัน

@@ -3,7 +3,6 @@ import { Button } from '@nextui-org/button';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 interface LoginProps {
   onOpenPopup: () => void;
@@ -19,6 +18,7 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
+
       setIsLogin(true);
     } catch (e) {
       setIsLogin(false);
@@ -44,11 +44,11 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
         }}
       >
         <Image
-          src='/google-icon.png'
           alt='Google'
-          width={20}
-          height={20}
           className='brightness-0 invert'
+          height={20}
+          src='/google-icon.png'
+          width={20}
         />
         {isLogin ? 'เข้าสู่ระบบเรียบร้อย' : 'เข้าสู่ระบบ'}
       </Button>

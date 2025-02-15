@@ -2,29 +2,25 @@
 import {
   Navbar as NextUINavbar,
   NavbarContent,
-  NavbarMenu,
-  NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-  NavbarMenuItem,
 } from '@nextui-org/navbar';
 import { Link } from '@nextui-org/link';
-import Login from './login';
 import { link as linkStyles } from '@nextui-org/theme';
 import NextLink from 'next/link';
 import clsx from 'clsx';
-
-import { siteConfig } from '@/config/site';
-import { ThemeSwitch } from '@/components/theme-switch';
-
 import Image from 'next/image';
-import logo from '@/public/logo.svg';
-import LoginPopup from '@/app/home/_local/loginPopup';
 import { useEffect, useState } from 'react';
-import { MenuBar } from './icons';
 import { Button } from '@nextui-org/button';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+
+import { MenuBar } from './icons';
+import Login from './login';
+
+import LoginPopup from '@/app/home/_local/loginPopup';
+import logo from '@/public/logo.svg';
+import { siteConfig } from '@/config/site';
 
 export const Navbar = () => {
   const [loginIsClosed, setLoginIsClosed] = useState(true);
@@ -42,6 +38,7 @@ export const Navbar = () => {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
+
       setRole(resp.data.role);
     } catch (e) {
       console.log('please login');
@@ -74,16 +71,16 @@ export const Navbar = () => {
         )}
       >
         <LoginPopup
+          isOpen={loginIsClosed}
           onClose={closeLoginPopup}
           onLoginSuccess={() => {}}
-          isOpen={loginIsClosed}
         />
       </div>
       <NextUINavbar
-        className='bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-500 rounded-2xl shadow-lg'
         isBordered
-        maxWidth='full'
+        className='bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-500 rounded-2xl shadow-lg'
         height={85}
+        maxWidth='full'
         position='sticky'
       >
         <NavbarContent
@@ -99,9 +96,9 @@ export const Navbar = () => {
               href='/home'
             >
               <Image
+                alt='cnc logo'
                 className='mt-3'
                 src={logo}
-                alt='cnc logo'
                 width={100}
               />
             </NextLink>
@@ -146,16 +143,16 @@ export const Navbar = () => {
           </ul>
         </NavbarContent>
         <Button
+          isIconOnly
           className='bg-white z-50 rounded-full top-0 left-0 xl:opacity-0 lg:absolute lg:opacity-0 lg:pointer-events-none'
           data-hover={false}
-          isIconOnly
           onClick={() => {
             setIsNavMenuOpen(!isNavMenuOpen);
           }}
         >
           <MenuBar
-            width={50}
             height={50}
+            width={50}
           />
         </Button>
       </NextUINavbar>
@@ -166,7 +163,7 @@ export const Navbar = () => {
         onClick={() => {
           setIsNavMenuOpen(!isNavMenuOpen);
         }}
-      ></button>
+      />
       <div
         className={clsx(
           'fixed top-[100px] m-[16px] left-0 right-0 transition-all bg-white rounded-md  p-5 lg:opacity-0 lg:pointer-events-none',
