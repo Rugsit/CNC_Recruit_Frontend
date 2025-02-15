@@ -105,23 +105,24 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [loginIsClosed, setLoginIsClosed] = useState(true);
 
-  const fetchRole = async () => {
-    try {
-      const resp = await axios.get('http://localhost:8000/user', {
-        headers: {
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
-
-      setIsLogin(true);
-    } catch (e) {
-      setIsLogin(false);
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+      console.log(exp - time);
+      if (time > exp) {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
     }
   };
 
   useEffect(() => {
     if (status !== 'loading') {
-      fetchRole();
+      checkToken();
     }
   }, [status]);
   const closeLoginPopup = () => {
@@ -223,6 +224,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         <Button
           className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95'
           onClick={() => {
+            checkToken();
             if (!isLogin) {
               setLoginIsClosed(false);
             }

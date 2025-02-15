@@ -4,12 +4,11 @@ import clsx from 'clsx';
 import axios from 'axios';
 import { Button } from '@nextui-org/button';
 import { useParams } from 'next/navigation';
+import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/page';
 import { useSession } from 'next-auth/react';
-
 import QuestionCardShort from './question-card-short';
-
-import { PopupType } from '@/app/candidate-list/[id]/question-knowledge/page';
-import { SearchIcon, XMark } from '@/components/icons';
+import { XMark } from '@/components/icons';
+import { SearchIcon } from 'lucide-react';
 
 type FormField = {
   question: string;

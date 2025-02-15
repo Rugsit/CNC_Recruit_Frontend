@@ -105,7 +105,7 @@ export const Navbar = () => {
           </NavbarBrand>
         </NavbarContent>
         <NavbarContent justify='end'>
-          <ul className='hidden lg:flex gap-4 ml-2 justify-end'>
+          <ul className='hidden lg:flex gap-4 ml-2 items-center'>
             {role === 'candidate' ? (
               siteConfig.navItems.map((item) => (
                 <NavbarItem key={item.href}>
@@ -129,9 +129,19 @@ export const Navbar = () => {
                     ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
                   )}
                   color='foreground'
-                  href={'/candidate-list'}
+                  href={'/admin/candidate-list'}
                 >
                   รายละเอียดผู้สมัคร
+                </Link>
+                <Link
+                  className={clsx(
+                    linkStyles({ color: 'foreground' }),
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                  )}
+                  color='foreground'
+                  href={'/admin/date-candidate'}
+                >
+                  ตารางเวลา
                 </Link>
               </div>
             )}
@@ -196,7 +206,7 @@ export const Navbar = () => {
                   ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
                 )}
                 color='foreground'
-                href={'/candidate-list'}
+                href={'/admin/candidate-list'}
               >
                 รายละเอียดผู้สมัคร
               </Link>

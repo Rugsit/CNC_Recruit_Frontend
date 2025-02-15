@@ -20,7 +20,7 @@ export default function CandidateCard({
   return (
     <Link
       className='flex items-center gap-x-6 gap-y-4 px-4 py-2 bg-white rounded-xl shadow-lg hover:scale-105 transition-all'
-      href={`/candidate-list/${id}`}
+      href={`/admin/candidate-list/${id}`}
     >
       <Image
         alt='profile-image'
