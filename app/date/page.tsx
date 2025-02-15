@@ -1,4 +1,3 @@
-// app/date/page.tsx
 'use client';
 
 import axios from 'axios';
@@ -7,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import DateModal from './_local/date-modal';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -24,7 +24,18 @@ interface TimeSlot {
   start: string;
   end: string;
   isBooked: boolean;
-}
+};
+
+interface ReservationTime {
+  email: string,
+  id: string,
+  interview_id: string,
+  label: string,
+  name: string,
+  pictureURL: string,
+  startTime: string,
+  endTime: string,
+};
 
 const INTERVIEW_DATES = ['2025-02-25', '2025-02-26'];
 
@@ -69,19 +80,81 @@ export default function InterviewCalendar() {
   );
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string[]>([]);
   const { data, status } = useSession();
-  const [timeSlot, setTimeSlot] = useState([]);
+  const [timeSlot, setTimeSlot] = useState<[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+  const [reservationTime, setReservationTime] = useState<ReservationTime | null>(null);
+
+  // console.log(`Token = ${data?.backendToken}`); // Token Debug
 
   const handleDateChange = (value: Value) => {
     setSelectedDate(value);
   };
 
-  const handleConfirm = () => {
+  // GET time slots
+  const fetchDataCalendar = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/interview', {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${data?.backendToken}`,
+        },
+      });
+      // console.log(response.data);
+      const responseSortedByStartDate = response.data.sort(
+        (a: TimeType, b: TimeType) => Date.parse(a.startTime) - Date.parse(b.startTime)
+      );
+      setTimeSlot(responseSortedByStartDate);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // GET reservation time (If candidate already chosen the date)
+  const fetchReservationTime = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/participant', {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${data?.backendToken}`,
+        },
+      });
+      setReservationTime(response.data);
+      // console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // PATCH
+  const handleConfirm = async () => {
     if (!selectedDate || selectedTimeSlot.length === 0) {
       alert('กรุณาเลือกวันที่และเวลาให้ครบถ้วน');
       return;
     }
-    // Handle confirmation logic here
-    alert('ยืนยันการจองเวลาสัมภาษณ์เรียบร้อย');
+    // console.log(selectedTimeSlot[0]s);
+    try {
+      setSelectedTimeSlot([]);
+      const response = await axios.patch(
+        `http://localhost:8000/interview/reserve/${selectedTimeSlot[0]}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${data?.backendToken}`
+          }
+        }
+      );
+
+      // Refetch the time slots immediately
+      await fetchDataCalendar();
+
+      setIsModalVisible(true);
+    } catch (e) {
+      console.error(e);
+      setIsSuccess(false);
+      setIsModalVisible(true);
+    }
   };
 
   const tileDisabled = ({ date }: { date: Date }) => {
@@ -92,17 +165,6 @@ export default function InterviewCalendar() {
   const getTimeSlotsForDate = (date: Date) => {
     const formattedDate = date.toLocaleDateString('en-CA'); // ใช้ฟอร์แมต 'YYYY-MM-DD'
     return TIME_SLOTS_BY_DATE[formattedDate] || [];
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/interview', {
-        headers: {
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
-      setTimeSlot(response.data);
-    } catch (e) {}
   };
 
   const findIsSelected = (id: string) => {
@@ -136,78 +198,108 @@ export default function InterviewCalendar() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      fetchData();
+      fetchDataCalendar();
+      fetchReservationTime();
     }
-  }, [status]);
+    // console.log(selectedTimeSlot); // Debug selected time slot
+  }, [status, selectedTimeSlot]);
 
   return (
-    <div className='font-sans-thai pt-[130px]'>
-      <h1 className='title'>เลือกวันเวลาสัมภาษณ์ผู้สมัคร</h1>
-
-      <div className='max-w-[1500px] w-full mx-auto p-[20px] lg:grid lg:grid-cols-2 lg:gap-4'>
+    <div className='flex flex-col gap-y-7 items-center font-sans-thai max-w-[1500px] w-full mx-auto pt-[150px] pb-[50px] px-20'>
+      <h1 className='font-bold text-3xl text-center text-[#475569]'>เลือกวันเวลาสัมภาษณ์ผู้สมัคร</h1>
+      <h2 className="font-bold text-xl text-center text-[#42b5fc]">
+        {(selectedDate as Date).toLocaleDateString('th-TH', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })}
+      </h2>
+      <div className='flex flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4'>
         <div className='calendar-section'>
           <Calendar
             onChange={handleDateChange}
             value={selectedDate}
             tileDisabled={tileDisabled}
+            nextLabel={null}
+            next2Label={null}
+            prevLabel={null}
+            prev2Label={null}
+            minDetail="month"
           />
         </div>
-
-        <div className='time-slots flex flex-col'>
+        <div className='flex flex-col'>
           {selectedDate && (
             <>
-              <div className='date-header'>
-                <h2>
-                  {(selectedDate as Date).toLocaleDateString('th-TH', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
+              <div className="flex flex-col gap-y-3 items-center">
+                <div className="flex flex-col gap-y-2 bg-white w-full h-[400px] overflow-y-scroll px-5 py-4 rounded-lg shadow-sm">
+                  {timeSlot.map((slot: TimeType) => {
+                    if (
+                      getSelectedDay(selectedDate) ===
+                      getSelectedDay(new Date(slot.startTime))
+                    ) {
+                      // console.log(slot.id); // Debug time slots
+                      return (
+                        <button
+                          key={slot.id}
+                          className={clsx(
+                            ` transition-all text-white p-4 rounded-lg shadow-lg w-full flex justify-between focus:outline-none`,
+                            {
+                              'bg-green-400 hover:scale-105':
+                                slot.status === 'unreserved' &&
+                                findIsSelected(slot.id),
+                              'bg-primary hover:bg-[#96d7ff] hover:scale-105':
+                                slot.status === 'unreserved' &&
+                                !findIsSelected(slot.id),
+                              'bg-lime-400 hover:bg-lime-300': reservationTime &&
+                                slot.id === reservationTime.interview_id,
+                              'bg-gray-300': slot.status === 'reserved',
+                            }
+                          )}
+                          onClick={() => {
+                            selectTimeSlot(slot.id);
+                            // (console.log(`Slot Id = ${slot.id}\nReservation ID${reservationTime?.interview_id ?? ''}`))
+                          }}
+                          disabled={slot.status === 'reserved' || reservationTime !== null}
+                        >
+                          <p className="w-full font-bold text-center">
+                            {slot.label}
+                          </p>
+                        </button>
+                      );
+                    }
                   })}
-                </h2>
+                </div>
               </div>
-
-              {timeSlot.map((slot: TimeType) => {
-                if (
-                  getSelectedDay(selectedDate) ===
-                  getSelectedDay(new Date(slot.startTime))
-                ) {
-                  return (
-                    <button
-                      key={slot.id}
-                      className={clsx(
-                        ` transition-all mb-3 text-white p-4 rounded-lg w-full flex justify-between focus:outline-none `,
-                        {
-                          'bg-green-400 hover:scale-105':
-                            slot.status === 'unreserved' &&
-                            findIsSelected(slot.id),
-                          'bg-primary hover:scale-105':
-                            slot.status === 'unreserved' &&
-                            !findIsSelected(slot.id),
-                          'bg-gray-300 ': slot.status === 'reserved',
-                        }
-                      )}
-                      onClick={() => {
-                        selectTimeSlot(slot.id);
-                      }}
-                      disabled={slot.status === 'reserved'}
-                    >
-                      {slot.label}
-                    </button>
-                  );
-                }
-              })}
-
-              {selectedTimeSlot && (
-                <button
-                  className='confirm-button'
-                  onClick={handleConfirm}
-                >
-                  ยืนยันการจอง
-                </button>
-              )}
             </>
           )}
         </div>
+      </div>
+      {selectedTimeSlot && (
+        <button
+          className={clsx("w-full py-3 border-2 rounded-md shadow-lg transition-all hover:scale-95", {
+            "bg-[#ebf7ff] hover:bg-[#8cd2fd] border-[#8cd2fd] text-[#8cd2fd] hover:text-white": !reservationTime,
+            "hover:bg-[#475569] border-[#475569] text-[#475569] hover:text-white": reservationTime,
+          })}
+          onClick={handleConfirm}
+        >
+          {reservationTime ? "แก้ไขการจอง" : "ยืนยันการจอง"}
+        </button>
+      )}
+      <div className={clsx("transition-opacity fixed top-0 left-0 right-0 bottom-0 bg-black/[.5] z-50 flex justify-center items-center", {
+        " opacity-0 pointer-events-none": !isModalVisible,
+        " opacity-100 ": isModalVisible
+      })}>
+        <DateModal
+          title={isSuccess ? "ลงเวลาสัมภาษณ์เสร็จสิ้น" : "ลงเวลาสัมภาษณ์ไม่สำเร็จ"}
+          desc={isSuccess ? "ขอให้โชคดีกับการสัมภาษณ์คับผมม" : "เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง"}
+          isSuccess={isSuccess}
+          isVisible={isModalVisible}
+          onClose={
+            () => {
+              setIsModalVisible(false);
+            }
+          }
+        />
       </div>
 
       <style jsx>{`

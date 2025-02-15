@@ -50,7 +50,7 @@ export default function RegisterForm() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const router = useRouter();
     const { data, status } = useSession();
-    // console.log(`Token = ${data?.backendToken}`);
+    console.log(`Token = ${data?.backendToken}`);
 
     const {
         register,
