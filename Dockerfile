@@ -5,7 +5,8 @@ WORKDIR /cnc-recruit-front
 RUN npm install -g pnpm
 
 COPY package.json  ./
-RUN pnpm install
+COPY pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY . . 
 RUN pnpm run build
 
