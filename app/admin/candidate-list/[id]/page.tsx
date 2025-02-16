@@ -92,7 +92,10 @@ export default function CandidateListId() {
               ? 'แก้ไขคำถาม'
               : statusPopup.type == 'delete'
                 ? 'ลบคำถาม'
-                : 'เพิ่มคำถาม') + (statusPopup.status ? 'สำเร็จ' : 'ไม่สำเร็จ')}
+                : statusPopup.type == 'scored'
+                  ? 'ประเมินผล'
+                  : 'เพิ่มคำถาม') +
+            (statusPopup.status ? 'สำเร็จ' : 'ไม่สำเร็จ')}
         </p>
       </button>
       {CandidatePages[pageIndex]}

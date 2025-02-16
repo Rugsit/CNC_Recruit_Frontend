@@ -49,9 +49,6 @@ export default function QuestionKnowledge({
     id: '',
   });
   const [questionNisit, setQuestionNisit] = useState<QuestionNisit[]>([]);
-  const [questionFilterNisit, setQuestionFilterNisit] = useState<
-    QuestionNisit[]
-  >([]);
   const [errorMessage, setErrorMessage] = useState('ไม่พบคำถามของผู้สมัคร');
   const { id } = useParams();
   const { data } = useSession();

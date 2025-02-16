@@ -17,7 +17,6 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
-      console.log(exp - time);
       if (time > exp) {
         setIsLogin(false);
       } else {

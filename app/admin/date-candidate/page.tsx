@@ -49,32 +49,8 @@ export default function CandidateInterview() {
     return !INTERVIEW_DATES.includes(formattedDate);
   };
 
-  // const fetchRole = async () => {
-  //   const currentPath = router.asPath;
-  //   console.log(currentPath);
-  //   // try {
-  //   //   const resp = await axios.get('http://localhost:8000/user', {
-  //   //     headers: {
-  //   //       Authorization: `Bearer ${data?.backendToken}`,
-  //   //     },
-  //   //   });
-  //   //   // if (resp.data?.role !== 'admin') {
-  //   //   //   NextResponse.redirect(new URL('/login', request.url));
-  //   //   // }
-  //   // } catch (e) {
-  //   //   console.log('please login');
-  //   // }
-  // };
-
-  // useEffect(() => {
-  //   if (status != 'loading') {
-  //     fetchRole();
-  //   }
-  // }, [status]);
-
   const clearInterview = async (value: string) => {
     try {
-      console.log(value);
       const response = await axios.patch(
         `http://localhost:8000/interview/end/${value}`,
         {},
@@ -98,7 +74,6 @@ export default function CandidateInterview() {
           },
         }
       );
-      console.log(response.data);
       const newDataFilterDay = response.data.filter((item: participants) => {
         if (
           getSelectedDay(selectedDate) ===

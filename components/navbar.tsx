@@ -41,7 +41,7 @@ export const Navbar = () => {
 
       setRole(resp.data.role);
     } catch (e) {
-      console.log('please login');
+      setRole('candidate');
     }
   };
 
