@@ -54,6 +54,7 @@ export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [imageFile, setImageFile] = useState<File>();
   const [transcriptFile, setTranscriptFile] = useState<File>();
+  const [errorDesc, setErrorDesc] = useState<string>("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง");
   const { data, status } = useSession();
   const router = useRouter();
 
@@ -98,6 +99,14 @@ export default function RegisterForm() {
 
   const onSubmit = async (formData: FormFields) => {
     try {
+      const currentTimestamp = new Date().getTime();
+      const expiryTimestamp = new Date("2025-02-25").getTime();
+
+      if (currentTimestamp > expiryTimestamp) {
+        setErrorDesc("สิ้นสุดเวลาสร้างและแก้ไขใบสมัคร");
+        throw new Error('Registration period has expired');
+      }
+
       let imageUrl = '', transcriptUrl = '';
       let isImageChange = false, isTranscriptChange = false;
       if (imageFile) {
@@ -347,20 +356,18 @@ export default function RegisterForm() {
           )}
         >
           <FormModal
+            title={
+              isSuccess
+                ? applicationForm ? 'แก้ไขใบสมัครเสร็จสิ้น' : 'สร้างใบสมัครเสร็จสิ้น'
+                : 'สร้างใบสมัครไม่สำเร็จ'
+            }
             desc={
               isSuccess
-                ? 'โปรดเลือกวันนัดหมายสำหรับสัมภาษณ์'
-                : 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง'
+                ? 'โปรดติดตามและลงเวลาสัมภาษณ์ที่หน้าหลัก'
+                : errorDesc
             }
             isSuccess={isSuccess}
             isVisible={isModalVisible}
-            title={
-              isSuccess
-                ? applicationForm
-                  ? 'สร้างใบสมัครสำเร็จ'
-                  : 'แก้ไขใบสมัครเสร็จสิ้น'
-                : 'ยื่นใบสมัครไม่สำเร็จ'
-            }
             onClose={() => {
               setModalVisible(false);
               if (isSuccess) router.push('/home');
