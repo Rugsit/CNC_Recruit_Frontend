@@ -24,7 +24,7 @@ export default function CandidateCard({
     >
       <Image
         alt='profile-image'
-        className='aspect-square rounded-full'
+        className='aspect-square shadow-sm rounded-full'
         height={70}
         src={profileUrl}
         width={70}

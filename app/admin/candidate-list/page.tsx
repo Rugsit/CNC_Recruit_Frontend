@@ -55,8 +55,8 @@ export default function Page() {
         classNames={{
           base: 'h-[50px] md:w-[530px] w-full',
           inputWrapper:
-            'p-4 h-full bg-white rounded-[30px] shadow-md transition-all focus-within:ring-2 focus-within:ring-blue-500',
-          input: 'text-center text-lg',
+            'p-4 h-full bg-white rounded-[30px] inset-shadow-lg transition-all focus-within:ring-2 focus-within:ring-blue-500',
+          input: 'text-left text-lg',
         }}
         startContent={
           <Image
@@ -73,14 +73,15 @@ export default function Page() {
         }}
       />
       <div className='flex gap-x-2 md:justify-end justify-center items-center w-full'>
-        <p className='text-[#3B434F]'>ปีการศึกษา: </p>
+        <p className='text-[#3B434F]'>KU รุ่นที่: </p>
         <select
-          className='px-7 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg appearance-none'
+          className='px-7 py-2 bg-blue-100 text-[#1d9fee] text-center font-bold rounded-lg transition-all hover:scale-95 appearance-none'
           value={year}
           onChange={(e) => setYear(parseInt(e.target.value))}
         >
           <option value='0'>ทั้งหมด</option>
-          <option value='1'>84</option>
+          <option value='83'>83</option>
+          <option value='84'>84</option>
         </select>
       </div>
       {status === 'loading' ? (

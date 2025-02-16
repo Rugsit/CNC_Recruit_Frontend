@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6MB
 
 export const formSchema = z.object({
   nisitId: z
@@ -12,7 +12,7 @@ export const formSchema = z.object({
   typeOfDpm: z.string().min(1, { message: '*กรุณาระบุภาค' }),
   nisitYearParticipated: z.preprocess(
     (val) => Number(val),
-    z.number().min(84, 'กรุณาระบุปีการศึกษาที่ถูกต้อง')
+    z.number().min(83, 'กรุณาระบุปีการศึกษาที่ถูกต้อง')
   ),
   socialContact: z.string().min(1, { message: '*กรุณาระบุบัญชีโซเชียล' }),
   phoneNumber: z
@@ -46,7 +46,7 @@ export const formSchema = z.object({
         { message: '*กรุณาอัพโหลดรูปภาพเป็น JPEG, JPG หรือ PNG' }
       )
       .refine((file) => file.size <= MAX_FILE_SIZE, {
-        message: '*กรุณาอัพโหลดรูปภาพขนาดไม่เกิน 10MB',
+        message: '*กรุณาอัพโหลดรูปภาพขนาดไม่เกิน 6MB',
       }),
   ]),
   transcriptUrl: z.union([
@@ -60,7 +60,7 @@ export const formSchema = z.object({
         message: '*กรุณาอัพโหลดใบรับรองผลการเรียนเป็น PDF',
       })
       .refine((file) => file.size <= MAX_FILE_SIZE, {
-        message: '*กรุณาอัพโหลดใบรับรองผลการเรียนขนาดไม่เกิน 10MB',
+        message: '*กรุณาอัพโหลดใบรับรองผลการเรียนขนาดไม่เกิน 6MB',
       }),
   ]),
 });
