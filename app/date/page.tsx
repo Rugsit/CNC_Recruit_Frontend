@@ -91,7 +91,7 @@ export default function InterviewCalendar() {
       setReservationTime(response.data);
       // console.log(response.data);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -239,14 +239,13 @@ export default function InterviewCalendar() {
                             {
                               // Selected unreserved slot
                               'bg-green-400 hover:bg-green-300':
-                                slot.status === 'unreserved' &&
-                                findIsSelected(slot.id) ||
-                                (reservationTime && slot.id === reservationTime.interviewId),
+                                (reservationTime && slot.id === reservationTime.interviewId) ||
+                                findIsSelected(slot.id),
 
                               // Available unreserved slots
                               'bg-primary hover:bg-[#96d7ff]':
                                 slot.status === 'unreserved' &&
-                                !findIsSelected(slot.id),
+                                !findIsSelected(slot.id) && (slot.id !== reservationTime?.interviewId),
 
                               // Slots reserved by others - lowest priority
                               'bg-gray-300 hover:bg-gray-200':
@@ -267,7 +266,7 @@ export default function InterviewCalendar() {
                             // );
                           }}
                         >
-                          <p className={`w-full font-bold text-center ${(slot.status === "completed" || slot.status === "reserved") ? "line-through" : ""}`}>
+                          <p className={'w-full font-bold text-center'}>
                             {slot.label}
                           </p>
                         </button>
