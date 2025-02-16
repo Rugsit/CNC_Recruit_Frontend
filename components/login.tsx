@@ -11,23 +11,23 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
   const { data, status } = useSession();
   const [isLogin, setIsLogin] = useState(false);
 
-  const fetchRole = async () => {
-    try {
-      const resp = await axios.get('http://localhost:8000/user', {
-        headers: {
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
-
-      setIsLogin(true);
-    } catch (e) {
-      setIsLogin(false);
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+      if (time > exp) {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
     }
   };
 
   useEffect(() => {
     if (status != 'loading') {
-      fetchRole();
+      checkToken();
     }
   }, [status]);
 

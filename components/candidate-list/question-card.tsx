@@ -81,20 +81,24 @@ export default function QuestionCard({
     let input = comment;
 
     if (input.trim() === '') input = 'ไม่มีความคิดเห็น';
-    let data = { comment: input, score: sum };
+    let dataComment = { comment: input, score: sum };
 
     try {
       const response = await axios.put(
         `http://localhost:8000/nisit-question/comment-score/${id}/${questionNisit.id}`,
-        data,
+        dataComment,
         {
-          headers: { 'Content-Type': 'applicatio/json' },
+          headers: {
+            'Content-Type': 'applicatio/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
         }
       );
 
-      fetchQuestion();
+      await fetchQuestion();
+      setStatusPopup({ type: 'scored', status: true, isShow: true });
     } catch (e) {
-      console.error(e);
+      setStatusPopup({ type: 'scored', status: false, isShow: true });
     }
   };
 
@@ -264,12 +268,12 @@ export default function QuestionCard({
                 </p>
               </button>
             </div>
-            <div>
+            <div className=''>
               <Button
                 className={clsx(
-                  'transition-all mt-7  rounded-lg  bg-primary text-white mx-auto block',
+                  'mt-7  rounded-lg  bg-primary text-white mx-auto block',
                   {
-                    ' fixed opacity-0': editGrade,
+                    ' fixed top-0 opacity-0': editGrade,
                   }
                 )}
                 onClick={() => {
@@ -279,13 +283,10 @@ export default function QuestionCard({
                 แก้ไขคะแนน
               </Button>
               <div
-                className={clsx(
-                  'transition-all mx-auto max-w-[300px] flex gap-5',
-                  {
-                    ' fixed opacity-0': !editGrade,
-                    ' opacity-100': editGrade,
-                  }
-                )}
+                className={clsx(' mx-auto max-w-[300px] flex gap-5', {
+                  ' fixed top-0 opacity-0': !editGrade,
+                  ' opacity-100': editGrade,
+                })}
               >
                 <Button
                   className='w-full mt-7'

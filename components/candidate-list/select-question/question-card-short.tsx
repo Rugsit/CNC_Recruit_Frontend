@@ -1,11 +1,10 @@
-import { Button } from '@nextui-org/button';
-import axios from 'axios';
-import clsx from 'clsx';
-import { useSession } from 'next-auth/react';
-import { Dispatch, SetStateAction } from 'react';
-
-import { Bin, Pen } from '@/components/icons';
-import { PopupType } from '@/app/candidate-list/[id]/question-knowledge/page';
+import { PopupType } from "@/app/admin/candidate-list/[id]/question-knowledge/page";
+import { Bin, Pen } from "@/components/icons";
+import { Button } from "@nextui-org/button";
+import axios from "axios";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction } from "react";
 
 export default function QuestionCardShort({
   question_type,

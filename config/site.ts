@@ -6,19 +6,19 @@ export const siteConfig = {
   navItems: [
     {
       label: 'เกี่ยวกับ LAB',
-      href: '#about-lab',
+      href: '/home#about-lab',
     },
     {
       label: 'กำหนดการณ์',
-      href: '#timeline',
+      href: '/home#timeline',
     },
     {
       label: 'สถานที่',
-      href: '#location',
+      href: '/home#location',
     },
     {
       label: 'ติดตามข่าวสาร',
-      href: '#connect',
+      href: '/home#connect',
     },
   ],
   navMenuItems: [

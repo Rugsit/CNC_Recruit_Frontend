@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-
-import CandidateDetail from '@/app/candidate-list/[id]/candidate-detail/page';
-import QuestionKnowledge from '@/app/candidate-list/[id]/question-knowledge/page';
+import CandidateDetail from '@/app/admin/candidate-list/[id]/candidate-detail/page';
+import QuestionKnowledge from '@/app/admin/candidate-list/[id]/question-knowledge/page';
 import NavbarCandidate from '@/components/candidate-list/navbar-candidate';
 import { CheckMark, XMark } from '@/components/icons';
+import clsx from 'clsx';
 
 export default function CandidateListId() {
   let timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -93,7 +92,10 @@ export default function CandidateListId() {
               ? 'แก้ไขคำถาม'
               : statusPopup.type == 'delete'
                 ? 'ลบคำถาม'
-                : 'เพิ่มคำถาม') + (statusPopup.status ? 'สำเร็จ' : 'ไม่สำเร็จ')}
+                : statusPopup.type == 'scored'
+                  ? 'ประเมินผล'
+                  : 'เพิ่มคำถาม') +
+            (statusPopup.status ? 'สำเร็จ' : 'ไม่สำเร็จ')}
         </p>
       </button>
       {CandidatePages[pageIndex]}
