@@ -10,7 +10,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
-
 import FormModal from '@/components/form/form-modal';
 import SelectInput from '@/components/form/select-input';
 import { formSchema, FormFields } from '@/app/lib/validations/schema';
@@ -30,6 +29,8 @@ interface ApplicationForm {
   socialContact: string;
   phoneNumber: string;
   currentLiving: string;
+  imageBucket: string
+  imageName: string,
   imageUrl: string;
   grade: number;
   expected: string;
@@ -40,20 +41,23 @@ interface ApplicationForm {
   projects: string;
   interests: string;
   hobbies: string;
+  transcriptBucket: string;
+  transcriptName: string;
   transcriptUrl: string;
   nisitYearParticipated: number;
 }
 
 export default function RegisterForm() {
-  const [applicationForm, setApplicationForm] =
-    useState<ApplicationForm | null>(null);
+  const [applicationForm, setApplicationForm] = useState<ApplicationForm | null>(null);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const router = useRouter();
+  const [imageFile, setImageFile] = useState<File>();
+  const [transcriptFile, setTranscriptFile] = useState<File>();
   const { data, status } = useSession();
+  const router = useRouter();
 
-  console.log(`Token = ${data?.backendToken}`);
+  // console.log(`Token = ${data?.backendToken}`);
 
   const {
     register,
@@ -75,7 +79,6 @@ export default function RegisterForm() {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
-
       // console.log(response.data);
       setApplicationForm(response.data);
       reset(response.data);
@@ -95,17 +98,49 @@ export default function RegisterForm() {
 
   const onSubmit = async (formData: FormFields) => {
     try {
+      let imageUrl = '', transcriptUrl = '';
+      let isImageChange = false, isTranscriptChange = false;
+      if (imageFile) {
+        isImageChange = true;
+        const imageResponse = await axios.post('http://localhost:8000/upload',
+          { file: imageFile },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data?.backendToken}`,
+            },
+          }
+        );
+        imageUrl = imageResponse.data;
+      }
+      if (transcriptFile) {
+        isTranscriptChange = true;
+        const transcriptResponse = await axios.post('http://localhost:8000/upload',
+          { file: transcriptFile },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data?.backendToken}`,
+            },
+          }
+        );
+        transcriptUrl = transcriptResponse.data;
+      }
+      // console.log(`Image: ${imageUrl}\nTranscript: ${transcriptUrl}`)
+
       const method = applicationForm ? 'PUT' : 'POST';
       const url = applicationForm
         ? `http://localhost:8000/nisit/`
         : 'http://localhost:8000/app';
 
+      // console.log(formData);
+
       const payload = {
         ...formData,
         nisitYearParticipated: Number(formData.nisitYearParticipated),
         grade: Number(formData.grade),
-        imageUrl: formData.imageUrl.name || 'example.com',
-        transcriptUrl: formData.transcriptUrl.name || 'example.com',
+        imageUrl: isImageChange ? imageUrl : null,
+        transcriptUrl: isTranscriptChange ? transcriptUrl : null,
       };
 
       const response = await axios({
@@ -117,7 +152,6 @@ export default function RegisterForm() {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
-
       // console.log("Response:", response.data);
       setSuccess(true);
       setModalVisible(true);
@@ -188,11 +222,11 @@ export default function RegisterForm() {
                 title='ภาค'
               />
               <SelectInput
-                options={[{ value: 84, label: '84' }]}
+                options={[{ value: 83, label: '83' }, { value: 84, label: '84' }]}
                 register={register('nisitYearParticipated', {
                   valueAsNumber: true,
                 })}
-                title='ปีการศึกษา'
+                title='KU รุ่นที่'
               />
               <InputText
                 errorMessage={errors.grade?.message}
@@ -258,26 +292,28 @@ export default function RegisterForm() {
                 title='Tools, Frameworks, Softwares ที่เคยใช้มีอะไรบ้าง?'
               />
               <FileUpload
+                title='อัพโหลดรูปภาพ'
+                desc='JPEG, JPG หรือ PNG ขนาดไม่เกิน 6MB เห็นใบหน้าชัดเจน'
                 accept='.png, .jpg, .jpeg'
-                description='ไฟล์ JPEG หรือ PNG ไม่เกิน 10MB เห็นใบหน้าชัดเจน'
                 errorMessage={errors.imageUrl?.message?.toString()}
-                existedFileName={applicationForm?.imageUrl}
                 icon={{ src: UploadImageIcon, alt: 'upload-image-icon' }}
+                existedFile={{ name: applicationForm?.imageName || '', url: applicationForm?.imageUrl || '' }}
                 register={register('imageUrl')}
                 setValue={setValue}
-                title='อัพโหลดรูปภาพ'
                 trigger={trigger}
+                setFile={setImageFile}
               />
               <FileUpload
+                title='อัพโหลดใบรับรองผลการเรียน'
+                desc='PDF ขนาดไม่เกิน 6MB'
                 accept='.pdf'
-                description='ไฟล์​ PDF ขนาดไม่เกิน 10 MB'
                 errorMessage={errors.transcriptUrl?.message?.toString()}
-                existedFileName={applicationForm?.transcriptUrl}
                 icon={{ src: UploadFileIcon, alt: 'upload-file-icon' }}
+                existedFile={{ name: applicationForm?.transcriptName || '', url: applicationForm?.transcriptUrl || '' }}
                 register={register('transcriptUrl')}
                 setValue={setValue}
-                title='อัพโหลดใบรับรองผลการเรียน'
                 trigger={trigger}
+                setFile={setTranscriptFile}
               />
             </div>
             <div className='flex flex-row gap-x-4 mb-5'>
@@ -296,7 +332,7 @@ export default function RegisterForm() {
                 type='submit'
                 variant='shadow'
               >
-                ส่งใบสมัคร
+                {applicationForm ? "แก้ไขใบสมัคร" : "ส่งใบสมัคร"}
               </Button>
             </div>
           </div>
@@ -322,7 +358,7 @@ export default function RegisterForm() {
               isSuccess
                 ? applicationForm
                   ? 'สร้างใบสมัครสำเร็จ'
-                  : 'แก้ไขใบสมัครเสร็จสิน'
+                  : 'แก้ไขใบสมัครเสร็จสิ้น'
                 : 'ยื่นใบสมัครไม่สำเร็จ'
             }
             onClose={() => {

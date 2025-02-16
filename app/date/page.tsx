@@ -49,8 +49,7 @@ export default function InterviewCalendar() {
   const [timeSlot, setTimeSlot] = useState<[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [reservationTime, setReservationTime] =
-    useState<ReservationTime | null>(null);
+  const [reservationTime, setReservationTime] = useState<ReservationTime | null>(null);
 
   // console.log(`Token = ${data?.backendToken}`); // Token Debug
 
@@ -92,23 +91,25 @@ export default function InterviewCalendar() {
       setReservationTime(response.data);
       // console.log(response.data);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
   // PATCH
   const handleConfirm = async (isUnreserve: boolean) => {
-    console.log(`SelectedTimeSlot = ${selectedTimeSlot[0]}`);
+    // console.log(`SelectedTimeSlot = ${selectedTimeSlot[0]}`);
     let path;
 
     try {
+      // console.log(`isUnreserve = ${isUnreserve}`);
+      // console.log(`selectedDate = ${selectedDate}\nselectedTimeSlot = ${selectedTimeSlot}`);
       if (isUnreserve) {
         if (!reservationTime) {
-          throw new Error('แก้ไขการจองไม่สำเร็จ');
+          throw new Error('เกิดข้อผิดพลาดระหว่างการแก้ไขกรุณาลองใหม่อีกครั้ง');
         }
         path = 'unreserve';
       } else {
-        if (!selectedDate && selectedTimeSlot.length === 0) {
+        if (selectedTimeSlot.length === 0) {
           throw new Error('กรุณาเลือกเวลาสัมภาษณ์');
         }
         path = 'reserve';
@@ -183,6 +184,16 @@ export default function InterviewCalendar() {
     }
     // console.log(selectedTimeSlot); // Debug selected time slot
   }, [status, selectedTimeSlot]);
+  if (status === 'loading') {
+    return (
+      <section className='flex flex-grow flex-col gap-y-5 justify-center items-center min-h-screen'>
+        <div className='w-16 h-16 border-5 border-[#42B5FC] border-t-transparent rounded-full animate-spin' />
+        <h1 className='text-[#42B5FC] text-xl font-bold'>
+          กำลังโหลดตารางเวลาสัมภาษณ์...
+        </h1>
+      </section>
+    );
+  }
 
   return (
     <div className='flex flex-col gap-y-7 items-center font-sans-thai max-w-[1500px] w-full mx-auto pt-[150px] pb-[50px] px-20'>
@@ -224,42 +235,38 @@ export default function InterviewCalendar() {
                         <button
                           key={slot.id}
                           className={clsx(
-                            'transition-all text-white p-4 rounded-lg shadow-lg w-full flex justify-between focus:outline-none',
+                            `${(!reservationTime?.interviewId && (slot.status !== "reserved" && slot.status !== "completed")) ? "hover:scale-105" : ""} transition-all text-white p-4 rounded-lg shadow-lg w-full flex justify-between focus:outline-none`,
                             {
-                              // User's own reservation - highest priority // BUG: first candidate already selected the timeslot
-                              'bg-lime-400 hover:bg-lime-300':
-                                reservationTime &&
-                                slot.id === reservationTime.interviewId,
-
                               // Selected unreserved slot
-                              'bg-green-400 hover:scale-105':
-                                slot.status === 'unreserved' &&
+                              'bg-green-400 hover:bg-green-300':
+                                (reservationTime && slot.id === reservationTime.interviewId) ||
                                 findIsSelected(slot.id),
 
                               // Available unreserved slots
-                              'bg-primary hover:bg-[#96d7ff] hover:scale-105':
+                              'bg-primary hover:bg-[#96d7ff]':
                                 slot.status === 'unreserved' &&
-                                !findIsSelected(slot.id),
+                                !findIsSelected(slot.id) && (slot.id !== reservationTime?.interviewId),
 
                               // Slots reserved by others - lowest priority
-                              'bg-gray-300':
-                                slot.status === 'reserved' &&
-                                (!reservationTime ||
-                                  slot.id !== reservationTime.interviewId),
+                              'bg-gray-300 hover:bg-gray-200':
+                                (slot.status === 'reserved' &&
+                                (!reservationTime || slot.id !== reservationTime.interviewId)) ||
+                                slot.status === 'completed',
                             }
                           )}
                           disabled={
+                            slot.status === 'completed' ||
                             slot.status === 'reserved' ||
                             reservationTime !== null
                           }
                           onClick={() => {
                             selectTimeSlot(slot.id);
-                            console.log(
-                              `Slot Id = ${slot.id}\nReservation ID${reservationTime?.interviewId ?? ''}`
-                            );
+                            // console.log(
+                            //   `Slot Id = ${slot.id}\nReservation ID = ${reservationTime?.interviewId}`
+                            // );
                           }}
                         >
-                          <p className='w-full font-bold text-center'>
+                          <p className={'w-full font-bold text-center'}>
                             {slot.label}
                           </p>
                         </button>
@@ -283,7 +290,7 @@ export default function InterviewCalendar() {
                 reservationTime,
             }
           )}
-          onClick={() => handleConfirm(reservationTime !== null)}
+          onClick={() => handleConfirm(reservationTime?.interviewId !== undefined)}
         >
           {reservationTime ? 'แก้ไขการจอง' : 'ยืนยันการจอง'}
         </button>
@@ -298,16 +305,18 @@ export default function InterviewCalendar() {
         )}
       >
         <DateModal
+          title={
+            isSuccess ?
+              (reservationTime?.interviewId ? 'ลงเวลาสัมภาษณ์เสร็จสิ้น' : 'แก้ไขเวลาสัมภาษณ์เสร็จสิ้น')
+              : 'ลงเวลาสัมภาษณ์ไม่สำเร็จ'
+          }
           desc={
             isSuccess
-              ? 'ขอให้โชคดีกับการสัมภาษณ์คับผมม'
+              ? (reservationTime?.interviewId ? 'ขอให้โชคดีกับการสัมภาษณ์ครับผม' : 'กรุณาเลือกเวลาสัมภาษณ์ใหม่')
               : 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง'
           }
           isSuccess={isSuccess}
           isVisible={isModalVisible}
-          title={
-            isSuccess ? 'ลงเวลาสัมภาษณ์เสร็จสิ้น' : 'ลงเวลาสัมภาษณ์ไม่สำเร็จ'
-          }
           onClose={() => {
             setIsModalVisible(false);
           }}
