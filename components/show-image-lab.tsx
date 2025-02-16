@@ -35,7 +35,7 @@ export default function ShowImageLab() {
       <p className='text-center lg:text-4xl text-3xl text-white mb-5'>
         บรรยากาศภายใน Lab
       </p>
-      <div className='transition-transform relative flex items-center rounded-lg overflow-hidden max-w-[1000px] mx-auto hover:scale-105 '>
+      <div className='transition-transform relative flex items-center rounded-lg overflow-hidden max-w-[1000px] mx-auto'>
         <Button
           isIconOnly
           className={clsx('bg-white absolute opacity-100 left-3 z-30', {
@@ -63,7 +63,7 @@ export default function ShowImageLab() {
               >
                 <Image
                   alt='test'
-                  className='w-full h-full rounded-lg object-cover object-center'
+                  className='w-full h-full rounded-lg object-cover object-center hover:scale-105 transition-all'
                   src={item}
                 />
               </div>
