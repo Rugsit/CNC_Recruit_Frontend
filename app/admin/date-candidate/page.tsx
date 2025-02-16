@@ -111,10 +111,10 @@ export default function CandidateInterview() {
   };
 
   useEffect(() => {
-    if (timeSlotCandidate.size == 0) {
+    if (timeSlotCandidate.size == 0 && status != 'loading') {
       fetchData();
     }
-  }, [timeSlotCandidate]);
+  }, [timeSlotCandidate, status]);
 
   useEffect(() => {
     if (status !== 'loading') {

@@ -35,7 +35,6 @@ export const Navbar = () => {
     if (data?.user.role) {
       setRole(data?.user.role);
     }
-    console.log(data);
   };
 
   useEffect(() => {
