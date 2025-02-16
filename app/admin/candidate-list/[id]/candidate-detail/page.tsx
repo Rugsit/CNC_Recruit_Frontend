@@ -29,7 +29,7 @@ interface CandidateDetail {
   projects: string;
   interests: string;
   hobbies: string;
-  transcript: string;
+  transcriptUrl: string;
   nisitYearParticipated: number;
 }
 
@@ -105,17 +105,17 @@ export default function CandidateDetail() {
         </h3>
         <Image
           alt='profile-image'
-          className='aspect-square rounded-full shadow-md'
-          height={150}
-          src={`/${candidateDetail?.imageUrl}`}
-          width={150}
+          className='aspect-square rounded-full shadow-md object-cover'
+          width={300}
+          height={300}
+          src={`${candidateDetail?.imageUrl}`}
         />
         <h3 className='text-xl md:text-3xl font-bold text-[#1d9fee]'>{`${candidateDetail?.name} ${candidateDetail?.lastname}`}</h3>
         <button
           className='w-full md:w-auto px-3 py-2 bg-primary rounded-lg shadown-sm hover: text-white text-md md:text-lg transition-all hover:scale-95'
           onClick={
             () => {
-              window.open("");
+              window.open(candidateDetail.transcriptUrl, '_blank', 'noopener,noreferrer');
             }
           }
         >

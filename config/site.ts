@@ -9,7 +9,7 @@ export const siteConfig = {
       href: '/home#about-lab',
     },
     {
-      label: 'กำหนดการณ์',
+      label: 'กำหนดการ',
       href: '/home#timeline',
     },
     {

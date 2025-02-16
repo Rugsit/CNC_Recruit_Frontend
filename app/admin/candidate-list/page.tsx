@@ -32,7 +32,7 @@ export default function Page() {
           },
         }
       );
-
+      // console.log(response.data);
       setCandidates(response.data);
     } catch (e) {
       console.error(e);

@@ -5,8 +5,6 @@ import axios from 'axios';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NextResponse } from 'next/server';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -31,7 +29,6 @@ type participants = {
 const INTERVIEW_DATES = ['2025-02-25', '2025-02-26'];
 
 export default function CandidateInterview() {
-  // const router = useRouter();
   const [timeSlotCandidate, setTimeSlotCandidate] = useState<
     Map<string, participants[]>
   >(new Map());
@@ -86,17 +83,17 @@ export default function CandidateInterview() {
         (a: participants, b: participants) =>
           Date.parse(a.startTime) - Date.parse(b.startTime)
       );
+      const newTimeSlotMap = new Map<string, participants[]>();
+
       responseSortedByStartDate.forEach((item: participants) => {
-        if (timeSlotCandidate.has(item.label)) {
-          const existingArray = timeSlotCandidate.get(item.label);
-          existingArray?.push(item);
-          setTimeSlotCandidate(new Map(timeSlotCandidate));
-        } else {
-          setTimeSlotCandidate(
-            new Map(timeSlotCandidate.set(item.label, [item]))
-          );
+        if (!newTimeSlotMap.has(item.label)) {
+          newTimeSlotMap.set(item.label, []);
         }
+        newTimeSlotMap.get(item.label)?.push(item);
       });
+  
+      setTimeSlotCandidate(newTimeSlotMap);
+      console.log(timeSlotCandidate);
     } catch (e) {}
   };
 
@@ -111,12 +108,6 @@ export default function CandidateInterview() {
   };
 
   useEffect(() => {
-    if (timeSlotCandidate.size == 0) {
-      fetchData();
-    }
-  }, [timeSlotCandidate]);
-
-  useEffect(() => {
     if (status !== 'loading') {
       setTimeSlotCandidate(new Map());
     }
@@ -126,7 +117,7 @@ export default function CandidateInterview() {
     if (status !== 'loading') {
       fetchData();
     }
-  }, [status]);
+  }, [selectedDate, status]);
 
   return (
     <div className='font-sans-thai pt-[130px]'>
@@ -213,7 +204,7 @@ export default function CandidateInterview() {
                                   className='flex flex-col justify-center items-center gap-3'
                                 >
                                   <img
-                                    className='w-full max-w-[100px] h-[100px]  rounded-full'
+                                    className='w-full max-w-[100px] h-[100px] rounded-full object-cover'
                                     src={item.pictureURL}
                                     alt='use_image'
                                   />

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export interface CandidateCardProps {
-  profileUrl: string;
+  imageUrl: string;
   name: string;
   lastname: string;
   year: string;
@@ -11,7 +11,7 @@ export interface CandidateCardProps {
 }
 
 export default function CandidateCard({
-  profileUrl,
+  imageUrl,
   name,
   lastname,
   year,
@@ -24,10 +24,10 @@ export default function CandidateCard({
     >
       <Image
         alt='profile-image'
-        className='aspect-square shadow-sm rounded-full'
-        height={70}
-        src={profileUrl}
-        width={70}
+        className='aspect-square shadow-sm rounded-full object-cover'
+        height={100}
+        src={imageUrl}
+        width={100}
       />
       <div className='flex flex-col'>
         <p className='text-lg text-blue-400 font-bold'>{`${name} ${lastname}`}</p>
