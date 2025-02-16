@@ -32,17 +32,10 @@ export const Navbar = () => {
   };
 
   const fetchRole = async () => {
-    try {
-      const resp = await axios.get('http://localhost:8000/user', {
-        headers: {
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
-
-      setRole(resp.data.role);
-    } catch (e) {
-      setRole('candidate');
+    if (data?.user.role) {
+      setRole(data?.user.role);
     }
+    console.log(data);
   };
 
   useEffect(() => {
