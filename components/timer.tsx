@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
+import axios from 'axios';
 
 interface Props {
   id: number;
@@ -104,6 +105,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [loginIsClosed, setLoginIsClosed] = useState(true);
   const rounter = useRouter();
+  const [isFoundApplication, setIsFountApplication] = useState<boolean>(false);
 
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
@@ -118,6 +120,31 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
     return false;
   };
+
+  const fetchApplication = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/nisit', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
+      // console.log(response.data);
+      if (response.data) {
+        setIsFountApplication(true);
+      } else {
+        setIsFountApplication(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (status !== "loading") {
+      fetchApplication();
+    }
+  }, [status])
 
   useEffect(() => {
     if (status !== 'loading') {
@@ -222,7 +249,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       {state?.path != '' && (
         <div className='flex gap-5'>
           <Button
-            className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+            className={`${isFoundApplication || (!isFoundApplication && state?.id === 2) ? "flex" : "hidden"} md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary`}
             onClick={async () => {
               const loginStatus = await checkToken();
 
@@ -239,7 +266,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
             {state?.action}
           </Button>
           <Button
-            className='md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white'
+            className={`${(isFoundApplication && state?.id === 3) ? "flex" : "hidden"} md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
             onClick={async () => {
               const loginStatus = await checkToken();
 

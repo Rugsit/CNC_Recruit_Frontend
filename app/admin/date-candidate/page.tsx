@@ -96,7 +96,7 @@ export default function CandidateInterview() {
       });
 
       setTimeSlotCandidate(newTimeSlotMap);
-      console.log(timeSlotCandidate);
+      // console.log(timeSlotCandidate);
     } catch (e) {}
   };
 
