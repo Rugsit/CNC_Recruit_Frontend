@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
+import { useRouter } from 'next/navigation';
+
 import DateModal from './_local/date-modal';
-import router, { useRouter } from 'next/navigation';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -50,9 +51,12 @@ export default function InterviewCalendar() {
   const [timeSlot, setTimeSlot] = useState<[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [reservationTime, setReservationTime] = useState<ReservationTime | null>(null);
+  const [reservationTime, setReservationTime] =
+    useState<ReservationTime | null>(null);
   const [isExpired, setIsExpired] = useState<boolean>(false);
-  const [errorDesc, setErrorDesc] = useState<string>("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง");
+  const [errorDesc, setErrorDesc] = useState<string>(
+    'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง'
+  );
   const router = useRouter();
 
   // console.log(`Token = ${data?.backendToken}`); // Token Debug
@@ -64,33 +68,36 @@ export default function InterviewCalendar() {
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
+
       if (time > exp) {
         return false;
       } else {
         return true;
       }
     }
+
     return false;
   };
+
 
   // GET time slots
   const fetchDataCalendar = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date("2025-02-25").getTime();
+    const expiryTimestamp = new Date('2025-02-25').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
     }
 
-    if (!await checkToken()) {
+    if (!(await checkToken())) {
       setIsSuccess(false);
       setIsModalVisible(true);
-      setErrorDesc("กรุณาเข้าสู่ระบบก่อนลงเวลาหรือแก้ไขเวลาสัมภาษณ์")
+      setErrorDesc('กรุณาเข้าสู่ระบบก่อนลงเวลาหรือแก้ไขเวลาสัมภาษณ์');
       setTimeout(() => {
-        
         router.push('/home');
       }, 3000);
     }
@@ -271,22 +278,25 @@ export default function InterviewCalendar() {
                         <button
                           key={slot.id}
                           className={clsx(
-                            `${(!reservationTime?.interviewId && (slot.status !== "reserved" && slot.status !== "completed")) ? "hover:scale-105" : ""} transition-all text-white p-4 rounded-lg shadow-lg w-full flex justify-between focus:outline-none`,
+                            `${!reservationTime?.interviewId && slot.status !== 'reserved' && slot.status !== 'completed' ? 'hover:scale-105' : ''} transition-all text-white p-4 rounded-lg shadow-lg w-full flex justify-between focus:outline-none`,
                             {
                               // Selected unreserved slot
                               'bg-green-400 hover:bg-green-300':
-                                (reservationTime && slot.id === reservationTime.interviewId) ||
+                                (reservationTime &&
+                                  slot.id === reservationTime.interviewId) ||
                                 findIsSelected(slot.id),
 
                               // Available unreserved slots
                               'bg-primary hover:bg-[#96d7ff]':
                                 slot.status === 'unreserved' &&
-                                !findIsSelected(slot.id) && (slot.id !== reservationTime?.interviewId),
+                                !findIsSelected(slot.id) &&
+                                slot.id !== reservationTime?.interviewId,
 
                               // Slots reserved by others - lowest priority
                               'bg-gray-300 hover:bg-gray-200':
                                 (slot.status === 'reserved' &&
-                                (!reservationTime || slot.id !== reservationTime.interviewId)) ||
+                                  (!reservationTime ||
+                                    slot.id !== reservationTime.interviewId)) ||
                                 slot.status === 'completed',
                             }
                           )}
@@ -326,7 +336,9 @@ export default function InterviewCalendar() {
                 reservationTime,
             }
           )}
-          onClick={() => handleConfirm(reservationTime?.interviewId !== undefined)}
+          onClick={() =>
+            handleConfirm(reservationTime?.interviewId !== undefined)
+          }
         >
           {reservationTime ? 'แก้ไขการจอง' : 'ยืนยันการจอง'}
         </button>
@@ -341,25 +353,29 @@ export default function InterviewCalendar() {
         )}
       >
         <DateModal
-          title={
-            isSuccess ?
-              (reservationTime?.interviewId ? 'ลงเวลาสัมภาษณ์เสร็จสิ้น' : 'แก้ไขเวลาสัมภาษณ์เสร็จสิ้น')
-              : 'ลงเวลาสัมภาษณ์ไม่สำเร็จ'
-          }
           desc={
             isSuccess
-              ? (reservationTime?.interviewId ? 'ขอให้โชคดีกับการสัมภาษณ์ครับผม' : 'กรุณาเลือกเวลาสัมภาษณ์ใหม่')
+              ? reservationTime?.interviewId
+                ? 'ขอให้โชคดีกับการสัมภาษณ์ครับผม'
+                : 'กรุณาเลือกเวลาสัมภาษณ์ใหม่'
               : errorDesc
           }
           isSuccess={isSuccess}
           isVisible={isModalVisible}
+          title={
+            isSuccess
+              ? reservationTime?.interviewId
+                ? 'ลงเวลาสัมภาษณ์เสร็จสิ้น'
+                : 'แก้ไขเวลาสัมภาษณ์เสร็จสิ้น'
+              : 'ลงเวลาสัมภาษณ์ไม่สำเร็จ'
+          }
           onClose={() => {
             setIsModalVisible(false);
           }}
         />
       </div>
 
-      <style jsx>{`
+      <style jsx={true}>{`
         .container {
           max-width: 1500px;
           margin: 0 auto;

@@ -17,8 +17,8 @@ export default function SelectInput({
       <select
         {...register}
         className='font-normal appearance-none bg-gray-100 border-1 border-gray-300 rounded-xl px-3 py-2 w-full focus-within:border-blue-500 focus-within:border-2'
-        id={register.name}
         disabled={isExpired}
+        id={register.name}
       >
         {options.map((option) => (
           <option

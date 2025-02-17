@@ -1,10 +1,12 @@
-import { PopupType } from "@/app/admin/candidate-list/[id]/question-knowledge/page";
-import { Bin, Pen } from "@/components/icons";
-import { Button } from "@nextui-org/button";
-import axios from "axios";
-import clsx from "clsx";
-import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction } from "react";
+import { Button } from '@nextui-org/button';
+import axios from 'axios';
+import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
+import { Dispatch, SetStateAction } from 'react';
+
+import { Bin, Pen } from '@/components/icons';
+import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
+import { StatusPopUpProps } from '@/app/admin/candidate-list/[id]/page';
 
 export default function QuestionCardShort({
   question_type,
@@ -52,7 +54,7 @@ export default function QuestionCardShort({
   };
 
   return (
-    <section
+    <button
       className={clsx(
         'bg-white p-3 border-[2px] shadow-md  rounded-lg font-normal cursor-pointer hover:scale-105 transition-all active:scale-100 text-balance',
         {
@@ -114,6 +116,6 @@ export default function QuestionCardShort({
         </div>
       </div>
       <div className='mt-3 text-[#3B434F] text-left text-wrap'>{question}</div>
-    </section>
+    </button>
   );
 }

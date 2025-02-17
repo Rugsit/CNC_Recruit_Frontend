@@ -7,7 +7,6 @@ import {
   UseFormTrigger,
 } from 'react-hook-form';
 
-import { useSession } from 'next-auth/react';
 import { FileImage } from '../icons';
 
 interface FileUploadProps {
@@ -21,8 +20,8 @@ interface FileUploadProps {
     alt: string;
   };
   existedFile: {
-    name: string,
-    url: string,
+    name: string;
+    url: string;
   };
   setValue: UseFormSetValue<any>;
   trigger: UseFormTrigger<any>;
@@ -59,6 +58,7 @@ export default function FileUpload({
     if (file) {
       setDisplayFileName(file.name);
       const objectUrl = URL.createObjectURL(file);
+
       setFileUrl(objectUrl);
       setValue(register.name, file);
       trigger(register.name);
@@ -79,38 +79,47 @@ export default function FileUpload({
     <section className='flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg'>
       <p className='text-base font-bold text-[#3B434F]'>{title}</p>
       <div className='flex flex-col gap-y-[15px] items-center py-10 bg-gray-100 border border-gray-300 rounded-lg'>
-        <Image alt={icon.alt} src={icon.src} />
+        <Image
+          alt={icon.alt}
+          src={icon.src}
+        />
         <p className='md:text-base text-sm px-2 text-center'>{desc}</p>
         <label id={register.name}>
           <input
             {...register}
             accept={accept}
             className='hidden'
+            disabled={isExpired}
             type='file'
             onChange={handleFileChange}
-            disabled={isExpired}
           />
           <Button
             as='span'
-            className={`${isExpired ? "hidden" : "block"} border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium`}
+            className={`${isExpired ? 'hidden' : 'block'} border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium`}
             variant='bordered'
           >
             เลือกไฟล์
           </Button>
         </label>
       </div>
-      {errorMessage && <p className='text-red-500 font-light'>{errorMessage}</p>}
+      {errorMessage && (
+        <p className='text-red-500 font-light'>{errorMessage}</p>
+      )}
       {displayFileName && (
-        <div
+        <button
           className='flex flex-row gap-x-5 py-3 px-4 items-center bg-[#3B434F] border border-gray-200 rounded-lg overflow-y-hidden transition-all hover:scale-95'
           style={{ cursor: 'pointer' }}
           onClick={handlePreview}
-        > 
-         <FileImage width={28} height={28} fill='#ffffff'/>
+        >
+          <FileImage
+            fill='#ffffff'
+            height={28}
+            width={28}
+          />
           <p className='text-base text-white cursor-pointer'>
             {displayFileName}
           </p>
-        </div>
+        </button>
       )}
     </section>
   );

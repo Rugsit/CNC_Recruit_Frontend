@@ -1,13 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from '@nextui-org/button';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import JudgeIcon from '@/public/cadidate-list/judge.svg';
 import TextField from '@/components/candidate-list/textfield';
 
 interface CandidateDetail {
@@ -50,10 +48,10 @@ export default function CandidateDetail() {
         },
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       setCandidateDetail(response.data);
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
@@ -106,18 +104,20 @@ export default function CandidateDetail() {
         <Image
           alt='profile-image'
           className='aspect-square rounded-full shadow-md object-cover'
-          width={300}
           height={300}
           src={`${candidateDetail?.imageUrl}`}
+          width={300}
         />
         <h3 className='text-xl md:text-3xl font-bold text-[#1d9fee]'>{`${candidateDetail?.name} ${candidateDetail?.lastname}`}</h3>
         <button
           className='w-full md:w-auto px-3 py-2 bg-primary rounded-lg shadown-sm hover: text-white text-md md:text-lg transition-all hover:scale-95'
-          onClick={
-            () => {
-              window.open(candidateDetail.transcriptUrl, '_blank', 'noopener,noreferrer');
-            }
-          }
+          onClick={() => {
+            window.open(
+              candidateDetail.transcriptUrl,
+              '_blank',
+              'noopener,noreferrer'
+            );
+          }}
         >
           เอกสารผลการเรียน
         </button>

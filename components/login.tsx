@@ -1,6 +1,5 @@
 'use client';
 import { Button } from '@nextui-org/button';
-import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -14,9 +13,11 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
+
       if (time > exp) {
         setIsLogin(false);
       } else {

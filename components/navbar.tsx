@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Button } from '@nextui-org/button';
 import { useSession } from 'next-auth/react';
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 import { MenuBar } from './icons';
 import Login from './login';
@@ -21,7 +21,6 @@ import Login from './login';
 import LoginPopup from '@/app/home/_local/loginPopup';
 import logo from '@/public/cnclogo.png';
 import { siteConfig } from '@/config/site';
-import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
   const [loginIsClosed, setLoginIsClosed] = useState(true);
@@ -37,11 +36,14 @@ export const Navbar = () => {
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
+
       return time > exp ? false : true;
     }
+
     return false;
   };
 
@@ -129,7 +131,7 @@ export const Navbar = () => {
               ))
             ) : (
               <div>
-                <p
+                <button
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
                     ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
@@ -137,6 +139,7 @@ export const Navbar = () => {
                   color='foreground'
                   onClick={async () => {
                     const loginStatus: boolean = await checkToken();
+
                     setIsLogin(loginStatus);
                     if (!loginStatus) {
                       setLoginIsClosed(false);
@@ -146,8 +149,8 @@ export const Navbar = () => {
                   }}
                 >
                   รายละเอียดผู้สมัคร
-                </p>
-                <p
+                </button>
+                <button
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
                     ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
@@ -155,6 +158,7 @@ export const Navbar = () => {
                   color='foreground'
                   onClick={async () => {
                     const loginStatus: boolean = await checkToken();
+
                     setIsLogin(loginStatus);
                     if (!loginStatus) {
                       setLoginIsClosed(false);
@@ -164,7 +168,7 @@ export const Navbar = () => {
                   }}
                 >
                   ตารางเวลา
-                </p>
+                </button>
               </div>
             )}
             <Login
@@ -222,7 +226,7 @@ export const Navbar = () => {
             ))
           ) : (
             <div className='flex flex-col gap-4'>
-              <p
+              <button
                 className={clsx(
                   linkStyles({ color: 'foreground' }),
                   ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
@@ -230,6 +234,7 @@ export const Navbar = () => {
                 color='foreground'
                 onClick={async () => {
                   const loginStatus: boolean = await checkToken();
+
                   setIsLogin(loginStatus);
                   if (!loginStatus) {
                     setLoginIsClosed(false);
@@ -239,8 +244,8 @@ export const Navbar = () => {
                 }}
               >
                 รายละเอียดผู้สมัคร
-              </p>
-              <p
+              </button>
+              <button
                 className={clsx(
                   linkStyles({ color: 'foreground' }),
                   ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
@@ -248,6 +253,7 @@ export const Navbar = () => {
                 color='foreground'
                 onClick={async () => {
                   const loginStatus: boolean = await checkToken();
+
                   setIsLogin(loginStatus);
                   if (!loginStatus) {
                     setLoginIsClosed(false);
@@ -257,7 +263,7 @@ export const Navbar = () => {
                 }}
               >
                 ตารางเวลา
-              </p>
+              </button>
             </div>
           )}
           <Login

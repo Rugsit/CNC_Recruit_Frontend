@@ -27,6 +27,7 @@
     }
   },
   "rules": {
+    "react/no-unknown-property": ["error", { "ignore": ["jsx"] }],
     "no-console": "warn",
     "react/prop-types": "off",
     "react/jsx-uses-react": "off",

@@ -7,6 +7,7 @@ const Map: React.FC = () => {
     <div className='grid grid-rows-[500px_auto] gap-8 p-[20px] min-[1024px]:flex '>
       <div className='w-full min-[1024px]:h-auto rounded-xl overflow-hidden shadow-xl border-4 border-[#42B5FC]'>
         <iframe
+          title='Google Map'
           allowFullScreen={false}
           className='rounded-xl'
           height='100%'

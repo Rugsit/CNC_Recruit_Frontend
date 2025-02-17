@@ -19,11 +19,10 @@ export default function Page() {
   const [year, setYear] = useState<number>(0);
   const { data, status } = useSession();
 
-
   const fetchCandidates = async (keyword: string, year: number) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/nisit/'  ,
+        'http://localhost:8000/nisit/',
         { keyword, year } as CandidateFilter,
         {
           headers: {
@@ -32,6 +31,7 @@ export default function Page() {
           },
         }
       );
+
       // console.log(response.data);
       setCandidates(response.data);
     } catch (e) {

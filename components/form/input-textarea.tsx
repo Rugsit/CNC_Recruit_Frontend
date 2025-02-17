@@ -22,14 +22,15 @@ export default function InputTextArea({
       <Textarea
         {...register}
         classNames={{
-          inputWrapper: 'placeholder-gray-300 bg-gray-100 border-1 border-gray-300 focus-within:border-blue-500 focus-within:border-2',
+          inputWrapper:
+            'placeholder-gray-300 bg-gray-100 border-1 border-gray-300 focus-within:border-blue-500 focus-within:border-2',
           input: 'placeholder:text-gray-400',
         }}
         id={register.name}
+        isDisabled={isExpired}
         maxRows={3}
         placeholder={desc}
         variant='faded'
-        isDisabled={isExpired}
       />
       {errorMessage && (
         <p className='text-red-500 font-light'>{errorMessage}</p>

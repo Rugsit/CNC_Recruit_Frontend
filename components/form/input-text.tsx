@@ -27,9 +27,9 @@ export default function InputText({
           input: 'placeholder:text-gray-400',
         }}
         id={register.name}
+        isDisabled={isExpired}
         placeholder={desc}
         variant='faded'
-        isDisabled={isExpired}
       />
       {errorMessage && (
         <p className='text-red-500 font-light'>{errorMessage}</p>
