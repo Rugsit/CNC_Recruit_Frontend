@@ -32,7 +32,7 @@ interface ApplicationForm {
   imageBucket: string
   imageName: string,
   imageUrl: string;
-  grade: number;
+  grade: string;
   expected: string;
   whyCnc: string;
   mbti: string;
@@ -49,12 +49,13 @@ interface ApplicationForm {
 
 export default function RegisterForm() {
   const [applicationForm, setApplicationForm] = useState<ApplicationForm | null>(null);
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [imageFile, setImageFile] = useState<File>();
   const [transcriptFile, setTranscriptFile] = useState<File>();
   const [errorDesc, setErrorDesc] = useState<string>("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง");
+  const [isExpired, setIsExpired] = useState<boolean>(false);
   const { data, status } = useSession();
   const router = useRouter();
 
@@ -72,7 +73,38 @@ export default function RegisterForm() {
     defaultValues: applicationForm || {},
   });
 
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+      if (time > exp) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const fetchingApplication = async () => {
+    const currentTimestamp = new Date().getTime();
+    const expiryTimestamp = new Date("2025-02-25").getTime();
+
+    if (currentTimestamp > expiryTimestamp) {
+      setIsExpired(true);
+    }
+
+    if (!await checkToken()) {
+      setIsSuccess(false);
+      setIsModalVisible(true);
+      setErrorDesc("กรุณาเข้าสู่ระบบก่อนสร้างหรือแก้ไขใบสมัคร")
+      setTimeout(() => {
+        router.push('/home');
+      }, 3000);
+    }
+
     try {
       const response = await axios.get('http://localhost:8000/nisit', {
         headers: {
@@ -99,14 +131,6 @@ export default function RegisterForm() {
 
   const onSubmit = async (formData: FormFields) => {
     try {
-      const currentTimestamp = new Date().getTime();
-      const expiryTimestamp = new Date("2025-02-25").getTime();
-
-      if (currentTimestamp > expiryTimestamp) {
-        setErrorDesc("สิ้นสุดเวลาสร้างและแก้ไขใบสมัคร");
-        throw new Error('Registration period has expired');
-      }
-
       let imageUrl = '', transcriptUrl = '';
       let isImageChange = false, isTranscriptChange = false;
       if (imageFile) {
@@ -162,12 +186,12 @@ export default function RegisterForm() {
         },
       });
       // console.log("Response:", response.data);
-      setSuccess(true);
-      setModalVisible(true);
+      setIsSuccess(true);
+      setIsModalVisible(true);
     } catch (error) {
       // console.error("Submission failed:", error);
-      setSuccess(false);
-      setModalVisible(true);
+      setIsSuccess(false);
+      setIsModalVisible(true);
     }
   };
 
@@ -205,22 +229,26 @@ export default function RegisterForm() {
                 errorMessage={errors.nisitId?.message}
                 register={register('nisitId')}
                 title='รหัสนิสิต'
+                isExpired={isExpired}
               />
               <InputText
                 desc='(ไม่ต้องมีคำนำหน้า)'
                 errorMessage={errors.name?.message}
                 register={register('name')}
                 title='ชื่อจริง'
+                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.lastname?.message}
                 register={register('lastname')}
                 title='นามสกุล'
+                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.nickname?.message}
                 register={register('nickname')}
                 title='ชื่อเล่น'
+                isExpired={isExpired}
               />
               <SelectInput
                 options={[
@@ -229,6 +257,7 @@ export default function RegisterForm() {
                 ]}
                 register={register('typeOfDpm')}
                 title='ภาค'
+                isExpired={isExpired}
               />
               <SelectInput
                 options={[{ value: 83, label: '83' }, { value: 84, label: '84' }]}
@@ -236,69 +265,82 @@ export default function RegisterForm() {
                   valueAsNumber: true,
                 })}
                 title='KU รุ่นที่'
+                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.grade?.message}
                 register={register('grade')}
                 title='เกรดเฉลี่ยรวม'
+                isExpired={isExpired}
               />
               <InputText
                 desc='(หอใน, หอนอก, บ้าน)'
                 errorMessage={errors.currentLiving?.message}
                 register={register('currentLiving')}
                 title='ที่อยู่อาศัยปัจจุบัน'
+                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.mbti?.message}
                 register={register('mbti')}
                 title='MBTI'
+                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.phoneNumber?.message}
                 register={register('phoneNumber')}
                 title='เบอร์โทรศัพท์'
+                isExpired={isExpired}
               />
               <InputTextArea
                 desc='Facebook, Instagram, LineID หรือ Discord'
                 errorMessage={errors.socialContact?.message}
                 register={register('socialContact')}
                 title='บัญชีโซเชียล'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.clubs?.message}
                 register={register('clubs')}
                 title='ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 desc='(ผม/หนู สนใจในเรื่อง UX/UI, Cloud, AI, WebDev, MobileDev, etc.)'
                 errorMessage={errors.interests?.message}
                 register={register('interests')}
                 title='มีความสนใจในเรื่องอะไร?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.hobbies?.message}
                 register={register('hobbies')}
                 title='งานอดิเรกที่ชอบทำ?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.whyCnc?.message}
                 register={register('whyCnc')}
                 title='ทำไมถึงสมัคร CNC?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.expected?.message}
                 register={register('expected')}
                 title='มีความคาดหวังอย่างไรกับ CNC?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.projects?.message}
                 register={register('projects')}
                 title='โปรเจ็คที่เคยทำมีอะไรบ้าง?'
+                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.tools?.message}
                 register={register('tools')}
                 title='Tools, Frameworks, Softwares ที่เคยใช้มีอะไรบ้าง?'
+                isExpired={isExpired}
               />
               <FileUpload
                 title='อัพโหลดรูปภาพ'
@@ -311,6 +353,7 @@ export default function RegisterForm() {
                 setValue={setValue}
                 trigger={trigger}
                 setFile={setImageFile}
+                isExpired={isExpired}
               />
               <FileUpload
                 title='อัพโหลดใบรับรองผลการเรียน'
@@ -323,11 +366,12 @@ export default function RegisterForm() {
                 setValue={setValue}
                 trigger={trigger}
                 setFile={setTranscriptFile}
+                isExpired={isExpired}
               />
             </div>
             <div className='flex flex-row gap-x-4 mb-5'>
               <Button
-                className='grow border border-[#42B5FC] md:text-xl text-base text-[#42B5FC] font-medium'
+                className={`${isExpired ? "hidden" : "block"} grow border border-[#42B5FC] md:text-xl text-base text-[#42B5FC] font-medium`}
                 disabled={isSubmitting}
                 type='reset'
                 variant='bordered'
@@ -336,7 +380,7 @@ export default function RegisterForm() {
                 ยกเลิก
               </Button>
               <Button
-                className='grow bg-[#42B5FC] md:text-xl text-base text-white font-medium'
+                className={`${isExpired ? "hidden" : "block"} grow bg-[#42B5FC] md:text-xl text-base text-white font-medium`}
                 disabled={isSubmitting}
                 type='submit'
                 variant='shadow'
@@ -369,7 +413,7 @@ export default function RegisterForm() {
             isSuccess={isSuccess}
             isVisible={isModalVisible}
             onClose={() => {
-              setModalVisible(false);
+              setIsModalVisible(false);
               if (isSuccess) router.push('/home');
             }}
           />

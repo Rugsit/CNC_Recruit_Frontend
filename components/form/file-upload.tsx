@@ -27,6 +27,7 @@ interface FileUploadProps {
   setValue: UseFormSetValue<any>;
   trigger: UseFormTrigger<any>;
   setFile?: (file: File) => void;
+  isExpired: boolean;
 }
 
 export default function FileUpload({
@@ -40,6 +41,7 @@ export default function FileUpload({
   trigger,
   existedFile,
   setFile,
+  isExpired,
 }: FileUploadProps) {
   const [displayFileName, setDisplayFileName] = useState<string>('');
   const [fileUrl, setFileUrl] = useState<string>('');
@@ -86,10 +88,11 @@ export default function FileUpload({
             className='hidden'
             type='file'
             onChange={handleFileChange}
+            disabled={isExpired}
           />
           <Button
             as='span'
-            className='border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium'
+            className={`${isExpired ? "hidden" : "block"} border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium`}
             variant='bordered'
           >
             เลือกไฟล์

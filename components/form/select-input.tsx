@@ -2,12 +2,14 @@ interface SelectInputProps {
   title: string;
   options: { value: number | string; label: string }[];
   register: any;
+  isExpired: boolean;
 }
 
 export default function SelectInput({
   title,
   options,
   register,
+  isExpired,
 }: SelectInputProps) {
   return (
     <div className='flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg'>
@@ -16,6 +18,7 @@ export default function SelectInput({
         {...register}
         className='font-normal appearance-none bg-gray-100 border-1 border-gray-300 rounded-xl px-3 py-2 w-full focus-within:border-blue-500 focus-within:border-2'
         id={register.name}
+        disabled={isExpired}
       >
         {options.map((option) => (
           <option
