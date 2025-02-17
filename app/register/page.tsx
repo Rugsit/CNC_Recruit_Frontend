@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
+
 import FormModal from '@/components/form/form-modal';
 import SelectInput from '@/components/form/select-input';
 import { formSchema, FormFields } from '@/app/lib/validations/schema';
@@ -29,8 +30,8 @@ interface ApplicationForm {
   socialContact: string;
   phoneNumber: string;
   currentLiving: string;
-  imageBucket: string
-  imageName: string,
+  imageBucket: string;
+  imageName: string;
   imageUrl: string;
   grade: string;
   expected: string;
@@ -48,13 +49,16 @@ interface ApplicationForm {
 }
 
 export default function RegisterForm() {
-  const [applicationForm, setApplicationForm] = useState<ApplicationForm | null>(null);
+  const [applicationForm, setApplicationForm] =
+    useState<ApplicationForm | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [imageFile, setImageFile] = useState<File>();
   const [transcriptFile, setTranscriptFile] = useState<File>();
-  const [errorDesc, setErrorDesc] = useState<string>("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง");
+  const [errorDesc, setErrorDesc] = useState<string>(
+    'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง'
+  );
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const { data, status } = useSession();
   const router = useRouter();
@@ -76,30 +80,33 @@ export default function RegisterForm() {
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
+
       if (time > exp) {
         return false;
       } else {
         return true;
       }
     }
+
     return false;
   };
 
   const fetchingApplication = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date("2025-02-25").getTime();
+    const expiryTimestamp = new Date('2025-02-25').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
     }
 
-    if (!await checkToken()) {
+    if (!(await checkToken())) {
       setIsSuccess(false);
       setIsModalVisible(true);
-      setErrorDesc("กรุณาเข้าสู่ระบบก่อนสร้างหรือแก้ไขใบสมัคร")
+      setErrorDesc('กรุณาเข้าสู่ระบบก่อนสร้างหรือแก้ไขใบสมัคร');
       setTimeout(() => {
         router.push('/home');
       }, 3000);
@@ -112,6 +119,7 @@ export default function RegisterForm() {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
+
       // console.log(response.data);
       setApplicationForm(response.data);
       reset(response.data);
@@ -131,11 +139,15 @@ export default function RegisterForm() {
 
   const onSubmit = async (formData: FormFields) => {
     try {
-      let imageUrl = '', transcriptUrl = '';
-      let isImageChange = false, isTranscriptChange = false;
+      let imageUrl = '',
+        transcriptUrl = '';
+      let isImageChange = false,
+        isTranscriptChange = false;
+
       if (imageFile) {
         isImageChange = true;
-        const imageResponse = await axios.post('http://localhost:8000/upload',
+        const imageResponse = await axios.post(
+          'http://localhost:8000/upload',
           { file: imageFile },
           {
             headers: {
@@ -144,11 +156,13 @@ export default function RegisterForm() {
             },
           }
         );
+
         imageUrl = imageResponse.data;
       }
       if (transcriptFile) {
         isTranscriptChange = true;
-        const transcriptResponse = await axios.post('http://localhost:8000/upload',
+        const transcriptResponse = await axios.post(
+          'http://localhost:8000/upload',
           { file: transcriptFile },
           {
             headers: {
@@ -157,6 +171,7 @@ export default function RegisterForm() {
             },
           }
         );
+
         transcriptUrl = transcriptResponse.data;
       }
       // console.log(`Image: ${imageUrl}\nTranscript: ${transcriptUrl}`)
@@ -185,6 +200,7 @@ export default function RegisterForm() {
           Authorization: `Bearer ${data?.backendToken}`,
         },
       });
+
       // console.log("Response:", response.data);
       setIsSuccess(true);
       setIsModalVisible(true);
@@ -227,151 +243,160 @@ export default function RegisterForm() {
             <div className='flex flex-col gap-y-5'>
               <InputText
                 errorMessage={errors.nisitId?.message}
+                isExpired={isExpired}
                 register={register('nisitId')}
                 title='รหัสนิสิต'
-                isExpired={isExpired}
               />
               <InputText
                 desc='(ไม่ต้องมีคำนำหน้า)'
                 errorMessage={errors.name?.message}
+                isExpired={isExpired}
                 register={register('name')}
                 title='ชื่อจริง'
-                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.lastname?.message}
+                isExpired={isExpired}
                 register={register('lastname')}
                 title='นามสกุล'
-                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.nickname?.message}
+                isExpired={isExpired}
                 register={register('nickname')}
                 title='ชื่อเล่น'
-                isExpired={isExpired}
               />
               <SelectInput
+                isExpired={isExpired}
                 options={[
                   { value: 'normal', label: 'ปกติ' },
                   { value: 'special', label: 'พิเศษ' },
                 ]}
                 register={register('typeOfDpm')}
                 title='ภาค'
-                isExpired={isExpired}
               />
               <SelectInput
-                options={[{ value: 83, label: '83' }, { value: 84, label: '84' }]}
+                isExpired={isExpired}
+                options={[
+                  { value: 83, label: '83' },
+                  { value: 84, label: '84' },
+                ]}
                 register={register('nisitYearParticipated', {
                   valueAsNumber: true,
                 })}
                 title='KU รุ่นที่'
-                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.grade?.message}
+                isExpired={isExpired}
                 register={register('grade')}
                 title='เกรดเฉลี่ยรวม'
-                isExpired={isExpired}
               />
               <InputText
                 desc='(หอใน, หอนอก, บ้าน)'
                 errorMessage={errors.currentLiving?.message}
+                isExpired={isExpired}
                 register={register('currentLiving')}
                 title='ที่อยู่อาศัยปัจจุบัน'
-                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.mbti?.message}
+                isExpired={isExpired}
                 register={register('mbti')}
                 title='MBTI'
-                isExpired={isExpired}
               />
               <InputText
                 errorMessage={errors.phoneNumber?.message}
+                isExpired={isExpired}
                 register={register('phoneNumber')}
                 title='เบอร์โทรศัพท์'
-                isExpired={isExpired}
               />
               <InputTextArea
                 desc='Facebook, Instagram, LineID หรือ Discord'
                 errorMessage={errors.socialContact?.message}
+                isExpired={isExpired}
                 register={register('socialContact')}
                 title='บัญชีโซเชียล'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.clubs?.message}
+                isExpired={isExpired}
                 register={register('clubs')}
                 title='ตอนนี้เป็นสมาชิกชมรม/แลป/สโมสรนิสิตอื่นๆหรือไม่?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 desc='(ผม/หนู สนใจในเรื่อง UX/UI, Cloud, AI, WebDev, MobileDev, etc.)'
                 errorMessage={errors.interests?.message}
+                isExpired={isExpired}
                 register={register('interests')}
                 title='มีความสนใจในเรื่องอะไร?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.hobbies?.message}
+                isExpired={isExpired}
                 register={register('hobbies')}
                 title='งานอดิเรกที่ชอบทำ?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.whyCnc?.message}
+                isExpired={isExpired}
                 register={register('whyCnc')}
                 title='ทำไมถึงสมัคร CNC?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.expected?.message}
+                isExpired={isExpired}
                 register={register('expected')}
                 title='มีความคาดหวังอย่างไรกับ CNC?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.projects?.message}
+                isExpired={isExpired}
                 register={register('projects')}
                 title='โปรเจ็คที่เคยทำมีอะไรบ้าง?'
-                isExpired={isExpired}
               />
               <InputTextArea
                 errorMessage={errors.tools?.message}
+                isExpired={isExpired}
                 register={register('tools')}
                 title='Tools, Frameworks, Softwares ที่เคยใช้มีอะไรบ้าง?'
-                isExpired={isExpired}
               />
               <FileUpload
-                title='อัพโหลดรูปภาพ'
-                desc='JPEG, JPG หรือ PNG ขนาดไม่เกิน 6MB เห็นใบหน้าชัดเจน'
                 accept='.png, .jpg, .jpeg'
+                desc='JPEG, JPG หรือ PNG ขนาดไม่เกิน 6MB เห็นใบหน้าชัดเจน'
                 errorMessage={errors.imageUrl?.message?.toString()}
+                existedFile={{
+                  name: applicationForm?.imageName || '',
+                  url: applicationForm?.imageUrl || '',
+                }}
                 icon={{ src: UploadImageIcon, alt: 'upload-image-icon' }}
-                existedFile={{ name: applicationForm?.imageName || '', url: applicationForm?.imageUrl || '' }}
-                register={register('imageUrl')}
-                setValue={setValue}
-                trigger={trigger}
-                setFile={setImageFile}
                 isExpired={isExpired}
+                register={register('imageUrl')}
+                setFile={setImageFile}
+                setValue={setValue}
+                title='อัพโหลดรูปภาพ'
+                trigger={trigger}
               />
               <FileUpload
-                title='อัพโหลดใบรับรองผลการเรียน'
-                desc='PDF ขนาดไม่เกิน 6MB'
                 accept='.pdf'
+                desc='PDF ขนาดไม่เกิน 6MB'
                 errorMessage={errors.transcriptUrl?.message?.toString()}
+                existedFile={{
+                  name: applicationForm?.transcriptName || '',
+                  url: applicationForm?.transcriptUrl || '',
+                }}
                 icon={{ src: UploadFileIcon, alt: 'upload-file-icon' }}
-                existedFile={{ name: applicationForm?.transcriptName || '', url: applicationForm?.transcriptUrl || '' }}
-                register={register('transcriptUrl')}
-                setValue={setValue}
-                trigger={trigger}
-                setFile={setTranscriptFile}
                 isExpired={isExpired}
+                register={register('transcriptUrl')}
+                setFile={setTranscriptFile}
+                setValue={setValue}
+                title='อัพโหลดใบรับรองผลการเรียน'
+                trigger={trigger}
               />
             </div>
             <div className='flex flex-row gap-x-4 mb-5'>
               <Button
-                className={`${isExpired ? "hidden" : "block"} grow border border-[#42B5FC] md:text-xl text-base text-[#42B5FC] font-medium`}
+                className={`${isExpired ? 'hidden' : 'block'} grow border border-[#42B5FC] md:text-xl text-base text-[#42B5FC] font-medium`}
                 disabled={isSubmitting}
                 type='reset'
                 variant='bordered'
@@ -380,12 +405,12 @@ export default function RegisterForm() {
                 ยกเลิก
               </Button>
               <Button
-                className={`${isExpired ? "hidden" : "block"} grow bg-[#42B5FC] md:text-xl text-base text-white font-medium`}
+                className={`${isExpired ? 'hidden' : 'block'} grow bg-[#42B5FC] md:text-xl text-base text-white font-medium`}
                 disabled={isSubmitting}
                 type='submit'
                 variant='shadow'
               >
-                {applicationForm ? "แก้ไขใบสมัคร" : "ส่งใบสมัคร"}
+                {applicationForm ? 'แก้ไขใบสมัคร' : 'ส่งใบสมัคร'}
               </Button>
             </div>
           </div>
@@ -400,18 +425,18 @@ export default function RegisterForm() {
           )}
         >
           <FormModal
-            title={
-              isSuccess
-                ? applicationForm ? 'แก้ไขใบสมัครเสร็จสิ้น' : 'สร้างใบสมัครเสร็จสิ้น'
-                : 'สร้างใบสมัครไม่สำเร็จ'
-            }
             desc={
-              isSuccess
-                ? 'โปรดติดตามและลงเวลาสัมภาษณ์ที่หน้าหลัก'
-                : errorDesc
+              isSuccess ? 'โปรดติดตามและลงเวลาสัมภาษณ์ที่หน้าหลัก' : errorDesc
             }
             isSuccess={isSuccess}
             isVisible={isModalVisible}
+            title={
+              isSuccess
+                ? applicationForm
+                  ? 'แก้ไขใบสมัครเสร็จสิ้น'
+                  : 'สร้างใบสมัครเสร็จสิ้น'
+                : 'สร้างใบสมัครไม่สำเร็จ'
+            }
             onClose={() => {
               setIsModalVisible(false);
               if (isSuccess) router.push('/home');

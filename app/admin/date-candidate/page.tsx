@@ -1,5 +1,4 @@
 'use client';
-import { CheckMark } from '@/components/icons';
 import { Button } from '@nextui-org/button';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -7,6 +6,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
+
+import { CheckMark } from '@/components/icons';
 import 'react-calendar/dist/Calendar.css';
 
 type ValuePiece = Date | null;
@@ -43,6 +44,7 @@ export default function CandidateInterview() {
 
   const tileDisabled = ({ date }: { date: Date }) => {
     const formattedDate = date.toLocaleDateString('en-CA'); // ใช้ฟอร์แมต 'YYYY-MM-DD'
+
     return !INTERVIEW_DATES.includes(formattedDate);
   };
 
@@ -57,6 +59,7 @@ export default function CandidateInterview() {
           },
         }
       );
+
       await fetchData();
     } catch (e) {}
   };
@@ -102,8 +105,10 @@ export default function CandidateInterview() {
       return selectedDate.getDate();
     } else if (Array.isArray(selectedDate)) {
       const [start, end] = selectedDate;
+
       return start instanceof Date ? start.getDate() : null;
     }
+
     return null;
   };
 
@@ -126,9 +131,9 @@ export default function CandidateInterview() {
       <div className='max-w-[1500px] w-full mx-auto p-[20px] lg:grid lg:grid-cols-2 lg:gap-4'>
         <div className='calendar-section'>
           <Calendar
-            onChange={handleDateChange}
-            value={selectedDate}
             tileDisabled={tileDisabled}
+            value={selectedDate}
+            onChange={handleDateChange}
           />
         </div>
 
@@ -173,15 +178,16 @@ export default function CandidateInterview() {
                           {key}
                         </p>
                         <Button
+                          isIconOnly
+                          className='bg-transparent hover:scale-95 transition-all rounded-full'
                           isDisabled={
                             timeSlotCandidate.get(key)?.[0].interviewStatus ==
                             'completed'
                           }
-                          isIconOnly
-                          className='bg-transparent hover:scale-95 transition-all rounded-full'
                           onClick={() => {
                             const interviewId =
                               timeSlotCandidate.get(key)?.[0].interviewId;
+
                             if (interviewId) {
                               clearInterview(interviewId);
                             }
@@ -196,17 +202,17 @@ export default function CandidateInterview() {
                           ?.map((item: participants, index: number) => {
                             return (
                               <button
-                                className='bg-white rounded-lg p-4 hover:scale-95 transition-all'
                                 key={item.id}
+                                className='bg-white rounded-lg p-4 hover:scale-95 transition-all'
                               >
                                 <Link
-                                  href={`/admin/candidate-list/${item.nisitInfoId}`}
                                   className='flex flex-col justify-center items-center gap-3'
+                                  href={`/admin/candidate-list/${item.nisitInfoId}`}
                                 >
                                   <img
+                                    alt='use_image'
                                     className='w-full max-w-[100px] h-[100px] rounded-full object-cover'
                                     src={item.pictureURL}
-                                    alt='use_image'
                                   />
                                   <p className='text-primary'>
                                     {item.name} ({item.nickName}) ภาค

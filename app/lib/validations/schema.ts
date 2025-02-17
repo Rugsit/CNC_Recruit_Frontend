@@ -19,11 +19,9 @@ export const formSchema = z.object({
     .string()
     .regex(/^\d{10}$/, { message: '*กรุณาระบุเบอร์โทรศัพท์ 10 หลัก' }),
   currentLiving: z.string().min(1, { message: '*กรุณาระบุที่อยู่อาศัย' }),
-  grade: z
-    .string()
-    .regex(/^(?:[0-3](?:\.\d{1,2})?|4(?:\.0{1,2})?)$/, {
-      message: 'เกรดต้องอยู่ระหว่าง 0.00 - 4.00',
-    }),
+  grade: z.string().regex(/^(?:[0-3](?:\.\d{1,2})?|4(?:\.0{1,2})?)$/, {
+    message: 'เกรดต้องอยู่ระหว่าง 0.00 - 4.00',
+  }),
   expected: z.string().min(1, { message: '*กรุณาระบุความคาดหวัง' }),
   whyCnc: z.string().min(1, { message: '*กรุณาระบุเหตุผล' }),
   mbti: z.string().length(4, { message: '*กรุณาระบุตัวอักษร 4 ตัว' }),

@@ -77,7 +77,9 @@ const FormModal: React.FC<FormModalProps> = ({
             </svg>
           )}
         </div>
-        <p className='font-normal md:text-base text-sm text-center text-gray-500'>{desc}</p>
+        <p className='font-normal md:text-base text-sm text-center text-gray-500'>
+          {desc}
+        </p>
       </div>
     </div>
   );

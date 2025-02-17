@@ -1,29 +1,38 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+
 import CandidateDetail from '@/app/admin/candidate-list/[id]/candidate-detail/page';
 import QuestionKnowledge from '@/app/admin/candidate-list/[id]/question-knowledge/page';
 import NavbarCandidate from '@/components/candidate-list/navbar-candidate';
 import { CheckMark, XMark } from '@/components/icons';
-import clsx from 'clsx';
+
+export interface StatusPopUpProps {
+  type: string;
+  status: boolean;
+  isShow: boolean;
+};
 
 export default function CandidateListId() {
   let timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [statusPopup, setStatusPopup] = useState({
+  const [statusPopup, setStatusPopup] = useState<StatusPopUpProps>({
     type: 'create',
     status: true,
     isShow: false,
   });
   const [pageIndex, setPageIndex] = useState(0);
   const CandidatePages = [
-    <CandidateDetail />,
+    <CandidateDetail key={0} />,
     <QuestionKnowledge
       currentIndex={pageIndex}
       setStatusPopup={setStatusPopup}
+      key={1}
     />,
     <QuestionKnowledge
       currentIndex={pageIndex}
       setStatusPopup={setStatusPopup}
+      key={2}
     />,
   ];
   const onChangeIndex = (index: number) => {

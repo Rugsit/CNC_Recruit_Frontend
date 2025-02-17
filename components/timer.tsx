@@ -1,13 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   id: number;
@@ -110,11 +108,14 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
+
       return time > exp ? false : true;
     }
+
     return false;
   };
 
@@ -224,6 +225,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
             className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
             onClick={async () => {
               const loginStatus = await checkToken();
+
               setIsLogin(loginStatus);
               if (!loginStatus) {
                 setLoginIsClosed(false);
@@ -240,6 +242,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
             className='md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white'
             onClick={async () => {
               const loginStatus = await checkToken();
+
               setIsLogin(loginStatus);
               if (!loginStatus) {
                 setLoginIsClosed(false);
