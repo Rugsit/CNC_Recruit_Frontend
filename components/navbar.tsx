@@ -19,23 +19,36 @@ import { MenuBar } from './icons';
 import Login from './login';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
-import logo from '@/public/logo.svg';
+import logo from '@/public/cnclogo.png';
 import { siteConfig } from '@/config/site';
+import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
   const [loginIsClosed, setLoginIsClosed] = useState(true);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [role, setRole] = useState('candidate');
   const { data, status } = useSession();
+  const rounter = useRouter();
   const closeLoginPopup = () => {
     setLoginIsClosed(true);
+  };
+
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+      return time > exp ? false : true;
+    }
+    return false;
   };
 
   const fetchRole = async () => {
     if (data?.user.role) {
       setRole(data?.user.role);
     }
-    // console.log(data);
   };
 
   useEffect(() => {
@@ -90,7 +103,7 @@ export const Navbar = () => {
             >
               <Image
                 alt='cnc logo'
-                className='mt-3'
+                className=''
                 src={logo}
                 width={100}
               />
@@ -116,26 +129,42 @@ export const Navbar = () => {
               ))
             ) : (
               <div>
-                <Link
+                <p
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
-                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
                   )}
                   color='foreground'
-                  href={'/admin/candidate-list'}
+                  onClick={async () => {
+                    const loginStatus: boolean = await checkToken();
+                    setIsLogin(loginStatus);
+                    if (!loginStatus) {
+                      setLoginIsClosed(false);
+                    } else {
+                      rounter.push('/admin/candidate-list');
+                    }
+                  }}
                 >
                   รายละเอียดผู้สมัคร
-                </Link>
-                <Link
+                </p>
+                <p
                   className={clsx(
                     linkStyles({ color: 'foreground' }),
-                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                    ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
                   )}
                   color='foreground'
-                  href={'/admin/date-candidate'}
+                  onClick={async () => {
+                    const loginStatus: boolean = await checkToken();
+                    setIsLogin(loginStatus);
+                    if (!loginStatus) {
+                      setLoginIsClosed(false);
+                    } else {
+                      rounter.push('/admin/date-candidate');
+                    }
+                  }}
                 >
                   ตารางเวลา
-                </Link>
+                </p>
               </div>
             )}
             <Login
@@ -192,17 +221,43 @@ export const Navbar = () => {
               </div>
             ))
           ) : (
-            <div>
-              <Link
+            <div className='flex flex-col gap-4'>
+              <p
                 className={clsx(
                   linkStyles({ color: 'foreground' }),
-                  ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all'
+                  ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
                 )}
                 color='foreground'
-                href={'/admin/candidate-list'}
+                onClick={async () => {
+                  const loginStatus: boolean = await checkToken();
+                  setIsLogin(loginStatus);
+                  if (!loginStatus) {
+                    setLoginIsClosed(false);
+                  } else {
+                    rounter.push('/admin/candidate-list');
+                  }
+                }}
               >
                 รายละเอียดผู้สมัคร
-              </Link>
+              </p>
+              <p
+                className={clsx(
+                  linkStyles({ color: 'foreground' }),
+                  ' font-sans-thai data-[active=true]:text-primary data-[active=true]:font-medium m-[1rem] hover:text-[#42B5FC] transition-all cursor-pointer'
+                )}
+                color='foreground'
+                onClick={async () => {
+                  const loginStatus: boolean = await checkToken();
+                  setIsLogin(loginStatus);
+                  if (!loginStatus) {
+                    setLoginIsClosed(false);
+                  } else {
+                    rounter.push('/admin/date-candidate');
+                  }
+                }}
+              >
+                ตารางเวลา
+              </p>
             </div>
           )}
           <Login

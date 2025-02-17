@@ -36,9 +36,9 @@ export default function Login({ onOpenPopup: openPopup }: LoginProps) {
       <Button
         className={`justify-center font-sans-thai font-semibold p-6 shadow-[rgba(29,159,238,255)_0px_0px_10px_0px] hover:scale-95  focus:outline-none `}
         color='primary'
-        isDisabled={false}
+        isDisabled={isLogin}
         onClick={() => {
-          if (true) {
+          if (!isLogin) {
             openPopup();
           }
         }}

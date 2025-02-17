@@ -57,7 +57,7 @@ export default function CandidateInterview() {
           },
         }
       );
-      setTimeSlotCandidate(new Map());
+      await fetchData();
     } catch (e) {}
   };
 
@@ -91,7 +91,7 @@ export default function CandidateInterview() {
         }
         newTimeSlotMap.get(item.label)?.push(item);
       });
-  
+
       setTimeSlotCandidate(newTimeSlotMap);
       console.log(timeSlotCandidate);
     } catch (e) {}
