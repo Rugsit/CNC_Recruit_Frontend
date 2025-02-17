@@ -6,6 +6,7 @@ interface InputTextAreaProps {
   desc?: string;
   register: UseFormRegisterReturn;
   errorMessage: string | undefined;
+  isExpired: boolean;
 }
 
 export default function InputTextArea({
@@ -13,6 +14,7 @@ export default function InputTextArea({
   desc,
   register,
   errorMessage,
+  isExpired,
 }: InputTextAreaProps) {
   return (
     <div className='flex flex-col gap-y-[8px] md:px-10 md:py-5 px-5 py-4 border border-gray-200 rounded-lg'>
@@ -27,6 +29,7 @@ export default function InputTextArea({
         maxRows={3}
         placeholder={desc}
         variant='faded'
+        isDisabled={isExpired}
       />
       {errorMessage && (
         <p className='text-red-500 font-light'>{errorMessage}</p>

@@ -8,6 +8,7 @@ import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
 import DateModal from './_local/date-modal';
+import router, { useRouter } from 'next/navigation';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -50,6 +51,9 @@ export default function InterviewCalendar() {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [reservationTime, setReservationTime] = useState<ReservationTime | null>(null);
+  const [isExpired, setIsExpired] = useState<boolean>(false);
+  const [errorDesc, setErrorDesc] = useState<string>("เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง");
+  const router = useRouter();
 
   // console.log(`Token = ${data?.backendToken}`); // Token Debug
 
@@ -57,8 +61,40 @@ export default function InterviewCalendar() {
     setSelectedDate(value);
   };
 
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+      if (time > exp) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // GET time slots
   const fetchDataCalendar = async () => {
+    const currentTimestamp = new Date().getTime();
+    const expiryTimestamp = new Date("2025-02-25").getTime();
+
+    if (currentTimestamp > expiryTimestamp) {
+      setIsExpired(true);
+    }
+
+    if (!await checkToken()) {
+      setIsSuccess(false);
+      setIsModalVisible(true);
+      setErrorDesc("กรุณาเข้าสู่ระบบก่อนลงเวลาหรือแก้ไขเวลาสัมภาษณ์")
+      setTimeout(() => {
+        
+        router.push('/home');
+      }, 3000);
+    }
+
     try {
       const response = await axios.get('http://localhost:8000/interview', {
         headers: {
@@ -313,7 +349,7 @@ export default function InterviewCalendar() {
           desc={
             isSuccess
               ? (reservationTime?.interviewId ? 'ขอให้โชคดีกับการสัมภาษณ์ครับผม' : 'กรุณาเลือกเวลาสัมภาษณ์ใหม่')
-              : 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง'
+              : errorDesc
           }
           isSuccess={isSuccess}
           isVisible={isModalVisible}
