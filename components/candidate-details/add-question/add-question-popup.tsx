@@ -162,7 +162,12 @@ export default function AddQuestion({
         className='flex flex-col'
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label htmlFor="question" className='text-lg mb-3'>คำถาม</label>
+        <label
+          className='text-lg mb-3'
+          htmlFor='question'
+        >
+          คำถาม
+        </label>
         <textarea
           id='question'
           {...register('question', {
@@ -175,7 +180,12 @@ export default function AddQuestion({
             {'*' + errors.question.message}
           </p>
         )}
-        <label htmlFor="expected_ans" className='text-lg mt-3 mb-3'>คำตอบที่คาดหวัง</label>
+        <label
+          className='text-lg mt-3 mb-3'
+          htmlFor='expected_ans'
+        >
+          คำตอบที่คาดหวัง
+        </label>
         <textarea
           id='expected_ans'
           {...register('expected_ans', {

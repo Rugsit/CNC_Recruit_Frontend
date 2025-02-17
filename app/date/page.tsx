@@ -83,10 +83,9 @@ export default function InterviewCalendar() {
     return false;
   };
 
-
   // GET time slots
   const fetchDataCalendar = async () => {
-    const currentTimestamp = new Date("2025-02-25").getTime();
+    const currentTimestamp = new Date('2025-02-25').getTime();
     const expiryTimestamp = new Date('2025-02-24T23:59:59').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
@@ -328,7 +327,6 @@ export default function InterviewCalendar() {
       </div>
       {selectedTimeSlot && (
         <button
-          disabled={isExpired}
           className={clsx(
             'w-full py-3 border-2 rounded-md shadow-lg transition-all hover:scale-95',
             {
@@ -338,6 +336,7 @@ export default function InterviewCalendar() {
                 reservationTime,
             }
           )}
+          disabled={isExpired}
           onClick={() =>
             handleConfirm(reservationTime?.interviewId !== undefined)
           }

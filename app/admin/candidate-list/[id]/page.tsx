@@ -12,7 +12,7 @@ export interface StatusPopUpProps {
   type: string;
   status: boolean;
   isShow: boolean;
-};
+}
 
 export default function CandidateListId() {
   let timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -25,14 +25,14 @@ export default function CandidateListId() {
   const CandidatePages = [
     <CandidateDetail key={0} />,
     <QuestionKnowledge
+      key={1}
       currentIndex={pageIndex}
       setStatusPopup={setStatusPopup}
-      key={1}
     />,
     <QuestionKnowledge
+      key={2}
       currentIndex={pageIndex}
       setStatusPopup={setStatusPopup}
-      key={2}
     />,
   ];
   const onChangeIndex = (index: number) => {

@@ -5,9 +5,11 @@ import axios from 'axios';
 import { Button } from '@nextui-org/button';
 import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import QuestionCardShort from './question-card-short';
-import { XMark } from '@/components/icons';
 import { SearchIcon } from 'lucide-react';
+
+import QuestionCardShort from './question-card-short';
+
+import { XMark } from '@/components/icons';
 import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
 
 type FormField = {
