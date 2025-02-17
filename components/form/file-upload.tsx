@@ -95,7 +95,7 @@ export default function FileUpload({
           />
           <Button
             as='span'
-            className={`${isExpired ? 'hidden' : 'block'} border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium`}
+            className={`${isExpired ? 'hidden' : 'flex'} border bg-white border-[#3B434F] md:text-base text-sm text-[#3B434F] font-medium`}
             variant='bordered'
           >
             เลือกไฟล์

@@ -20,7 +20,7 @@ export default function HomeDetails() {
         <header className='text-[60px]  text-white font-bold  text-center xl:text-start xl:text-[80px]'>
           LAB CNC
         </header>
-        <section className='mt-3 xl:text-[20px]/9 text-[16px]/9 text-white bg-gradient-to-b from-primary to-[#0374BA]  p-8 rounded-[31] grow font-normal border-white shadow-lg border-[3px]'>
+        <section className='mt-3 xl:text-[20px]/9 text-[16px]/9 text-white bg-gradient-to-b from-primary to-[#0374BA]  p-8 rounded-xl grow font-normal border-white shadow-lg border-[3px]'>
           <p className='font-bold '>
             ห้องปฏิบัติการและวิจัย CNC สังกัดภาควิชาวิทยาการคอมพิวเตอร์
             คณะวิทยาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์ บางเขน

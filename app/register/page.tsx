@@ -21,7 +21,7 @@ import InputTextArea from '@/components/form/input-textarea';
 import FileUpload from '@/components/form/file-upload';
 import InputText from '@/components/form/input-text';
 
-interface ApplicationForm {
+export interface ApplicationForm {
   nisitId: string;
   name: string;
   lastname: string;
@@ -97,16 +97,16 @@ export default function RegisterForm() {
 
   const fetchingApplication = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date('2025-02-25').getTime();
+    const expiryTimestamp = new Date('2025-02-21T23:59:00').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
     }
 
     if (!(await checkToken())) {
+      setErrorDesc('กรุณาเข้าสู่ระบบก่อนสร้างหรือแก้ไขใบสมัคร');
       setIsSuccess(false);
       setIsModalVisible(true);
-      setErrorDesc('กรุณาเข้าสู่ระบบก่อนสร้างหรือแก้ไขใบสมัคร');
       setTimeout(() => {
         router.push('/home');
       }, 3000);

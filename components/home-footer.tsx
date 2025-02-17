@@ -8,7 +8,7 @@ import ku_logo from '@/public/images/logo_ku_th.jpg';
 export default function HomeFooter() {
   return (
     <section
-      className='grid grid-cols-1 lg:flex justify-between pl-[20px] pr-[20px] pb-10 pt-[50] bg-gradient-to-b from-primary to-[#0374BA]'
+      className='grid grid-cols-1 lg:flex justify-between pl-[20px] pr-[20px] pb-10 pt-[50px] bg-gradient-to-b from-primary to-[#0374BA]'
       id='connect'
     >
       <div className='w-full'>
