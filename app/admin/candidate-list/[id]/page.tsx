@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import CandidateDetail from '@/app/admin/candidate-list/[id]/candidate-detail/page';
-import QuestionKnowledge from '@/app/admin/candidate-list/[id]/question-knowledge/page';
+import QuestionKnowledge from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
 import NavbarCandidate from '@/components/candidate-list/navbar-candidate';
 import { CheckMark, XMark } from '@/components/icons';
 

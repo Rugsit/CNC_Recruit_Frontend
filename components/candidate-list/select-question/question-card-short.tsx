@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { Dispatch, SetStateAction } from 'react';
 
 import { Bin, Pen } from '@/components/icons';
-import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/page';
+import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
 import { StatusPopUpProps } from '@/app/admin/candidate-list/[id]/page';
 
 export default function QuestionCardShort({

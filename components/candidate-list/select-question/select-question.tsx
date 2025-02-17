@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import QuestionCardShort from './question-card-short';
 import { XMark } from '@/components/icons';
 import { SearchIcon } from 'lucide-react';
-import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/page';
+import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
 
 type FormField = {
   question: string;
