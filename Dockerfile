@@ -32,4 +32,4 @@ COPY --from=builder /cnc-recruit-front/.next ./next
 COPY --from=builder /cnc-recruit-front/node_modules ./node_modules
 
 EXPOSE 3000
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "prod"]
