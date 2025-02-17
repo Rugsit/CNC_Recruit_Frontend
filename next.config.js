@@ -3,18 +3,19 @@ const { redirect } = require('next/dist/server/api-utils');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // output: 'standalone',
   images: {
-    domains: ["s3.cnc.cs.sci.ku.ac.th"],
+    domains: ['s3.cnc.cs.sci.ku.ac.th'],
   },
-  async redirects(){ 
+  async redirects() {
     return [
       {
         source: '/',
         destination: '/home',
         permanent: true,
-      }];
-  }
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
