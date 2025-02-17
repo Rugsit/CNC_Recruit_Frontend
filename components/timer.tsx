@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import axios from 'axios';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   id: number;
@@ -104,6 +105,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const { data, status } = useSession();
   const [isLogin, setIsLogin] = useState(false);
   const [loginIsClosed, setLoginIsClosed] = useState(true);
+  const rounter = useRouter();
 
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
@@ -111,12 +113,9 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
     if (base64) {
       const time = Date.now() / 1000;
       const exp = JSON.parse(window.atob(base64))['exp'];
-      if (time > exp) {
-        setIsLogin(false);
-      } else {
-        setIsLogin(true);
-      }
+      return time > exp ? false : true;
     }
+    return false;
   };
 
   useEffect(() => {
@@ -220,31 +219,40 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       </div>
 
       {state?.path != '' && (
-        <Button
-          className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95'
-          onClick={() => {
-            checkToken();
-            if (!isLogin) {
-              setLoginIsClosed(false);
-            }
-          }}
-        >
-          {isLogin ? (
-            <Link
-              className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
-              href={state?.path || ''}
-            >
-              {state?.action}
-            </Link>
-          ) : (
-            <Link
-              className='p-[1rem] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
-              href={''}
-            >
-              {state?.action}
-            </Link>
-          )}
-        </Button>
+        <div className='flex gap-5'>
+          <Button
+            className='md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary'
+            onClick={async () => {
+              const loginStatus = await checkToken();
+              setIsLogin(loginStatus);
+              if (!loginStatus) {
+                setLoginIsClosed(false);
+              } else {
+                if (state?.path) {
+                  rounter.push(state?.path);
+                }
+              }
+            }}
+          >
+            {state?.action}
+          </Button>
+          <Button
+            className='md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white'
+            onClick={async () => {
+              const loginStatus = await checkToken();
+              setIsLogin(loginStatus);
+              if (!loginStatus) {
+                setLoginIsClosed(false);
+              } else {
+                if (state?.path) {
+                  rounter.push('/register');
+                }
+              }
+            }}
+          >
+            ดูใบสมัคร
+          </Button>
+        </div>
       )}
     </div>
   );
