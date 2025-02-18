@@ -25,13 +25,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account && account.provider === 'google') {
         // console.log("user : " , user)
         try {
-          const res = await fetch('http://localhost:8000/auth/google', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id_token: account.id_token }),
-          });
+          const res = await fetch(
+            process.env.NEXT_PUBLIC_API_URL + '/auth/google',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id_token: account.id_token }),
+            }
+          );
           const data = await res.json();
 
           // console.log( "responses status : ", res.status)

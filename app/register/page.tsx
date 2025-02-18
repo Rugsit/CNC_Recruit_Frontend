@@ -113,12 +113,15 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await axios.get('http://localhost:8000/nisit', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/nisit',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
 
       // console.log(response.data);
       setApplicationForm(response.data);
@@ -147,7 +150,7 @@ export default function RegisterForm() {
       if (imageFile) {
         isImageChange = true;
         const imageResponse = await axios.post(
-          'http://localhost:8000/upload',
+          process.env.NEXT_PUBLIC_API_URL + '/upload',
           { file: imageFile },
           {
             headers: {
@@ -162,7 +165,7 @@ export default function RegisterForm() {
       if (transcriptFile) {
         isTranscriptChange = true;
         const transcriptResponse = await axios.post(
-          'http://localhost:8000/upload',
+          process.env.NEXT_PUBLIC_API_URL + '/upload',
           { file: transcriptFile },
           {
             headers: {
@@ -178,8 +181,8 @@ export default function RegisterForm() {
 
       const method = applicationForm ? 'PUT' : 'POST';
       const url = applicationForm
-        ? `http://localhost:8000/nisit/`
-        : 'http://localhost:8000/app';
+        ? process.env.NEXT_PUBLIC_API_URL + `/nisit/`
+        : process.env.NEXT_PUBLIC_API_URL + '/app';
 
       // console.log(formData);
 

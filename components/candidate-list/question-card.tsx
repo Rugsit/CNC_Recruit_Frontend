@@ -54,7 +54,8 @@ export default function QuestionCard({
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/nisit-question/${id}/${questionNisit.id}`,
+        process.env.NEXT_PUBLIC_API_URL +
+          `/nisit-question/${id}/${questionNisit.id}`,
         {
           headers: {
             'Content-Type': 'applicatio/json',
@@ -85,7 +86,8 @@ export default function QuestionCard({
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/nisit-question/comment-score/${id}/${questionNisit.id}`,
+        process.env.NEXT_PUBLIC_API_URL +
+          `/nisit-question/comment-score/${id}/${questionNisit.id}`,
         dataComment,
         {
           headers: {

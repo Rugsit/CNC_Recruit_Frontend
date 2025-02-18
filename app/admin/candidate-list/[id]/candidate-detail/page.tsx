@@ -41,12 +41,15 @@ export default function CandidateDetail() {
 
   const fetchApplication = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/nisit/id/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + `/nisit/id/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
 
       // console.log(response.data);
       setCandidateDetail(response.data);
