@@ -123,12 +123,15 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
   const fetchApplication = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/nisit', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/nisit',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
 
       // console.log(response.data);
       if (response.data) {

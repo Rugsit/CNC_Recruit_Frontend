@@ -34,7 +34,7 @@ export default function QuestionCardShort({
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/questions/${id}`,
+        process.env.NEXT_PUBLIC_API_URL + `/questions/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

@@ -75,7 +75,7 @@ export default function SelectQuestion({
     try {
       selectQuestion.forEach(async (item) => {
         const response = await axios.post(
-          `http://localhost:8000/nisit-question/${id}/${item}`,
+          process.env.NEXT_PUBLIC_API_URL + `/nisit-question/${id}/${item}`,
           {},
           {
             headers: {
@@ -99,7 +99,7 @@ export default function SelectQuestion({
   const fetchQuestion = async () => {
     try {
       const questionResponse = await axios.get(
-        'http://localhost:8000/questions/',
+        process.env.NEXT_PUBLIC_API_URL + '/questions/',
         {
           headers: {
             'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export default function SelectQuestion({
         }
       );
       const Nisitresponse = await axios.get(
-        `http://localhost:8000/nisit-question/${id}`,
+        process.env.NEXT_PUBLIC_API_URL + `/nisit-question/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

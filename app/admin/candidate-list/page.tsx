@@ -22,7 +22,7 @@ export default function Page() {
   const fetchCandidates = async (keyword: string, year: number) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/nisit/',
+        process.env.NEXT_PUBLIC_API_URL + '/nisit/',
         { keyword, year } as CandidateFilter,
         {
           headers: {

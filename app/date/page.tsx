@@ -102,12 +102,15 @@ export default function InterviewCalendar() {
     }
 
     try {
-      const response = await axios.get('http://localhost:8000/interview', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/interview',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
       // console.log(response.data);
       const responseSortedByStartDate = response.data.sort(
         (a: TimeType, b: TimeType) =>
@@ -123,12 +126,15 @@ export default function InterviewCalendar() {
   // GET reservation time (If candidate already chosen the date)
   const fetchReservationTime = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/participant', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      });
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_API_URL + '/participant',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
 
       setReservationTime(response.data);
       // console.log(response.data);
@@ -157,7 +163,8 @@ export default function InterviewCalendar() {
         path = 'reserve';
       }
       const response = await axios.patch(
-        `http://localhost:8000/interview/${path}/${selectedTimeSlot[0] ? selectedTimeSlot[0] : reservationTime?.interviewId}`,
+        process.env.NEXT_PUBLIC_API_URL +
+          `/interview/${path}/${selectedTimeSlot[0] ? selectedTimeSlot[0] : reservationTime?.interviewId}`,
         {},
         {
           headers: {

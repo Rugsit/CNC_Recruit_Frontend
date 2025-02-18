@@ -56,7 +56,7 @@ export default function QuestionKnowledge({
   const fetchQuestion = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/nisit-question/${id}`,
+        process.env.NEXT_PUBLIC_API_URL + `/nisit-question/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

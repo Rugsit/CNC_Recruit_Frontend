@@ -51,7 +51,7 @@ export default function CandidateInterview() {
   const clearInterview = async (value: string) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/interview/end/${value}`,
+        process.env.NEXT_PUBLIC_API_URL + `/interview/end/${value}`,
         {},
         {
           headers: {
@@ -67,7 +67,7 @@ export default function CandidateInterview() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8000/admin/participants',
+        process.env.NEXT_PUBLIC_API_URL + '/admin/participants',
         {
           headers: {
             Authorization: `Bearer ${data?.backendToken}`,

@@ -54,7 +54,7 @@ export default function AddQuestion({
 
   const targetQuestionEdit = async () => {
     const response = await axios.get(
-      `http://localhost:8000/questions/${isOpen.id}`,
+      process.env.NEXT_PUBLIC_API_URL + `/questions/${isOpen.id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default function AddQuestion({
       try {
         if (isOpen.type === 'create') {
           const response = await axios.post(
-            'http://localhost:8000/questions',
+            process.env.NEXT_PUBLIC_API_URL + '/questions',
             dataForm,
             {
               headers: {
@@ -113,7 +113,7 @@ export default function AddQuestion({
 
         newData.id = isOpen.id;
         const response = await axios.put(
-          `http://localhost:8000/questions/${isOpen.id}`,
+          process.env.NEXT_PUBLIC_API_URL + `/questions/${isOpen.id}`,
           newData,
           {
             headers: {
