@@ -26,12 +26,6 @@ COPY --from=builder /cnc-recruit-front/.next ./.next
 COPY --from=builder /cnc-recruit-front/node_modules ./node_modules
 
 ENV NODE_ENV=production
-ENV NEXTAUTH_URL="http://localhost:3000"
-
-ENV AUTH_SECRET=${AUTH_SECRET}
-
-ENV AUTH_GOOGLE_ID=${AUTH_GOOGLE_ID}
-ENV AUTH_GOOGLE_SECRET=${AUTH_GOOGLE_SECRET}
 
 EXPOSE 3000
 CMD ["pnpm", "start"]
