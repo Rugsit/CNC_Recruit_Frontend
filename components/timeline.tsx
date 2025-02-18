@@ -1,32 +1,44 @@
-import { UserAdd,Location, Note, Verify } from "./icons";
+import { UserAdd, Location, Verify } from './icons';
 
 export default function Timeline() {
   return (
-    <section className="w-full max-w-fit mx-auto">
-      <p className="text-center text-white text-4xl mb-[20px]">กำหนดการ</p>
-      <div className="bg-white rounded-lg flex w-full max-w-[1500px] items-center p-20">
-        <div className="flex flex-col justify-center items-center">
-          <UserAdd />
-          <p className="text-[#0374BA]">00 - 00 กุมภาพันธ์</p>
-          <p className="text-primary">เปิดรับสมัครออนไลน์</p>
+    <section className='w-full max-w-fit mx-auto lg:px-5 px-3'>
+      <p className='text-center text-white lg:text-4xl text-3xl mb-[20px]'>
+        กำหนดการ
+      </p>
+      <div className='bg-white rounded-lg flex flex-col gap-y-5 lg:flex-row w-full max-w-[1500px] items-center p-20'>
+        <div className='flex flex-col justify-center items-center'>
+          <div className='hover:scale-125 transition-transform'>
+            <UserAdd />
+          </div>
+          <p className='text-[#0374BA] text-center lg:text-3xl text-2xl font-bold mt-5'>
+            เปิดรับสมัคร
+          </p>
+          <p className='text-primary text-center text-xl mt-3'>
+            17 - 21 กุมภาพันธ์
+          </p>
         </div>
-        <div className="w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl"></div>
-        <div className="flex flex-col justify-center items-center">
-          <Note />
-          <p className="text-[#0374BA]">00 - 00 กุมภาพันธ์</p>
-          <p className="text-primary">ประกาศรายชื่อผู้มีสิทธิ์สัมภาษณ์</p>
+        <div className='hidden lg:block w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl' />
+        <div className='flex flex-col justify-center items-center'>
+          <div className='hover:scale-125 transition-transform'>
+            <Location />
+          </div>
+          <p className='text-[#0374BA] text-center lg:text-3xl text-2xl font-bold mt-5'>
+            สัมภาษณ์
+          </p>
+          <p className='text-primary text-center text-xl mt-3'>
+            25 - 26 กุมภาพันธ์
+          </p>
         </div>
-        <div className="w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl"></div>
-        <div className="flex flex-col justify-center items-center">
-          <Location />
-          <p className="text-[#0374BA]">00 - 00 กุมภาพันธ์</p>
-          <p className="text-primary">สัมภาษณ์ออนไซต์</p>
-        </div>
-        <div className="w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl"></div>
-        <div className="flex flex-col justify-center items-center">
-          <Verify />
-          <p className="text-[#0374BA]">00 - 00 กุมภาพันธ์</p>
-          <p className="text-primary">ประกาศผลการสัมภาษณ์</p>
+        <div className='hidden lg:block w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl' />
+        <div className='flex flex-col justify-center items-center'>
+          <div className='hover:scale-125 transition-transform'>
+            <Verify />
+          </div>
+          <p className='text-[#0374BA] text-center lg:text-3xl text-2xl font-bold mt-5'>
+            ประกาศผล
+          </p>
+          <p className='text-primary text-center text-xl mt-3'>28 กุมภาพันธ์</p>
         </div>
       </div>
     </section>

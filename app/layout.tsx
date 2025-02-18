@@ -1,6 +1,5 @@
 import '@/styles/globals.css';
 import { Metadata, Viewport } from 'next';
-import { Link } from '@nextui-org/link';
 import clsx from 'clsx';
 
 import { Providers } from './providers';
@@ -34,8 +33,8 @@ export default function RootLayout({
 }) {
   return (
     <html
-      className='scroll-smooth'
       suppressHydrationWarning
+      className='scroll-smooth'
       lang='en'
     >
       <head />
@@ -46,11 +45,9 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'light' }}>
-          <div className='relative flex flex-col h-screen'>
+          <div className='relative flex flex-col'>
             <Navbar />
-            <main className=''>
-              {children}
-            </main>
+            <main className=''>{children}</main>
           </div>
         </Providers>
       </body>

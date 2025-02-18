@@ -1,5 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
+
 import { fontSansThai } from '@/config/fonts';
 
 interface SuccessPopupProps {
@@ -10,16 +11,16 @@ interface SuccessPopupProps {
 const popupContent = {
   submit: {
     title: 'ยื่นใบสมัครสำเร็จ',
-    description: 'โปรดเลือกนัดหมายวันที่สำหรับสัมภาษณ์'
+    description: 'โปรดเลือกนัดหมายวันที่สำหรับสัมภาษณ์',
   },
   login: {
     title: 'เข้าสู่ระบบสำเร็จ',
-    description: 'ยินดีต้อนรับเข้าสู่ระบบ'
+    description: 'ยินดีต้อนรับเข้าสู่ระบบ',
   },
   interview: {
     title: 'ลงเวลาสัมภาษณ์สำเร็จ',
-    description: 'ปิดหน้าต่างนี้เพื่อตรวจสอบเวลาสัมภาษณ์ของคุณ'
-  }
+    description: 'ปิดหน้าต่างนี้เพื่อตรวจสอบเวลาสัมภาษณ์ของคุณ',
+  },
 };
 
 const SuccessPopup: React.FC<SuccessPopupProps> = ({ onClose, step }) => {
@@ -32,9 +33,9 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ onClose, step }) => {
     >
       <div className='relative h-full flex flex-col items-center justify-center p-4'>
         <button
+          aria-label='ปิด'
           className='absolute right-4 top-4'
           onClick={onClose}
-          aria-label='ปิด'
         >
           <X className='h-8 w-8 text-gray-600' />
         </button>
@@ -48,12 +49,12 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ onClose, step }) => {
             <div className='w-24 h-24 rounded-full bg-[#EDFBF0] flex items-center justify-center'>
               <svg
                 className='w-20 h-20 text-[#75D679]'
-                viewBox='0 0 24 24'
                 fill='none'
                 stroke='currentColor'
-                strokeWidth='2.5'
                 strokeLinecap='round'
                 strokeLinejoin='round'
+                strokeWidth='2.5'
+                viewBox='0 0 24 24'
               >
                 <polyline points='20 6 9 17 4 12' />
               </svg>

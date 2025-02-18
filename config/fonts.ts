@@ -23,5 +23,5 @@ export const fontKanit = Kanit({
 
 export const fontSansThai = FontSansThai({
   subsets: ['thai'],
-  variable: '--font-sans-thai'
+  variable: '--font-sans-thai',
 });

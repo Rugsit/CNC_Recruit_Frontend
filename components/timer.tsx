@@ -1,12 +1,18 @@
 'use client';
-import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
+import { Button } from '@nextui-org/button';
+import { useSession } from 'next-auth/react';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
+import LoginPopup from '@/app/home/_local/loginPopup';
 
 interface Props {
+  id: number;
   title: string;
   desc?: string;
   endTime: string;
-  buttonAction?: string;
 }
 
 interface time {
@@ -16,7 +22,14 @@ interface time {
   seconds: string;
 }
 
-export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
+interface State {
+  id: number;
+  path: string;
+  action: string;
+  desc: string;
+}
+
+export const Timer = ({ id, title, desc, endTime }: Props) => {
   const [timeRemaining, setTimeRemaining] = useState<time>({
     days: '00',
     hours: '00',
@@ -24,23 +37,29 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
     seconds: '00',
   });
 
+  const [state, setState] = useState<State>();
+
   useEffect(() => {
-    const dest = new Date(endTime).getTime();
-    const updateCountdow = () => {
+    const updateCountdown = () => {
+      const date = new Date(endTime).getTime();
       const now = new Date().getTime();
-      const diff = dest - now;
 
-      if (diff <= 0) {
-        clearInterval(timer);
-
+      if (date - now <= 0) {
         return;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      let diff = Math.abs(now - date) / 1000;
+
+      const days = Math.floor(diff / (3600 * 24));
+
+      diff %= 3600 * 24;
+
+      const hours = Math.floor(diff / 3600);
+
+      diff %= 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = Math.floor(diff % 60);
 
       setTimeRemaining({
         days: days < 10 ? `0${days}` : `${days}`,
@@ -50,56 +69,221 @@ export const Timer = ({ title, desc, endTime, buttonAction }: Props) => {
       });
     };
 
-    const timer = setInterval(updateCountdow, 1000);
+    setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(timer);
+    path();
   }, []);
 
+  const path = () => {
+    const paths: State[] = [
+      {
+        id: 2,
+        path: '/register',
+        action: 'สมัครเข้าร่วม Lab',
+        desc: 'เข้าร่วม Lab CNC เพื่อพัฒนาทักษะด้านวิทยาการคอมพิวเตอร์และร่วมทำงานวิจัย/โปรเจกต์ที่ท้าทาย',
+      },
+      {
+        id: 3,
+        path: '/date',
+        action: 'ลงเวลาสัมภาษณ์',
+        desc: 'อย่าลืมเลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด !!!',
+      },
+      {
+        id: 4,
+        path: '',
+        action: 'ผลการคัดเลือก',
+        desc: 'ขอบคุณที่ให้ความสนใจแล้วพบกันใหม่ในกิจกรรมต่อไป',
+      },
+    ];
+
+    const result = paths.find((item) => item.id === id);
+
+    setState(result);
+  };
+
+  const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
+  const [loginIsClosed, setLoginIsClosed] = useState(true);
+  const rounter = useRouter();
+  const [isFoundApplication, setIsFountApplication] = useState<boolean>(false);
+
+  const checkToken = async () => {
+    const base64Url = data?.backendToken?.split('.')[1];
+    const base64 = base64Url?.replace('-', '+').replace('_', '/');
+
+    if (base64) {
+      const time = Date.now() / 1000;
+      const exp = JSON.parse(window.atob(base64))['exp'];
+
+      return time > exp ? false : true;
+    }
+
+    return false;
+  };
+
+  const fetchApplication = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/nisit', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
+
+      // console.log(response.data);
+      if (response.data) {
+        setIsFountApplication(true);
+      } else {
+        setIsFountApplication(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (status !== 'loading') {
+      fetchApplication();
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status !== 'loading') {
+      checkToken();
+    }
+  }, [status]);
+  const closeLoginPopup = () => {
+    setLoginIsClosed(true);
+  };
+
   return (
-    <div className='flex flex-col items-center justify-center font-sans-thai'>
-      <div className='text-center'>
-        <h3 className='text-5xl font-bold text-[#0374BA] mb-6'>{title}</h3>
-        <p className='text-3xl font-light text-[#0374BA]'>{desc}</p>
+    <div className='flex flex-col items-center justify-center font-sans-thai m-[50px] '>
+      <div
+        className={clsx(
+          'bg-black/[.5] fixed top-0 bottom-0 left-0 right-0 z-50 flex justify-center items-center transition-all',
+          {
+            ' pointer-events-none opacity-0': loginIsClosed,
+            ' opacity-100': !loginIsClosed,
+          }
+        )}
+      >
+        <LoginPopup
+          isOpen={loginIsClosed}
+          onClose={closeLoginPopup}
+          onLoginSuccess={() => {}}
+        />
       </div>
-      <div className='flex items-start justify-center w-full gap-4 count-down-main text-primary'>
-        <div className='timer flex flex-col space-y-[-2rem] '>
-          <span className='text-[140px] text-primary font-bold text-center'>
+      <div className='text-center'>
+        <h3 className='lg:text-[50px] md:text-[40px] text-[25px] font-bold text-[#0374BA]'>
+          {title}
+        </h3>
+        <p className='lg:text-[30px] md:text-[25px] text-[16px] font-light text-[#0374BA]'>
+          {state && state.desc}
+        </p>
+      </div>
+      <div className='flex items-start justify-center w-full sm:gap-4 gap-2 count-down-main bg-gradient-to-t from-primary to-[#0374BA] text-transparent bg-clip-text'>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem] '>
+          <span
+            className={`text-[40px] sm:text-[50px]  md:text-[90px] lg:text-[140px] font-bold text-center `}
+          >
             {timeRemaining.days}
           </span>
-          <span className='text-[39px] font-normal text-center'>วัน</span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            วัน
+          </span>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.hours}
-          </h3>
-          <p className='text-[39px] font-normal text-center w-full'>ชั่วโมง</p>
+          </span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            ชั่วโมง
+          </span>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.minutes}
-          </h3>
-          <p className='text-[39px] font-normal text-center w-full'>นาที</p>
+          </span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            นาที
+          </span>
         </div>
-        <h3 className='font-bold text-[140px] '>:</h3>
-        <div className='timer flex flex-col space-y-[-2rem]'>
-          <h3 className='text-[140px] text-primary font-bold text-center'>
+        <h3
+          className={`font-bold text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px]`}
+        >
+          :
+        </h3>
+        <div className='timer flex flex-col md:space-y-[-2rem] space-y-[-0.5rem]'>
+          <span
+            className={`text-[40px] sm:text-[50px] md:text-[90px] lg:text-[140px] font-bold text-center`}
+          >
             {timeRemaining.seconds}
-          </h3>
-          <p className='text-[39px] font-normal text-center w-full'>วินาที</p>
+          </span>
+          <span
+            className={`lg:text-[39px] md:text-[30px] text-[20px] font-normal text-center`}
+          >
+            วินาที
+          </span>
         </div>
       </div>
 
-      {buttonAction ? (
-        <Button
-          className='mt-8 p-[2rem] text-2xl font-bold hover:scale-90 bg-white text-primary shadow-lg shadow-primary-100]'
-          
-        >
-          {buttonAction}
-        </Button>
-      ) : (
-        <></>
+      {state?.path != '' && (
+        <div className='flex gap-5'>
+          <Button
+            className={`${isFoundApplication || (!isFoundApplication && state?.id === 2) ? 'flex' : 'hidden'} md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary`}
+            onClick={async () => {
+              const loginStatus = await checkToken();
+
+              setIsLogin(loginStatus);
+              if (!loginStatus) {
+                setLoginIsClosed(false);
+              } else {
+                if (state?.path) {
+                  rounter.push(state?.path);
+                }
+              }
+            }}
+          >
+            {state?.action}
+          </Button>
+          <Button
+            className={`${isFoundApplication && state?.id === 3 ? 'flex' : 'hidden'} md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
+            onClick={async () => {
+              const loginStatus = await checkToken();
+
+              setIsLogin(loginStatus);
+              if (!loginStatus) {
+                setLoginIsClosed(false);
+              } else {
+                if (state?.path) {
+                  rounter.push('/register');
+                }
+              }
+            }}
+          >
+            ดูใบสมัคร
+          </Button>
+        </div>
       )}
     </div>
   );
