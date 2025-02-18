@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { XMark } from '@/components/icons';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 type FormField = {
   question: string;
@@ -53,11 +53,9 @@ export default function AddQuestion({
     reset,
   } = useForm<FormField>();
 
-  const { publicRuntimeConfig } = getConfig();
-
   const targetQuestionEdit = async () => {
     const response = await axios.get(
-      publicRuntimeConfig.apiUrl + `/questions/${isOpen.id}`,
+      env('NEXT_PUBLIC_API_URL') + `/questions/${isOpen.id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +94,7 @@ export default function AddQuestion({
       try {
         if (isOpen.type === 'create') {
           const response = await axios.post(
-            publicRuntimeConfig.apiUrl + '/questions',
+            env('NEXT_PUBLIC_API_URL') + '/questions',
             dataForm,
             {
               headers: {
@@ -116,7 +114,7 @@ export default function AddQuestion({
 
         newData.id = isOpen.id;
         const response = await axios.put(
-          publicRuntimeConfig.apiUrl + `/questions/${isOpen.id}`,
+          env('NEXT_PUBLIC_API_URL') + `/questions/${isOpen.id}`,
           newData,
           {
             headers: {

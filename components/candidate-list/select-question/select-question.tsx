@@ -11,7 +11,7 @@ import QuestionCardShort from './question-card-short';
 
 import { XMark } from '@/components/icons';
 import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 type FormField = {
   question: string;
@@ -58,7 +58,6 @@ export default function SelectQuestion({
     'ไม่พบคำถามที่สามารถเพิ่มได้'
   );
   const { id } = useParams();
-  const { publicRuntimeConfig } = getConfig();
 
   const search = (event: any) => {
     if (event.target.value == '') {
@@ -77,7 +76,7 @@ export default function SelectQuestion({
     try {
       selectQuestion.forEach(async (item) => {
         const response = await axios.post(
-          publicRuntimeConfig.apiUrl + `/nisit-question/${id}/${item}`,
+          env('NEXT_PUBLIC_API_URL') + `/nisit-question/${id}/${item}`,
           {},
           {
             headers: {
@@ -101,7 +100,7 @@ export default function SelectQuestion({
   const fetchQuestion = async () => {
     try {
       const questionResponse = await axios.get(
-        publicRuntimeConfig.apiUrl + '/questions/',
+        env('NEXT_PUBLIC_API_URL') + '/questions/',
         {
           headers: {
             'Content-Type': 'application/json',
@@ -110,7 +109,7 @@ export default function SelectQuestion({
         }
       );
       const Nisitresponse = await axios.get(
-        publicRuntimeConfig.apiUrl + `/nisit-question/${id}`,
+        env('NEXT_PUBLIC_API_URL') + `/nisit-question/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

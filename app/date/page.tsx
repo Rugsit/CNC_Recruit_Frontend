@@ -10,7 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 
 import DateModal from './_local/date-modal';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -60,8 +60,6 @@ export default function InterviewCalendar() {
   );
   const router = useRouter();
 
-  const { publicRuntimeConfig } = getConfig();
-
   // console.log(`Token = ${data?.backendToken}`); // Token Debug
 
   const handleDateChange = (value: Value) => {
@@ -106,7 +104,7 @@ export default function InterviewCalendar() {
 
     try {
       const response = await axios.get(
-        publicRuntimeConfig.apiUrl + '/interview',
+        env('NEXT_PUBLIC_API_URL') + '/interview',
         {
           headers: {
             'Content-Type': 'application/json',
@@ -130,7 +128,7 @@ export default function InterviewCalendar() {
   const fetchReservationTime = async () => {
     try {
       const response = await axios.get(
-        publicRuntimeConfig.apiUrl + '/participant',
+        env('NEXT_PUBLIC_API_URL') + '/participant',
         {
           headers: {
             'Content-Type': 'application/json',
@@ -166,7 +164,7 @@ export default function InterviewCalendar() {
         path = 'reserve';
       }
       const response = await axios.patch(
-        publicRuntimeConfig.apiUrl +
+        env('NEXT_PUBLIC_API_URL') +
           `/interview/${path}/${selectedTimeSlot[0] ? selectedTimeSlot[0] : reservationTime?.interviewId}`,
         {},
         {

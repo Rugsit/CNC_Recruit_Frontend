@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import { AngleDown, Bin } from '../icons';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 type QuestionNisit = {
   id: string;
@@ -38,7 +38,6 @@ export default function QuestionCard({
   const [grader, setGrader] = useState<boolean[]>(clearGrade);
   const { data } = useSession();
   const { id } = useParams();
-  const { publicRuntimeConfig } = getConfig();
   const handdleGrader = (level: number) => {
     setGrader(clearGrade);
     const grade: boolean[] = [false, false, false, false, false];
@@ -56,7 +55,7 @@ export default function QuestionCard({
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(
-        publicRuntimeConfig.apiUrl +
+        env('NEXT_PUBLIC_API_URL') +
           `/nisit-question/${id}/${questionNisit.id}`,
         {
           headers: {
@@ -88,7 +87,7 @@ export default function QuestionCard({
 
     try {
       const response = await axios.put(
-        publicRuntimeConfig.apiUrl +
+        env('NEXT_PUBLIC_API_URL') +
           `/nisit-question/comment-score/${id}/${questionNisit.id}`,
         dataComment,
         {
