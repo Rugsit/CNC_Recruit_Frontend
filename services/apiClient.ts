@@ -1,10 +1,9 @@
 'use client';
 import axios from 'axios';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
-const { publicRuntimeConfig } = getConfig();
 const apiClient = axios.create({
-  baseURL: publicRuntimeConfig.apiUrl,
+  baseURL: env('NEXT_PUBLIC_API_URL'),
   headers: {
     'Content-Type': 'application/json',
     // Authorization:

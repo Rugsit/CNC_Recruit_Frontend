@@ -20,7 +20,7 @@ import ChevronLeftIcon from '@/public/form/chevron-left.svg';
 import InputTextArea from '@/components/form/input-textarea';
 import FileUpload from '@/components/form/file-upload';
 import InputText from '@/components/form/input-text';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 export interface ApplicationForm {
   nisitId: string;
@@ -63,8 +63,6 @@ export default function RegisterForm() {
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const { data, status } = useSession();
   const router = useRouter();
-
-  const { publicRuntimeConfig } = getConfig();
 
   // console.log(`Token = ${data?.backendToken}`);
 
@@ -116,7 +114,7 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await axios.get(publicRuntimeConfig.apiUrl + '/nisit', {
+      const response = await axios.get(env('NEXT_PUBLIC_API_URL') + '/nisit', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${data?.backendToken}`,
@@ -150,7 +148,7 @@ export default function RegisterForm() {
       if (imageFile) {
         isImageChange = true;
         const imageResponse = await axios.post(
-          publicRuntimeConfig.apiUrl + '/upload',
+          env('NEXT_PUBLIC_API_URL') + '/upload',
           { file: imageFile },
           {
             headers: {
@@ -165,7 +163,7 @@ export default function RegisterForm() {
       if (transcriptFile) {
         isTranscriptChange = true;
         const transcriptResponse = await axios.post(
-          publicRuntimeConfig.apiUrl + '/upload',
+          env('NEXT_PUBLIC_API_URL') + '/upload',
           { file: transcriptFile },
           {
             headers: {
@@ -181,8 +179,8 @@ export default function RegisterForm() {
 
       const method = applicationForm ? 'PUT' : 'POST';
       const url = applicationForm
-        ? publicRuntimeConfig.apiUrl + `/nisit/`
-        : publicRuntimeConfig.apiUrl + '/app';
+        ? env('NEXT_PUBLIC_API_URL') + `/nisit/`
+        : env('NEXT_PUBLIC_API_URL') + '/app';
 
       // console.log(formData);
 

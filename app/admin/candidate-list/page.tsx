@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 
 import SearchIcon from '@/public/search.svg';
 import CandidateCard, { CandidateCardProps } from '@/components/candidate-card';
-import getConfig from 'next/config';
+import { env } from 'next-runtime-env';
 
 interface CandidateFilter {
   keyword: string;
@@ -19,12 +19,11 @@ export default function Page() {
   const [candidates, setCandidates] = useState<CandidateCardProps[]>([]);
   const [year, setYear] = useState<number>(0);
   const { data, status } = useSession();
-  const { publicRuntimeConfig } = getConfig();
 
   const fetchCandidates = async (keyword: string, year: number) => {
     try {
       const response = await axios.post(
-        publicRuntimeConfig.apiUrl + '/nisit/',
+        env('NEXT_PUBLIC_API_URL') + '/nisit/',
         { keyword, year } as CandidateFilter,
         {
           headers: {

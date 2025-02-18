@@ -7,10 +7,6 @@ const nextConfig = {
   images: {
     domains: ['s3.cnc.cs.sci.ku.ac.th'],
   },
-  publicRuntimeConfig: {
-    apiUrl: process.env.API_URL || '',
-    dontDelete: 'this',
-  },
   async redirects() {
     return [
       {

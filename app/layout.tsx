@@ -7,6 +7,7 @@ import { Providers } from './providers';
 import { siteConfig } from '@/config/site';
 import { fontSansThai } from '@/config/fonts';
 import { Navbar } from '@/components/navbar';
+import { PublicEnvScript } from 'next-runtime-env';
 
 export const metadata: Metadata = {
   title: {
@@ -37,7 +38,9 @@ export default function RootLayout({
       className='scroll-smooth'
       lang='en'
     >
-      <head />
+      <head>
+        <PublicEnvScript />
+      </head>
       <body
         className={clsx(
           'min-h-screen bg-background font-sans-thai antialiased font-semibold',
