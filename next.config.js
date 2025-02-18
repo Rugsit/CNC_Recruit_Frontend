@@ -8,7 +8,7 @@ const nextConfig = {
     domains: ['s3.cnc.cs.sci.ku.ac.th'],
   },
   publicRuntimeConfig: {
-    apiUrl: process.env.API_URL,
+    apiUrl: process.env.API_URL || '',
     dontDelete: 'this',
   },
   async redirects() {
