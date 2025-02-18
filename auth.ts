@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import getConfig from 'next/config';
 
+const { publicRuntimeConfig } = getConfig();
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
@@ -25,16 +27,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account && account.provider === 'google') {
         // console.log("user : " , user)
         try {
-          const res = await fetch(
-            process.env.NEXT_PUBLIC_API_URL + '/auth/google',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ id_token: account.id_token }),
-            }
-          );
+          const res = await fetch(publicRuntimeConfig.apiUrl + '/auth/google', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id_token: account.id_token }),
+          });
           const data = await res.json();
 
           // console.log( "responses status : ", res.status)
