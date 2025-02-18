@@ -20,6 +20,7 @@ import ChevronLeftIcon from '@/public/form/chevron-left.svg';
 import InputTextArea from '@/components/form/input-textarea';
 import FileUpload from '@/components/form/file-upload';
 import InputText from '@/components/form/input-text';
+import getConfig from 'next/config';
 
 export interface ApplicationForm {
   nisitId: string;
@@ -62,6 +63,8 @@ export default function RegisterForm() {
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const { data, status } = useSession();
   const router = useRouter();
+
+  const { publicRuntimeConfig } = getConfig();
 
   // console.log(`Token = ${data?.backendToken}`);
 
@@ -113,15 +116,12 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + '/nisit',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${data?.backendToken}`,
-          },
-        }
-      );
+      const response = await axios.get(publicRuntimeConfig.apiUrl + '/nisit', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
 
       // console.log(response.data);
       setApplicationForm(response.data);
@@ -150,7 +150,7 @@ export default function RegisterForm() {
       if (imageFile) {
         isImageChange = true;
         const imageResponse = await axios.post(
-          process.env.NEXT_PUBLIC_API_URL + '/upload',
+          publicRuntimeConfig.apiUrl + '/upload',
           { file: imageFile },
           {
             headers: {
@@ -165,7 +165,7 @@ export default function RegisterForm() {
       if (transcriptFile) {
         isTranscriptChange = true;
         const transcriptResponse = await axios.post(
-          process.env.NEXT_PUBLIC_API_URL + '/upload',
+          publicRuntimeConfig.apiUrl + '/upload',
           { file: transcriptFile },
           {
             headers: {
@@ -181,8 +181,8 @@ export default function RegisterForm() {
 
       const method = applicationForm ? 'PUT' : 'POST';
       const url = applicationForm
-        ? process.env.NEXT_PUBLIC_API_URL + `/nisit/`
-        : process.env.NEXT_PUBLIC_API_URL + '/app';
+        ? publicRuntimeConfig.apiUrl + `/nisit/`
+        : publicRuntimeConfig.apiUrl + '/app';
 
       // console.log(formData);
 

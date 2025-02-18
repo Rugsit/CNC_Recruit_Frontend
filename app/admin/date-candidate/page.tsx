@@ -9,6 +9,7 @@ import Calendar from 'react-calendar';
 
 import { CheckMark } from '@/components/icons';
 import 'react-calendar/dist/Calendar.css';
+import getConfig from 'next/config';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -38,6 +39,8 @@ export default function CandidateInterview() {
   );
   const { data, status } = useSession();
 
+  const { publicRuntimeConfig } = getConfig();
+
   const handleDateChange = (value: Value) => {
     setSelectedDate(value);
   };
@@ -51,7 +54,7 @@ export default function CandidateInterview() {
   const clearInterview = async (value: string) => {
     try {
       const response = await axios.patch(
-        process.env.NEXT_PUBLIC_API_URL + `/interview/end/${value}`,
+        publicRuntimeConfig.apiUrl + `/interview/end/${value}`,
         {},
         {
           headers: {
@@ -67,7 +70,7 @@ export default function CandidateInterview() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + '/admin/participants',
+        publicRuntimeConfig.apiUrl + '/admin/participants',
         {
           headers: {
             Authorization: `Bearer ${data?.backendToken}`,

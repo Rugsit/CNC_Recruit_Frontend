@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
+import getConfig from 'next/config';
 
 interface Props {
   id: number;
@@ -107,6 +108,8 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   const rounter = useRouter();
   const [isFoundApplication, setIsFountApplication] = useState<boolean>(false);
 
+  const { publicRuntimeConfig } = getConfig();
+
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
     const base64 = base64Url?.replace('-', '+').replace('_', '/');
@@ -123,15 +126,12 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
   const fetchApplication = async () => {
     try {
-      const response = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + '/nisit',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${data?.backendToken}`,
-          },
-        }
-      );
+      const response = await axios.get(publicRuntimeConfig.apiUrl + '/nisit', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${data?.backendToken}`,
+        },
+      });
 
       // console.log(response.data);
       if (response.data) {

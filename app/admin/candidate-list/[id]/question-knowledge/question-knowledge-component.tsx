@@ -11,6 +11,7 @@ import { Plus } from '@/components/icons';
 import SelectQuestion from '@/components/candidate-list/select-question/select-question';
 import QuestionCard from '@/components/candidate-list/question-card';
 import AddQuestion from '@/components/candidate-details/add-question/add-question-popup';
+import getConfig from 'next/config';
 
 type QuestionNisit = {
   id: string;
@@ -53,10 +54,12 @@ export default function QuestionKnowledge({
   const { id } = useParams();
   const { data } = useSession();
 
+  const { publicRuntimeConfig } = getConfig();
+
   const fetchQuestion = async () => {
     try {
       const response = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/nisit-question/${id}`,
+        publicRuntimeConfig.apiUrl + `/nisit-question/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

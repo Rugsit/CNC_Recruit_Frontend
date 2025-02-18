@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import TextField from '@/components/candidate-list/textfield';
+import getConfig from 'next/config';
 
 interface CandidateDetail {
   nisitId: string;
@@ -37,12 +38,14 @@ export default function CandidateDetail() {
   const [candidateDetail, setCandidateDetail] =
     useState<CandidateDetail | null>(null);
 
+  const { publicRuntimeConfig } = getConfig();
+
   // console.log(`Token = ${data?.backendToken}`);
 
   const fetchApplication = async () => {
     try {
       const response = await axios.get(
-        process.env.NEXT_PUBLIC_API_URL + `/nisit/id/${id}`,
+        publicRuntimeConfig.apiUrl + `/nisit/id/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

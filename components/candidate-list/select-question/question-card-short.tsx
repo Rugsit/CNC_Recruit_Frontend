@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { Bin, Pen } from '@/components/icons';
 import { PopupType } from '@/app/admin/candidate-list/[id]/question-knowledge/question-knowledge-component';
+import getConfig from 'next/config';
 
 export default function QuestionCardShort({
   question_type,
@@ -31,10 +32,11 @@ export default function QuestionCardShort({
   >;
 }) {
   const { data } = useSession();
+  const { publicRuntimeConfig } = getConfig();
   const deleteQuestion = async () => {
     try {
       const response = await axios.delete(
-        process.env.NEXT_PUBLIC_API_URL + `/questions/${id}`,
+        publicRuntimeConfig.apiUrl + `/questions/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
