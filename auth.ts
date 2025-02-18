@@ -34,8 +34,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
           const data = await res.json();
 
-          // console.log( "responses status : ", res.status)
-          // console.log('data : ', data);
+          console.log( "responses status : ", res.status)
+          console.log('data : ', data);
           token.backendToken = data.token;
           token.role = data.role;
           token.id = data.id;
