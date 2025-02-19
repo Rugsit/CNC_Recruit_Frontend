@@ -15,7 +15,7 @@ export default function Timeline() {
             เปิดรับสมัคร
           </p>
           <p className='text-primary text-center text-xl mt-3'>
-            17 - 21 กุมภาพันธ์
+            20 - 23 กุมภาพันธ์
           </p>
         </div>
         <div className='hidden lg:block w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl' />

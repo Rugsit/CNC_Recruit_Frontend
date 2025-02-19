@@ -98,7 +98,7 @@ export default function RegisterForm() {
 
   const fetchingApplication = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date('2025-02-21T23:59:00').getTime();
+    const expiryTimestamp = new Date('2025-02-23T23:59:59').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
@@ -379,8 +379,8 @@ export default function RegisterForm() {
                 trigger={trigger}
               />
               <FileUpload
-                accept='.pdf'
-                desc='PDF ขนาดไม่เกิน 6MB'
+                accept='.png, .jpg, .jpeg, .pdf'
+                desc='JPEG, JPG, PNG หรือ PDF ขนาดไม่เกิน 6MB'
                 errorMessage={errors.transcriptUrl?.message?.toString()}
                 existedFile={{
                   name: applicationForm?.transcriptName || '',
@@ -391,7 +391,7 @@ export default function RegisterForm() {
                 register={register('transcriptUrl')}
                 setFile={setTranscriptFile}
                 setValue={setValue}
-                title='อัพโหลดใบรับรองผลการเรียน'
+                title='อัพโหลดไฟล์ผลการเรียน (ภาพจาก my ku หรือ transcript)'
                 trigger={trigger}
               />
             </div>
