@@ -12,7 +12,7 @@ export const formSchema = z.object({
   typeOfDpm: z.string().min(1, { message: '*กรุณาระบุภาค' }),
   nisitYearParticipated: z.preprocess(
     (val) => Number(val),
-    z.number().min(83, 'กรุณาระบุปีการศึกษาที่ถูกต้อง')
+    z.number().min(83, 'กรุณาระบุรุ่น KU ให้ถูกต้อง').max(84, 'กรุณาระบุรุ่น KU ให้ถูกต้อง')
   ),
   socialContact: z.string().min(1, { message: '*กรุณาระบุบัญชีโซเชียล' }),
   phoneNumber: z
@@ -24,7 +24,7 @@ export const formSchema = z.object({
   }),
   expected: z.string().min(1, { message: '*กรุณาระบุความคาดหวัง' }),
   whyCnc: z.string().min(1, { message: '*กรุณาระบุเหตุผล' }),
-  mbti: z.string().length(4, { message: '*กรุณาระบุตัวอักษร 4 ตัว' }),
+  mbti: z.string().regex(/^[A-Z]{4}$/, { message: '*กรุณาระบุตัวอักษรภาษาอังกฤษพิมพ์ใหญ่ 4 ตัว' }),
   clubs: z.string().min(1, { message: '*กรุณาระบุชมรม/แลป/สโมสรที่อยู่' }),
   interests: z.string().min(1, { message: '*กรุณาระบุความสนใจ' }),
   hobbies: z.string().min(1, { message: '*กรุณาระบุงานอดิเรก' }),
@@ -34,7 +34,7 @@ export const formSchema = z.object({
   }),
   imageUrl: z.union([
     // File name existed (Already attached the file)
-    z.string().min(1, { message: '*ไม่พบชื่อไฟล์ที่อัปโหลด' }),
+    z.string().min(1, { message: '*กรุณาอัพโหลดรูปภาพเห็นใบหน้าชัดเจน' }),
 
     // (Not attach the file yet)
     z
@@ -42,7 +42,7 @@ export const formSchema = z.object({
       .refine(
         (file) =>
           file && ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type),
-        { message: '*กรุณาอัพโหลดรูปภาพเป็น JPEG, JPG หรือ PNG' }
+        { message: '*กรุณาอัพโหลดรูปภาพเห็นใบหน้าชัดเจน' }
       )
       .refine((file) => file.size <= MAX_FILE_SIZE, {
         message: '*กรุณาอัพโหลดรูปภาพขนาดไม่เกิน 6MB',
@@ -50,13 +50,13 @@ export const formSchema = z.object({
   ]),
   transcriptUrl: z.union([
     // File name existed (Already attached the file)
-    z.string().min(1, { message: '*ไม่พบชื่อไฟล์ที่อัปโหลด' }),
+    z.string().min(1, { message: '*กรุณาอัพโหลดไฟล์ผลการเรียน' }),
 
     // (Not attach the file yet)
     z
       .any()
       .refine((file) => file && ['application/pdf'].includes(file.type), {
-        message: '*กรุณาอัพโหลดใบรับรองผลการเรียนเป็น PDF',
+        message: '*กรุณาอัพโหลดไฟล์ผลการเรียน',
       })
       .refine((file) => file.size <= MAX_FILE_SIZE, {
         message: '*กรุณาอัพโหลดใบรับรองผลการเรียนขนาดไม่เกิน 6MB',

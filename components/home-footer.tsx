@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Facebook, IG } from './icons';
 
 import logo from '@/public/cnc_logo_white.png';
-import ku_logo from '@/public/images/logo_ku_th.jpg';
 
 export default function HomeFooter() {
   return (
@@ -18,11 +17,6 @@ export default function HomeFooter() {
             className='mt-3'
             src={logo}
             width={150}
-          />
-          <Image
-            alt='ku logo'
-            className='rounded-full w-[90px] h-[90px] lg:w-[130px] lg:h-[130px]'
-            src={ku_logo}
           />
         </div>
         <p className='text-white w-full text-lg font-bold text-center lg:text-start lg:text-2xl'>

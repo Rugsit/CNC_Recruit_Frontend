@@ -22,15 +22,13 @@ export default function HomeDetails() {
         </header>
         <section className='mt-3 xl:text-[20px]/9 text-[16px]/9 text-white bg-gradient-to-b from-primary to-[#0374BA]  p-8 rounded-xl grow font-normal border-white shadow-lg border-[3px]'>
           <p className='font-bold '>
-            ห้องปฏิบัติการและวิจัย CNC สังกัดภาควิชาวิทยาการคอมพิวเตอร์
-            คณะวิทยาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
+            ห้องปฏิบัติการและวิจัย CNC สังกัดภาควิชาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
             <br />
           </p>
-          กิจกรรมและงานวิจัยเกี่ยวกับ Communication networks, Data Science, Web
-          Technology and Applications, IoT, Deep Learning เป็นต้น
-          มีวัตถุประสงค์ให้นิสิตสมาชิกห้องปฏิบัติการและวิจัย
-          ได้สัมผัสกับการเรียนรู้นอกห้องเรียน ได้ลงมือปฏิบัติจริง
-          เพื่อพัฒนาความรู้ความสามารถของนิสิตในสาขาวิทยาการคอมพิวเตอร์
+          พวกเรามีวัตถุประสงค์ให้สมาชิกห้องปฏิบัติการและวิจัยได้สัมผัสกับการเรียนรู้นอกห้องเรียน ได้ลงมือปฏิบัติจริง เพื่อพัฒนาความรู้ความสามารถ
+
+          ขอบเขตงานได้แก่
+          Communication networks, Data Science, Web Technology and Applications, IoT เป็นต้น
         </section>
       </div>
     </article>
