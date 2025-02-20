@@ -1,6 +1,11 @@
 # Build Stage
 FROM node:20-alpine AS builder
 WORKDIR /cnc-recruit-front
+
+# Use thailand timezone
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Bangkok
+
 # Install pnpm
 RUN npm install -g pnpm
 COPY package.json  ./
@@ -11,6 +16,11 @@ RUN pnpm run build
 
 # Production Stage
 FROM node:20-alpine AS runner
+
+# Use thailand timezone
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Bangkok
+
 WORKDIR /cnc-recruit-front
 # Install pnpm globally in the runner stage
 RUN npm install -g pnpm
