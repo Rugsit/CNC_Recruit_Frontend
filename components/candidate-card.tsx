@@ -29,7 +29,7 @@ export default function CandidateCard({
         src={imageUrl}
         width={100}
       />
-      <div className='flex flex-col'>
+      <div className='flex flex-col overflow-hidden'>
         <p className='text-lg text-blue-400 font-bold'>{`${name} ${lastname}`}</p>
         <p className='text-[#3B434F] font-bold'>ชั้นปี: {year}</p>
       </div>
