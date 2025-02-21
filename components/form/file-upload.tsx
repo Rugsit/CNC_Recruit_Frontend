@@ -107,18 +107,22 @@ export default function FileUpload({
       )}
       {displayFileName && (
         <button
-          className='flex flex-row gap-x-5 py-3 px-4 items-center bg-[#3B434F] border border-gray-200 rounded-lg overflow-y-hidden transition-all hover:scale-95'
+          className='grid grid-cols-[28px_auto] gap-x-5 py-3 px-4 bg-[#3B434F] border border-gray-200 rounded-lg overflow-y-hidden transition-all hover:scale-95'
           style={{ cursor: 'pointer' }}
           onClick={handlePreview}
+          type='button'
         >
           <FileImage
+            className=""
             fill='#ffffff'
             height={28}
             width={28}
           />
-          <p className='text-base text-white cursor-pointer'>
-            {displayFileName}
-          </p>
+          <div className="flex items-center">
+            <p className='text-sm md:text-base truncate text-white cursor-pointer'>
+              {displayFileName}
+            </p>
+          </div>
         </button>
       )}
     </section>
