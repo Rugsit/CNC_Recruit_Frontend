@@ -28,7 +28,7 @@ type participants = {
   interviewStatus: string;
 };
 
-const INTERVIEW_DATES = ['2025-02-25', '2025-02-26'];
+const INTERVIEW_DATES = ['2025-03-01', '2025-03-02'];
 
 export default function CandidateInterview() {
   const [timeSlotCandidate, setTimeSlotCandidate] = useState<
