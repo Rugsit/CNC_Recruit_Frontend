@@ -54,24 +54,26 @@ export default function AddQuestion({
   } = useForm<FormField>();
 
   const targetQuestionEdit = async () => {
-    const response = await axios.get(
-      env('NEXT_PUBLIC_API_URL') + `/questions/${isOpen.id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data?.backendToken}`,
-        },
-      }
-    );
-    const dataEdit = response.data;
-    const newData = {
-      question: dataEdit.question,
-      question_type: dataEdit.question_type,
-      expected_ans: dataEdit.expected_ans,
-      question_difficulty: dataEdit.question_difficulty,
-    };
+    try {
+      const response = await axios.get(
+        env('NEXT_PUBLIC_API_URL') + `/questions/${isOpen.id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data?.backendToken}`,
+          },
+        }
+      );
+      const dataEdit = response.data;
+      const newData = {
+        question: dataEdit.question,
+        question_type: dataEdit.question_type,
+        expected_ans: dataEdit.expected_ans,
+        question_difficulty: dataEdit.question_difficulty,
+      };
 
-    reset(newData);
+      reset(newData);
+    } catch (e) {}
   };
 
   useEffect(() => {

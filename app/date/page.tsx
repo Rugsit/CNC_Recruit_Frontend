@@ -60,7 +60,7 @@ export default function InterviewCalendar() {
   );
   const router = useRouter();
 
-  console.log(data?.backendToken); // Token Debug
+  // console.log(data?.backendToken); // Token Debug
 
   const handleDateChange = (value: Value) => {
     setSelectedDate(value);
