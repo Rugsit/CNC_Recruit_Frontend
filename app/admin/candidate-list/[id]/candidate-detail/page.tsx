@@ -125,7 +125,7 @@ export default function CandidateDetail() {
         >
           เอกสารผลการเรียน
         </button>
-        <div className='flex flex-col gap-y-3 my-3 w-full'>
+        <div className='flex flex-col gap-y-5 my-3 w-full'>
           <TextField
             header='รหัสนิสิต:'
             value={`${candidateDetail?.nisitId}`}

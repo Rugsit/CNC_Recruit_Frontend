@@ -19,9 +19,10 @@ export const formSchema = z.object({
     .string()
     .regex(/^\d{10}$/, { message: '*กรุณาระบุเบอร์โทรศัพท์ 10 หลัก' }),
   currentLiving: z.string().min(1, { message: '*กรุณาระบุที่อยู่อาศัย' }),
-  grade: z.string().regex(/^(?:[0-3](?:\.\d{1,2})?|4(?:\.0{1,2})?)$/, {
-    message: 'เกรดต้องอยู่ระหว่าง 0.00 - 4.00',
-  }),
+  grade: z.preprocess(
+    (val) => parseFloat(val as string),
+    z.number({ message: 'เกรดต้องอยู่ระหว่าง 0.01 - 4.00' }).min(0.01, { message: 'เกรดต้องอยู่ระหว่าง 0.01 - 4.00' }).max(4.00, { message: 'เกรดต้องอยู่ระหว่าง 0.01 - 4.00' })
+  ),
   expected: z.string().min(1, { message: '*กรุณาระบุความคาดหวัง' }),
   whyCnc: z.string().min(1, { message: '*กรุณาระบุเหตุผล' }),
   mbti: z.string().regex(/^[A-Z]{4}$/, { message: '*กรุณาระบุตัวอักษรภาษาอังกฤษพิมพ์ใหญ่ 4 ตัว' }),
@@ -55,7 +56,7 @@ export const formSchema = z.object({
     // (Not attach the file yet)
     z
       .any()
-      .refine((file) => file && ['application/pdf'].includes(file.type), {
+      .refine((file) => file && ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'].includes(file.type), {
         message: '*กรุณาอัพโหลดไฟล์ผลการเรียน',
       })
       .refine((file) => file.size <= MAX_FILE_SIZE, {

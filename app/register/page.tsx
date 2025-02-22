@@ -54,7 +54,7 @@ export default function RegisterForm() {
     useState<ApplicationForm | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingApplication, setIsLoadingApplication] = useState<boolean>(true);
   const [imageFile, setImageFile] = useState<File>();
   const [transcriptFile, setTranscriptFile] = useState<File>();
   const [errorDesc, setErrorDesc] = useState<string>(
@@ -75,7 +75,7 @@ export default function RegisterForm() {
     reset,
   } = useForm<FormFields>({
     resolver: zodResolver(formSchema),
-    defaultValues: applicationForm || {},
+    defaultValues: applicationForm ? { ...applicationForm, grade: parseFloat(applicationForm.grade) } : {},
   });
 
   const checkToken = async () => {
@@ -98,7 +98,7 @@ export default function RegisterForm() {
 
   const fetchingApplication = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date('2025-02-23T23:59:59').getTime();
+    const expiryTimestamp = new Date('2025-02-27T23:59:59').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
@@ -127,7 +127,7 @@ export default function RegisterForm() {
     } catch (e) {
       console.error(e);
     } finally {
-      setIsLoading(false);
+      setIsLoadingApplication(false);
     }
   };
 
@@ -212,7 +212,7 @@ export default function RegisterForm() {
     }
   };
 
-  if (isLoading) {
+  if (isLoadingApplication) {
     return (
       <div className='fixed inset-0 flex flex-col gap-y-5 justify-center items-center'>
         <div className='w-16 h-16 border-5 border-[#42B5FC] border-t-transparent rounded-full animate-spin' />
@@ -235,7 +235,7 @@ export default function RegisterForm() {
           <span className='py-6 text-base'>กลับสู่หน้าหลัก</span>
         </Link>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='flex flex-col gap-y-5 px-10 py-3 bg-white rounded-lg shadow-lg'>
+          <div className='flex flex-col gap-y-5 px-5 md:px-10 py-3 bg-white rounded-lg shadow-lg'>
             <div>
               <h3 className='md:text-2xl text-xl mt-5 text-blue-400 font-bold'>
                 แบบฟอร์มสมัคร
@@ -364,7 +364,7 @@ export default function RegisterForm() {
               />
               <FileUpload
                 accept='.png, .jpg, .jpeg'
-                desc='JPEG, JPG หรือ PNG ขนาดไม่เกิน 6MB เห็นใบหน้าชัดเจน'
+                desc='JPEG, JPG หรือ PNG ขนาดไม่เกิน 6MB'
                 errorMessage={errors.imageUrl?.message?.toString()}
                 existedFile={{
                   name: applicationForm?.imageName || '',
@@ -375,7 +375,7 @@ export default function RegisterForm() {
                 register={register('imageUrl')}
                 setFile={setImageFile}
                 setValue={setValue}
-                title='อัพโหลดรูปภาพ'
+                title='อัพโหลดรูปภาพที่เห็นใบหน้าชัดเจน'
                 trigger={trigger}
               />
               <FileUpload
@@ -391,7 +391,7 @@ export default function RegisterForm() {
                 register={register('transcriptUrl')}
                 setFile={setTranscriptFile}
                 setValue={setValue}
-                title='อัพโหลดไฟล์ผลการเรียน (ภาพจาก my ku หรือ transcript)'
+                title='อัพโหลดไฟล์ผลการเรียนที่เห็นผลการเรียนครบทุกวิชา (ภาพจาก my ku หรือ transcript)'
                 trigger={trigger}
               />
             </div>
@@ -416,9 +416,17 @@ export default function RegisterForm() {
             </div>
           </div>
         </form>
+        {isSubmitting && (
+          <div className="fixed inset-0 flex justify-center items-center transition-opacity bg-black bg-opacity-70 z-50">
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 border-5 border-[#42B5FC] border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-[#42B5FC] text-xl font-bold">{applicationForm ? "กำลังแก้ไขใบสมัคร..." : "กำลังสร้างใบสมัคร..."}</p>
+            </div>
+          </div>
+        )}
         <div
           className={clsx(
-            'transition-opacity fixed top-0 left-0 right-0 bottom-0 bg-black/[.5] z-50 flex justify-center items-center',
+            'transition-opacity fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-70 z-50 flex justify-center items-center',
             {
               ' opacity-0 pointer-events-none': !isModalVisible,
               ' opacity-100 ': isModalVisible,
