@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import LoginPopup from '@/app/home/_local/loginPopup';
 import { env } from 'next-runtime-env';
+import Link from 'next/link';
 interface Props {
   id: number;
   title: string;
@@ -91,8 +92,8 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
       },
       {
         id: 3,
-        path: '/date',
-        action: 'ลงเวลาสัมภาษณ์',
+        path: '/register',
+        action: 'ดูใบสมัคร',
         desc: 'อย่าลืมเลือกวันเวลาสัมภาษณ์โปรดเลือกเวลาภายในช่วงเวลาที่กำหนด !!!',
       },
       {
@@ -174,7 +175,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         <LoginPopup
           isOpen={loginIsClosed}
           onClose={closeLoginPopup}
-          onLoginSuccess={() => { }}
+          onLoginSuccess={() => {}}
         />
       </div>
       <div className='text-center'>
@@ -270,23 +271,13 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
           >
             {state?.action}
           </button>
-          <button
-            className={`${isFoundApplication && state?.id === 3 ? 'flex' : 'hidden'} md:p-[30px] p-[25px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] rounded-2xl transition-all hover:scale-95 bg-gradient-to-t from-primary to-[#0374BA] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
-            onClick={async () => {
-              const loginStatus = await checkToken();
-
-              setIsLogin(loginStatus);
-              if (!loginStatus) {
-                setLoginIsClosed(false);
-              } else {
-                if (state?.path) {
-                  rounter.push('/register');
-                }
-              }
-            }}
-          >
-            ดูใบสมัคร
-          </button>
+          <Link href={'/date'}>
+            <button
+              className={`${isFoundApplication ? 'flex' : 'hidden'} md:p-[30px] p-[25px] bg-gradient-to-t from-primary to-[#0374BA] border-[3px] border-white mt-[80px] shadow-md rounded-2xl transition-all hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
+            >
+              ลงเวลาสัมภาษณ์
+            </button>
+          </Link>
         </div>
       )}
     </div>
