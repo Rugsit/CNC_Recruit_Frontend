@@ -589,8 +589,9 @@ export const Pen = ({ width, height, fill, ...props }: IconSvgProps) => (
   </svg>
 );
 
-export const FileImage = ({ width, height, fill, ...props }: IconSvgProps) => (
+export const FileImage = ({ width, height, fill, className, ...props }: IconSvgProps) => (
   <svg
+    className={className}
     fill={fill}
     height={height}
     viewBox='0 0 28 28'

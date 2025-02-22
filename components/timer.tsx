@@ -38,6 +38,13 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
   });
 
   const [state, setState] = useState<State>();
+  const { data, status } = useSession();
+  const [isLogin, setIsLogin] = useState(false);
+  const [loginIsClosed, setLoginIsClosed] = useState(true);
+  const rounter = useRouter();
+  const [isFoundApplication, setIsFoundApplication] = useState<boolean>(false);
+
+  // console.log(`Token: ${data?.backendToken}`); // Debug Token
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -70,16 +77,16 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
     };
 
     setInterval(updateCountdown, 1000);
-
-    path();
   }, []);
 
-  const path = () => {
+  const path = async () => {
+    await fetchApplication();
+    // console.log(`Path: ${isFoundApplication}`);
     const paths: State[] = [
       {
         id: 2,
         path: '/register',
-        action: 'สมัครเข้าร่วม Lab',
+        action: isFoundApplication ? 'แก้ไขใบสมัคร' : 'สมัครเข้าร่วม Lab',
         desc: 'เข้าร่วม Lab CNC เพื่อพัฒนาทักษะด้านวิทยาการคอมพิวเตอร์และร่วมทำงานวิจัย/โปรเจกต์ที่ท้าทาย',
       },
       {
@@ -100,12 +107,6 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
     setState(result);
   };
-
-  const { data, status } = useSession();
-  const [isLogin, setIsLogin] = useState(false);
-  const [loginIsClosed, setLoginIsClosed] = useState(true);
-  const rounter = useRouter();
-  const [isFoundApplication, setIsFountApplication] = useState<boolean>(false);
 
   const checkToken = async () => {
     const base64Url = data?.backendToken?.split('.')[1];
@@ -132,9 +133,9 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
       // console.log(response.data);
       if (response.data) {
-        setIsFountApplication(true);
+        setIsFoundApplication(true);
       } else {
-        setIsFountApplication(false);
+        setIsFoundApplication(false);
       }
     } catch (e) {
       console.error(e);
@@ -143,15 +144,18 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
   useEffect(() => {
     if (status !== 'loading') {
-      fetchApplication();
+      // fetchApplication();
+      path();
+      // console.log(`Application: ${isFoundApplication}`);
     }
-  }, [status]);
+  }, [status, isFoundApplication]);
 
   useEffect(() => {
     if (status !== 'loading') {
       checkToken();
     }
   }, [status]);
+
   const closeLoginPopup = () => {
     setLoginIsClosed(true);
   };
@@ -170,7 +174,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
         <LoginPopup
           isOpen={loginIsClosed}
           onClose={closeLoginPopup}
-          onLoginSuccess={() => {}}
+          onLoginSuccess={() => { }}
         />
       </div>
       <div className='text-center'>
@@ -249,8 +253,8 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
 
       {state?.path != '' && (
         <div className='flex gap-5'>
-          <Button
-            className={`${isFoundApplication || (!isFoundApplication && state?.id === 2) ? 'flex' : 'hidden'} md:p-[40px] p-[30px] bg-white border-[3px] border-primary mt-[80px] shadow-md hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary`}
+          <button
+            className={`${isFoundApplication || (!isFoundApplication && state?.id === 2) ? 'flex' : 'hidden'} md:p-[30px] p-[25px] bg-white border-[3px] border-primary mt-[80px] shadow-md rounded-2xl transition-all hover:scale-95 lg:text-[25px] md:text-[20px] text-[16px] font-bold text-primary`}
             onClick={async () => {
               const loginStatus = await checkToken();
 
@@ -265,9 +269,9 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
             }}
           >
             {state?.action}
-          </Button>
-          <Button
-            className={`${isFoundApplication && state?.id === 3 ? 'flex' : 'hidden'} md:p-[40px] p-[30px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] hover:scale-95 bg-transparent lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
+          </button>
+          <button
+            className={`${isFoundApplication && state?.id === 3 ? 'flex' : 'hidden'} md:p-[30px] p-[25px]  border-[3px] border-white mt-[80px] shadow-[0_0px_35px_rgba(255,255,255,1)] rounded-2xl transition-all hover:scale-95 bg-gradient-to-t from-primary to-[#0374BA] lg:text-[25px] md:text-[20px] text-[16px] font-bold text-white`}
             onClick={async () => {
               const loginStatus = await checkToken();
 
@@ -282,7 +286,7 @@ export const Timer = ({ id, title, desc, endTime }: Props) => {
             }}
           >
             ดูใบสมัคร
-          </Button>
+          </button>
         </div>
       )}
     </div>
