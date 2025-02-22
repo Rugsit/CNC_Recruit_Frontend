@@ -15,7 +15,7 @@ export default function Timeline() {
             เปิดรับสมัคร
           </p>
           <p className='text-primary text-center text-xl mt-3'>
-            20 - 23 กุมภาพันธ์
+            วันนี้ - 27 กุมภาพันธ์
           </p>
         </div>
         <div className='hidden lg:block w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl' />
@@ -27,7 +27,7 @@ export default function Timeline() {
             สัมภาษณ์
           </p>
           <p className='text-primary text-center text-xl mt-3'>
-            25 - 26 กุมภาพันธ์
+            1 - 2 มีนาคม
           </p>
         </div>
         <div className='hidden lg:block w-[150px] h-[10px] bg-[#8CD2FD] rounded-xl' />
@@ -38,7 +38,7 @@ export default function Timeline() {
           <p className='text-[#0374BA] text-center lg:text-3xl text-2xl font-bold mt-5'>
             ประกาศผล
           </p>
-          <p className='text-primary text-center text-xl mt-3'>28 กุมภาพันธ์</p>
+          <p className='text-primary text-center text-xl mt-3'>5 มีนาคม</p>
         </div>
       </div>
     </section>
