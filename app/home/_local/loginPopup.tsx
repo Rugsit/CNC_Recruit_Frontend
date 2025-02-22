@@ -79,7 +79,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
             className={clsx(
               'text-red-400 text-center text-sm mt-4 font-normal',
               {
-                hidden: error,
+                hidden: !error,
               }
             )}
           >
