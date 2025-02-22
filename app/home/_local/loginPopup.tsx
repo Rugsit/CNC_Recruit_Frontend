@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@nextui-org/button';
 import Image from 'next/image';
@@ -17,14 +17,24 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   onLoginSuccess,
   isOpen,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const handleGoogleLogin = async () => {
-    await signIn('google');
+    setLoading(true);
+    setError(false);
+    try {
+      await signIn('google');
+    } catch (e) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div
       className={clsx(
-        `transition-all max-w-[500px] m-[20px] h-[320px] bg-white p-5 rounded-xl shadow-lg`,
+        `transition-all max-w-[500px] m-[20px] max-h-[500px] bg-white p-5 rounded-xl shadow-lg`,
         {
           ' scale-90 opacity-0': isOpen,
           ' scale-100 opacity-100': !isOpen,
@@ -49,6 +59,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
           <Button
             className='w-full h-[60] py-6 bg-[#29B6F6] text-white rounded-xl hover:bg-[#0288D1] transition-colors'
             onClick={handleGoogleLogin}
+            isDisabled={loading}
           >
             <div className='flex items-center justify-center gap-3'>
               <Image
@@ -59,12 +70,22 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                 width={30}
               />
               <span className='text-[16px] lg:text-xl '>
-                เข้าสู่ระบบด้วย Google
+                {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบด้วย Google'}
               </span>
             </div>
           </Button>
 
-          <p className='text-gray-400 text-center text-xs mt-4 font-normal'>
+          <p
+            className={clsx(
+              'text-red-400 text-center text-sm mt-4 font-normal',
+              {
+                hidden: error,
+              }
+            )}
+          >
+            เกิดข้อผิดพลาดไม่สามารถเข้าสู่ระบบได้
+          </p>
+          <p className='text-gray-400 text-center text-sm mt-4 font-normal'>
             ใช้เมลของมหาวิทยาลัยเท่านั้น ตัวอย่าง example@ku.th
           </p>
 
