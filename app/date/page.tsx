@@ -87,7 +87,7 @@ export default function InterviewCalendar() {
   // GET time slots
   const fetchDataCalendar = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date('2025-02-28T23:59:59').getTime();
+    const expiryTimestamp = new Date('2025-03-02T23:59:59').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);

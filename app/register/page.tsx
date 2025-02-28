@@ -98,7 +98,7 @@ export default function RegisterForm() {
 
   const fetchingApplication = async () => {
     const currentTimestamp = new Date().getTime();
-    const expiryTimestamp = new Date('2025-02-27T23:59:59').getTime();
+    const expiryTimestamp = new Date('2025-02-28T23:59:59').getTime();
 
     if (currentTimestamp > expiryTimestamp) {
       setIsExpired(true);
