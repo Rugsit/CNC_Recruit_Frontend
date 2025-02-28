@@ -49,7 +49,7 @@ export default function Page() {
   return (
     <div className='flex flex-col gap-y-6 items-center max-w-[1500px] mx-auto pb-12 px-4 pt-44 min-h-screen'>
       <h3 className='text-center text-3xl text-blue-400 font-bold'>
-        รายการผู้สมัคร
+        รายการผู้สมัคร (จำนวน {candidates.length} คน)
       </h3>
       <Input
         classNames={{
