@@ -17,5 +17,5 @@
 https://cnc.cs.sci.ku.ac.th/home
 
 ## Descriptions
-- this website was developed using the Next.js framework and Tailwind CSS for the frontend.
+- For the parts I worked on, this website was developed using the Next.js framework and Tailwind CSS for the frontend.
 - It supports responsive design.
