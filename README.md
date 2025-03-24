@@ -1,82 +1,21 @@
-# Next.js & NextUI Template
+<h1 align="center">CNC recruit frontend Project</h1>
+<p align="center"><b>This project was developed for recruiting members into the CNC lab. It facilitates the application process, registration for interviews, conducting interviews, and candidate selection.</b></p>
+<p align="center">
+<a href="https://nextjs.org/" target="_blank" rel="noreferrer"> <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="git" width="50" height="40"/> </a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png" alt="java" width="60" height="40"/> </a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://neovim.io/" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Neovim-mark.svg" alt="css3" width="40" height="40"/> </a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+## Showcase</h1>
+![Image](https://github.com/user-attachments/assets/35bc6600-326c-40a9-9675-4d869b61577e)
+![Image](https://github.com/user-attachments/assets/5037a635-efbb-4f4e-80fc-da240958d71f)
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+## Live Website
+https://cnc.cs.sci.ku.ac.th/home
 
-## Technologies Used
-
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-
-local lib:
-    
-- axios
-- tanstack
-
-## How to Use
-
-
-### Install dependencies
-
-require 
-    
-    - Docker
-    - Node 20 or above
-
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
-
-
-```bash
-npm install
-```
-
-or 
-
-```bash
-pnpm i
-```
-
-### Run the development server
-
-```bash
-npm run dev
-```
-
-or 
-
-```bash
-pnpm dev
-```
-
-## To Build Image
-
-first type command 
-
-```bash
-docker build -t cnc-recruit-project .
-```
- 
-!!make sure your project has Dockerfile!!
-
-and then use 
-
-```bash
-docker run -dp 3000:3000 cnc-recruit-project
-```
-to run project
-
-and then you can go to ` localhost:3000 ` with your browser 
-
-NOTE:
-
--d is stand for runnin in background
--p is to specify port
-
-
-
+## Descriptions
+- this website was developed using the Next.js framework and Tailwind CSS for the frontend.
+- It supports responsive design.
