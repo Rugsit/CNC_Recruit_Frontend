@@ -14,7 +14,7 @@
 ![Image](https://github.com/user-attachments/assets/5037a635-efbb-4f4e-80fc-da240958d71f)
 
 ## Live Website
-https://cnc.cs.sci.ku.ac.th/home
+https://cnc-recruit-frontend.vercel.app/home
 
 ## Descriptions
 - For the parts I worked on, this website was developed using the Next.js framework and Tailwind CSS for the frontend.
